@@ -25,11 +25,11 @@
         c := c not = b      % inequality comparison
     else
         c := i < j          % less-than comparison
-    d := i < = j            % less-than-or-equal-to comparison
+    d := i <= j            % less-than-or-equal-to comparison
 
     if 10 > 15              % greater-than comparison
     then 
-        d := 15 > = 15      % greater-than-or-equal-to comparison
+        d := 15 >= 15      % greater-than-or-equal-to comparison
     else 
         d := ( i = 2 ? true : false )       % conditional expression
 }
