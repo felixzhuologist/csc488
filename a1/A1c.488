@@ -1,0 +1,38 @@
+% This program uses all forms of loop building and loop exit constructs in the language.
+% by Felix Mo (mofelix)
+
+{
+	% Nested 'while' loops to test exits.
+	while true do
+	{
+		while true do
+		{
+			while true do
+			{
+				while true do 
+				{
+					% Exit from one (this) loop when expression is true.
+					exit 1 when true
+				}
+				
+				% Exit from this (first) loop and its containing (second) loop.
+				exit 2
+			}
+		}
+		
+		% Exit from this loop.
+		exit
+	}
+	
+	% Loop until this flag is set.
+	var done : Boolean
+	while not done do
+	{
+		% Use 'repeat' loop to set flag.
+		repeat
+		{
+			done := true
+		}
+		until done
+	}
+}
