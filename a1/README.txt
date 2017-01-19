@@ -8,7 +8,7 @@ PROGRAM B: Jeffrey Deng (dengjeff)
 
 
 PROGRAM C: Felix Mo (mofelix)
-
+This program uses all forms of loop building and loop exit constructs in the language.
 
 PROGRAM D: Evan Klein (kleinev1)
 
