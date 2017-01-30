@@ -13,7 +13,10 @@ PROGRAM C: Felix Mo (mofelix)
 This program uses all forms of loop building and loop exit constructs in the language.
 
 PROGRAM D: Evan Klein (kleinev1)
-
+This program uses non-recursive functions both with and without parameters, 
+and procedures with and without parameters.
 
 PROGRAM E: Felix Zhu (zhufelix)
+This program includes a recursive function, a procedure with parameters,
+a procedure without parameters, a nested procedure, and a nested function declaration. 
 
