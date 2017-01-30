@@ -2,7 +2,7 @@
 
 package compiler488.parser;
 
-import java_cup.runtime.*;		// Must always import this.
+import java_cup.runtime.*;        // Must always import this.
 
 /* User code components 1: action code components.
  * Code to be used inside the actions triggered when productions are matched.
@@ -17,43 +17,43 @@ import java_cup.runtime.*;		// Must always import this.
  */
 parser code {:
 
-	String lastError;
-	
+    String lastError;
+    
     /* Override the report_error method so it will display the line and
      * column of where the error occurred in the input as well as the
      * reason for the error which is passed into the method in the
      * String 'message'.
      */
     public void report_error(String message, Object info)
-	{
-	String st =  "Error";
+    {
+    String st =  "Error";
    
         if (info instanceof java_cup.runtime.Symbol)
-	    {
+        {
             java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
 
-	    /* s.left is supposed to hold the line number of the error.
-	     * s.right is supposed to hold the column number.
-	     */
+        /* s.left is supposed to hold the line number of the error.
+         * s.right is supposed to hold the column number.
+         */
    
-            if (s.left >= 0)				// Check line number.
-		{
+            if (s.left >= 0)                // Check line number.
+        {
                 st += " in line " + (s.left + 1);
-                if (s.right >= 0)			// Check column number.
+                if (s.right >= 0)            // Check column number.
                     st += ", column " + (s.right + 1);
-		}
-	    }
-	    st += ": " + message;
+        }
+        }
+        st += ": " + message;
         System.err.println (st);
         lastError = st;
-	}
+    }
    
     // Override the report_fatal_error method to use the report_error method.
     public void report_fatal_error (String message, Object info) throws Exception
-	{
+    {
         report_error (message, info);
         throw new Exception (lastError);
-	}
+    }
    
    // version string for printing version in Main
    public static final String version =
@@ -88,26 +88,26 @@ init with {:
 // DEFINITIONS for CSC488S Source Language  Winter  2016/2017 
 
 // Terminals returned by the scanner with no value attached.  
-terminal	AND,	OR,	NOT,	TRUE,	FALSE	;
-terminal 	BOOLEAN,INTEGER,FUNCTION,PROCEDURE	;
-terminal	DO,	ELSE,	EXIT,   IF	;
-terminal	READ, 	REPEAT,	RETURN,	NEWLINE,THEN,	UNTIL	;
-terminal	VAR,	WHEN,	WHILE,	WITHX,	WRITE 	;
+terminal    AND,    OR,    NOT,    TRUE,    FALSE    ;
+terminal     BOOLEAN,INTEGER,FUNCTION,PROCEDURE    ;
+terminal    DO,    ELSE,    EXIT,   IF    ;
+terminal    READ,     REPEAT,    RETURN,    NEWLINE,THEN,    UNTIL    ;
+terminal    VAR,    WHEN,    WHILE,    WITHX,    WRITE     ;
 
 // Special-character terminals, no value attached
-terminal	L_PAREN	,R_PAREN,L_SQUARE, R_SQUARE, L_CURLEY, R_CURLEY	;
-terminal	EQUAL,	GREATER,LESS,	COMMA,  DOT, QUESTION, COLON	;
-terminal	PLUS,	MINUS,	TIMES,  DIVIDE	;
+terminal    L_PAREN    ,R_PAREN,L_SQUARE, R_SQUARE, L_CURLEY, R_CURLEY    ;
+terminal    EQUAL,    GREATER,LESS,    COMMA,  DOT, QUESTION, COLON    ;
+terminal    PLUS,    MINUS,    TIMES,  DIVIDE    ;
 
 // Terminals returned by the scanner with a value.
-terminal String  IDENT	;
-terminal Integer INTCONST	;
-terminal String  TEXTCONST	;
+terminal String  IDENT    ;
+terminal Integer INTCONST    ;
+terminal String  TEXTCONST    ;
 
 // Non-terminals that have no value.
 // nonterminal xxx
 
-nonterminal	program 	;
+nonterminal    program     ;
 
 // Non-terminals that have a value.
 // nonterminal type  nameList ;
@@ -117,7 +117,7 @@ nonterminal	program 	;
 // commented out.
 //
 //precedence right PLUS, MINUS;
-//precedence right TIMES, DIVIDE;		// Higher precedence.
+//precedence right TIMES, DIVIDE;        // Higher precedence.
 
 // The grammar section.
 
@@ -136,4 +136,4 @@ start with program;
  *  GOES HERE
  */
 
-program		::=	;
+program        ::=    ;
