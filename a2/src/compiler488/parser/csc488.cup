@@ -111,7 +111,8 @@ nonterminal    program, scope, statement, declaration,
                 variable, expression, output, input,
                 procedurename, arguments, variablenames,
                 functionname, type, bound, variablename,
-                parameters, parametername, arrayname; 
+                parameters, parametername, arrayname,
+                unary, question, param; 
 
 // Non-terminals that have a value.
 // nonterminal type  nameList ;
@@ -209,23 +210,29 @@ procedurename  ::= IDENT;
 
 expression     ::= INTCONST |
                    MINUS expression |
-                   expression PLUS expression |
-                   expression MINUS expression |
-                   expression TIMES expression |
-                   expression DIVIDE expression |
-                   TRUE |
-                   FALSE |
+                   unary PLUS expression |
+                   unary MINUS expression |
+                   unary TIMES expression |
+                   unary DIVIDE expression |
                    NOT expression |
-                   expression AND expression |
-                   expression OR expression |
-                   expression EQUAL expression |
-                   expression NOT EQUAL expression |
-                   expression LESS expression |
-                   expression GREATER expression
-                   expression LESS EQUAL expression |
-                   L_PAREN expression R_PAREN |
-                   L_PAREN expression QUESTION expression COLON expression R_PAREN |
-                   variable |
-                   functionname |
-                   functionname L_PAREN arguments R_PAREN |
-                   parametername;
+                   unary AND expression |
+                   unary OR expression |
+                   unary EQUAL expression |
+                   unary NOT EQUAL expression |
+                   unary LESS expression |
+                   unary LESS EQUAL expression |
+                   unary GREATER expression
+                   L_PAREN expression question |
+                   unary |
+                   functionname L_PAREN arguments R_PAREN ;
+
+unary           ::= TRUE |
+                    FALSE |
+                    variable |
+                    functionname param |
+                    parametername;
+
+param           ::= L_PAREN arguments R_PAREN | ;
+
+question        ::= QUESTION expression COLON expression R_PAREN | 
+                    R_PAREN;
