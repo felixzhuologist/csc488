@@ -1,0 +1,13 @@
+% Tests error when improper function declaration (no params)
+% By: Atheed Thameem
+% UTORid: thameema
+
+{
+  function func(): Integer {
+    var pi: Integer
+    pi := 3
+    return with pi
+  }
+
+  func()
+}

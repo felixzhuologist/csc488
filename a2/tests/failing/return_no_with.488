@@ -1,0 +1,12 @@
+% Tests use of 'return <value>' instead of 'return with <value>'
+
+% By: Evan Klein
+% UtorID: kleinev1
+
+{
+    % non-recursive function with parameters
+    function sum (a : Integer, b : Integer) : Integer {
+        return a + b
+    }
+
+}

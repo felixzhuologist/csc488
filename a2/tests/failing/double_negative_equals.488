@@ -1,0 +1,8 @@
+% Tests using double negative as part of a 'not =' expression
+% By: Evan Klein
+% UtorID: kleinev1
+
+{
+    var i : Boolean
+    i := (4 not not = 3)
+}

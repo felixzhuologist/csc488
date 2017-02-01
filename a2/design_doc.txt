@@ -1,0 +1,34 @@
+Design:
+We designed the grammar by first inputting the grammar directly from the
+language reference, then resolving each shift/reduce conflict produced
+from the CUP parser generator. Here is a list of conflicts that arose
+and how we fixed them:
+
+  statement: dangling else
+  We get a shift/reduce conflict because of the dangling else problem for
+  the recursive statement rules (ifthen, ifthenelse, while, repeat). We
+  fixed this in the standard way: by dividing statements into matched or
+  unmatched statements, where unmatched statements which has at least one if 
+  or repeat that is not paired with a following else or until, and matched statements
+  have no unpaired if/repeats, or no if/repeats at all (the non recursive
+  statement rules). We then only allow matched statements between an if/else,
+  or repeat/until, which means that each else or until is matched with the nearest
+  preceding pair.
+
+  expression: two sources of recursion
+
+  nonterminal COMMA nonterminal:
+
+  variable/array/function/parameter/procedurename:
+  we get a reduce/reduce conflict, since these are all defined as IDENT and
+  the parser is unable to determine which type of name to reduce to. To get
+  around this, we just removed all of these non terminals and used IDENT
+  directly
+
+
+Testing:
+We included our a1 programs as passing tests, and mistakes from a1 as 
+failing tests. We also added a number of extra tests - the purpose of each
+test is described in comments at the top of each file
+
+Who did what:

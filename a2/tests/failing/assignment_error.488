@@ -1,3 +1,7 @@
+% Tests error when assignment syntax is wrong
+% By: Atheed Thameem
+% UTORid: thameema
+
 {
     var i : Integer
 

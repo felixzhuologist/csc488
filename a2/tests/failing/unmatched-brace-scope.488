@@ -1,0 +1,6 @@
+% Test that an unmatched brace for the beginning of a scope is caught.
+% by Felix Mo (mofelix)
+
+{{
+    return
+}
