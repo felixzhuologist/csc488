@@ -215,18 +215,19 @@ expression     ::=      value |
                         value NOT EQUAL expression |
                         value LESS expression |
                         value LESS EQUAL expression |
-                        value GREATER expression |
-                        L_PAREN expression question |
-                        IDENT L_PAREN arguments R_PAREN |
-                        IDENT L_SQUARE expression R_SQUARE |
-                        TEXTCONST |
-                        NEWLINE;
+                        value GREATER expression;
+ 
 
 value         ::=       INTCONST |
                         MINUS value |
                         IDENT |
                         TRUE |  
-                        FALSE;
+                        FALSE
+                        L_PAREN expression question |
+                        IDENT L_PAREN arguments R_PAREN |
+                        IDENT L_SQUARE expression R_SQUARE |
+                        TEXTCONST |
+                        NEWLINE;
 
 question      ::=       QUESTION expression COLON expression R_PAREN | 
                         R_PAREN;
