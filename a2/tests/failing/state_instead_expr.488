@@ -1,0 +1,10 @@
+% Tests statement instead of expression
+% By: Felix Zhu
+% UtorID: zhufelix
+
+{
+  var a: Integer
+  var b: Integer
+
+  a := (3 + return with 5)
+}
