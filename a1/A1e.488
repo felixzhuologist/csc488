@@ -10,24 +10,17 @@
     if n = 1 then return with 1
     return with fib(n - 1) + fib(n - 2)
   }
-  write fib(1)
-  write fib(10)
 
   % procedure without parameter
   procedure greeting {
     write "hello world"
   }
-  greeting
 
   % procedure with parameter
   procedure add1(n: Integer) {
     n := n + 1
   }
   var i: Integer
-  i := 3
-  write i
-  add1(i)
-  write i
 
   % nested procedure
   procedure cake {
@@ -40,17 +33,29 @@
     get_ingredients
     bake_ingredients
   }
-  cake
 
   % nested function
   function get_circle_area(radius: Integer): Integer {
     var pi: Integer
-    pi := 3
-    function square(n: Integer): {
+    function square(n: Integer): Integer {
       return with n * n
     }
 
+    pi := 3
     return with pi * square(radius)
   }
+
+  write fib(1)
+  write fib(10)
+
+  i := 3
+  write i
+  add1(i)
+  write i
+
+  greeting
+  
+  cake
+
   get_circle_area(1)
 }

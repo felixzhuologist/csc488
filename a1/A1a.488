@@ -3,23 +3,24 @@
 % UTORid: thameema
 
 {
-    % usage of all arithmetic operators
     var i : Integer
     var j : Integer
+    var b : Boolean
+    var c : Boolean
+    var d : Boolean
+
+    % usage of all arithmetic operators
     i := 3 + 18     % addition
     i := i - 10     % subtraction
     j := i * j      % multiplication
     j := 15 / 5     % division
 
     % usage of all logical operators
-    var b : Boolean
-    var c : Boolean
     b := false and true     % AND
     b := b or true          % OR 
     c := not b              % NOT 
 
     % usage of all comparison operators
-    var d : Boolean
     if b = true             % equality comparison
     then 
         c := c not = b      % inequality comparison
