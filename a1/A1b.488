@@ -1,5 +1,4 @@
-program {
-
+{
     % This program uses all forms of array declaration, positive and negative bounds
     % In addition this program also tries to use some of the features of the language
     % Such as addition, not, and while loops
