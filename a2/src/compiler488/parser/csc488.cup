@@ -111,7 +111,7 @@ nonterminal    program, scope, statement, statements,
                declaration, declarations, expression, output,
                arguments, variablenames, type,
                question, value, parameters,
-                matched, unmatched, variable;
+               matched, unmatched, variable, input;
 
 // Non-terminals that have a value.
 // nonterminal type  nameList ;
@@ -158,7 +158,9 @@ matched      ::=        IF expression THEN matched ELSE matched |
                         EXIT WHEN expression |
                         EXIT INTCONST WHEN expression |
                         RETURN |
-                        RETURN WITHX expression;
+                        RETURN WITHX expression |
+                        WRITE output
+                        READ input;
 
 unmatched ::= IF expression THEN matched |
               IF expression THEN unmatched | 
@@ -177,10 +179,15 @@ declaration    ::=      VAR variablenames COLON type |
 declarations   ::=      declarations declaration |
                         declaration;
 
-variablenames  ::=      IDENT |
+variable       ::=      IDENT |
                         IDENT L_SQUARE value R_SQUARE |
-                        IDENT L_SQUARE value DOT DOT value R_SQUARE |
-                        variablenames COMMA IDENT;
+                        IDENT L_SQUARE value DOT DOT value R_SQUARE;
+
+variablenames  ::=      variable |
+                        variablenames COMMA variable;
+
+input          ::=      variable |
+                        input COMMA variable;
 
 output         ::=      expression |
                         output COMMA expression;
@@ -199,7 +206,7 @@ expression     ::=      value |
                         expression MINUS value |
                         expression TIMES value |
                         expression DIVIDE value |
-                      /* NOT expression | */
+                        // NOT expression |
                         expression AND value |
                         expression OR value |
                         expression EQUAL value |
