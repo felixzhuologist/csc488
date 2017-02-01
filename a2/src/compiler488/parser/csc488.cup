@@ -222,7 +222,7 @@ value         ::=       INTCONST |
                         MINUS value |
                         IDENT |
                         TRUE |  
-                        FALSE
+                        FALSE |
                         L_PAREN expression question |
                         IDENT L_PAREN arguments R_PAREN |
                         IDENT L_SQUARE expression R_SQUARE |
