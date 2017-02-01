@@ -22,11 +22,6 @@
   }
   var i: Integer
 
-  i := 3
-  write i
-  add1(i)
-  write i
-
   % nested procedure
   procedure cake {
     procedure get_ingredients {
@@ -52,6 +47,11 @@
 
   write fib(1)
   write fib(10)
+
+  i := 3
+  write i
+  add1(i)
+  write i
 
   greeting
   
