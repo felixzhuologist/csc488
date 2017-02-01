@@ -134,22 +134,16 @@ start with program;
  * reads one more token before it will act on the production.
  */
 
+program         ::=     scope;
 
-/*  YOUR CLEVERLY CRAFTED cup GRAMMAR FOR THE CSC488S SOURCE LANGUAGE
- *
- *  GOES HERE
- */
-
-program        ::=      scope;
-
-scope          ::=      L_CURLEY declarations statements R_CURLEY | 
+scope           ::=     L_CURLEY declarations statements R_CURLEY | 
                         L_CURLEY statements R_CURLEY |
                         L_CURLEY R_CURLEY;
 
-statement ::= matched |
-              unmatched;
+statement       ::=     matched |
+                        unmatched;
 
-matched      ::=        IF expression THEN matched ELSE matched |
+matched         ::=     IF expression THEN matched ELSE matched |
                         WHILE expression DO matched |
                         REPEAT matched UNTIL expression |
                         variable COLON EQUAL expression |
@@ -165,47 +159,47 @@ matched      ::=        IF expression THEN matched ELSE matched |
                         IDENT L_PAREN arguments R_PAREN |
                         scope;
 
-unmatched ::= IF expression THEN matched |
-              IF expression THEN unmatched | 
-              IF expression THEN matched ELSE unmatched |
-              WHILE expression DO unmatched |
-              REPEAT matched UNTIL unmatched ;
+unmatched       ::=     IF expression THEN matched |
+                        IF expression THEN unmatched | 
+                        IF expression THEN matched ELSE unmatched |
+                        WHILE expression DO unmatched |
+                        REPEAT matched UNTIL unmatched ;
 
-statements     ::=       statement |
-                         statements statement;
+statements      ::=     statement |
+                        statements statement;
 
-declaration    ::=      VAR variablenames COLON type |
+declaration     ::=     VAR variablenames COLON type |
                         FUNCTION IDENT COLON type scope |
                         FUNCTION IDENT L_PAREN parameters R_PAREN COLON type scope |
                         PROCEDURE IDENT scope |
                         PROCEDURE IDENT L_PAREN parameters R_PAREN scope;
   
-declarations   ::=      declarations declaration |
+declarations    ::=     declarations declaration |
                         declaration;
 
-variable       ::=      IDENT |
+variable        ::=     IDENT |
                         IDENT L_SQUARE value R_SQUARE |
                         IDENT L_SQUARE value DOT DOT value R_SQUARE;
 
-variablenames  ::=      variable |
+variablenames   ::=     variable |
                         variablenames COMMA variable;
 
-input          ::=      variable |
+input           ::=     variable |
                         input COMMA variable;
 
-output         ::=      expression |
+output          ::=     expression |
                         output COMMA expression;
 
-type           ::=      INTEGER | 
+type            ::=     INTEGER | 
                         BOOLEAN;
 
-arguments      ::=      expression |
+arguments       ::=     expression |
                         arguments COMMA expression;
 
-parameters     ::=      IDENT COLON type |
+parameters      ::=     IDENT COLON type |
                         parameters COMMA IDENT COLON type;
 
-expression     ::=      value |
+expression      ::=     value |
                         value PLUS expression |
                         value MINUS expression |
                         value TIMES expression |
@@ -221,7 +215,7 @@ expression     ::=      value |
                         value GREATER EQUAL expression;
  
 
-value         ::=       INTCONST |
+value           ::=     INTCONST |
                         MINUS value |
                         IDENT |
                         TRUE |  
@@ -232,5 +226,5 @@ value         ::=       INTCONST |
                         TEXTCONST |
                         NEWLINE;
 
-question      ::=       QUESTION expression COLON expression R_PAREN | 
+question        ::=     QUESTION expression COLON expression R_PAREN | 
                         R_PAREN;
