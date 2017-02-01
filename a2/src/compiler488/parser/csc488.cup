@@ -202,18 +202,18 @@ parameters     ::=      IDENT COLON type |
                         parameters COMMA IDENT COLON type;
 
 expression     ::=      value |
-                        expression PLUS value |
-                        expression MINUS value |
-                        expression TIMES value |
-                        expression DIVIDE value |
-                        // NOT expression |
-                        expression AND value |
-                        expression OR value |
-                        expression EQUAL value |
-                        expression NOT EQUAL value |
-                        expression LESS value |
-                        expression LESS EQUAL value |
-                        expression GREATER value |
+                        value PLUS expression |
+                        value MINUS expression |
+                        value TIMES expression |
+                        value DIVIDE expression |
+                        NOT expression |
+                        value AND expression |
+                        value OR expression |
+                        value EQUAL expression |
+                        value NOT EQUAL expression |
+                        value LESS expression |
+                        value LESS EQUAL expression |
+                        value GREATER expression |
                         L_PAREN expression question |
                         IDENT L_PAREN arguments R_PAREN |
                         IDENT L_SQUARE expression R_SQUARE |
