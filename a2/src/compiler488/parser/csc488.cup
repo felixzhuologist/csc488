@@ -159,7 +159,7 @@ matched      ::=        IF expression THEN matched ELSE matched |
                         EXIT INTCONST WHEN expression |
                         RETURN |
                         RETURN WITHX expression |
-                        WRITE output
+                        WRITE output |
                         READ input;
 
 unmatched ::= IF expression THEN matched |
@@ -168,7 +168,8 @@ unmatched ::= IF expression THEN matched |
               WHILE expression DO unmatched |
               REPEAT matched UNTIL unmatched ;
 
-statements ::= statements statement;
+statements     ::=       statement |
+                         statements statement;
 
 declaration    ::=      VAR variablenames COLON type |
                         FUNCTION IDENT COLON type scope |
