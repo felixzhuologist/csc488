@@ -165,7 +165,7 @@ statement      ::=      IDENT COLON EQUAL expression |
 
 withelse       ::=      IF expression THEN withelse ELSE withelse;
 
-statements	   ::=      statements statement |
+statements     ::=      statements statement |
                         statement;
 
 declaration    ::=      VAR variablenames COLON type |
