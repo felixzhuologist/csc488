@@ -56,3 +56,9 @@ Atheed
     - Helped translate language specifications to productions
     - Fixed and added A2a as passing test case
     - Wrote several failing test cases
+
+Evan 
+    - Helped with translating language specifications to productions
+    - Fixed syntax errors in A2d and added it as passing test case
+    - Added many failing test cases
+
