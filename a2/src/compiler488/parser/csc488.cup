@@ -217,7 +217,8 @@ expression     ::=      value |
                         value NOT EQUAL expression |
                         value LESS expression |
                         value LESS EQUAL expression |
-                        value GREATER expression;
+                        value GREATER expression |
+                        value GREATER EQUAL expression;
  
 
 value         ::=       INTCONST |
