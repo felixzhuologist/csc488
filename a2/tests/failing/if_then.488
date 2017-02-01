@@ -1,0 +1,16 @@
+% Tests invalid if-then-else structure - multiple statements inside of block
+% that are not wrapped in a scope (see bottom of language handout)
+% By: Felix Zhu
+% UtorID: zhufelix
+
+{
+  var a: Integer
+  var b: Integer
+  a := 5
+  if a = 5
+  then
+    READ b
+    WRITE a
+  else
+    a := 3
+}
