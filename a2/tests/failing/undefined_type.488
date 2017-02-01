@@ -1,0 +1,6 @@
+% Tests that undefined types are caught.
+% by Felix Mo (mofelix)
+
+{
+    var x : None
+}
