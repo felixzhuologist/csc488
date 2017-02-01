@@ -1,0 +1,21 @@
+Design:
+We designed the grammar by first inputting the grammar directly from the
+language reference, then resolving each shift/reduce conflict produced
+from the CUP parser generator. Here is a list of conflicts that arose
+and how we fixed them:
+
+  statement: hanging else
+
+  expression: two sources of recursion
+
+  nonterminal COMMA nonterminal:
+
+  variable/array/function/parameter/procedurename:
+
+
+Testing:
+We included our a1 programs as passing tests, and mistakes from a1 as 
+failing tests. We also added a number of extra tests - the purpose of each
+test is described in comments at the top of each file
+
+Who did what:
