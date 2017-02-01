@@ -1,0 +1,6 @@
+{
+    var i : Integer
+
+    % usage of all arithmetic operators
+    i = i - 10     % subtraction
+}
