@@ -110,8 +110,7 @@ terminal String  TEXTCONST    ;
 nonterminal    program, scope, statement, statements, 
                declaration, declarations, expression, output,
                arguments, variablenames, type,
-               question, value, withelse, input, bound,
-                parameters, parametername, arrayname,
+               question, value, parameters,
                 matched, unmatched, variable;
 
 // Non-terminals that have a value.
