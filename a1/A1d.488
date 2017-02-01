@@ -12,17 +12,11 @@
         else
             return with j
     }
-    % test positive max
-    write max(2, 5)
-    % test max with negatives
-    write max(-1, -4)
 
     % function without parameters
     function return_10 : Integer {
         return with 10
     }
-
-    write return_10
 
     % non-recursive procedure with parameters
     procedure greater_than_5 (n: Integer) {
@@ -34,17 +28,24 @@
         return
     }
 
-    % should print false
-    greater_than_5(5)
-
-    % should print true
-    greater_than_5(12)
-
     % non-recursive procedure without parameters
     procedure print_course_name {
         write "CSC488: Compilers & Interpreters"
         return
     }
+
+    % test positive max
+    write max(2, 5)
+    % test max with negatives
+    write max(-1, -4)
+
+    write return_10
+
+    % should print false
+    greater_than_5(5)
+
+    % should print true
+    greater_than_5(12)
 
     print_course_name
 }
