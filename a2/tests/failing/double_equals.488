@@ -1,0 +1,15 @@
+% Tests using double equals '==' as equality comparison
+% instead of single equals '='
+
+% By: Evan Klein
+% UtorID: kleinev1
+
+{
+    function equal_0 (n: Integer) : Boolean {
+        if n == 0
+        then
+            return with true
+        else
+            return with false
+    }
+}
