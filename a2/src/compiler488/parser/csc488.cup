@@ -107,13 +107,13 @@ terminal String  TEXTCONST    ;
 // Non-terminals that have no value.
 // nonterminal xxx
 
-nonterminal    program, scope, statement, declaration,
-                variable, expression, output, input,
-                procedurename, arguments, variablenames,
-                functionname, type, bound, variablename,
+nonterminal    program, scope, statement, statements, 
+               declaration, declarations, expression, output,
+               arguments, variablenames, type, parameters,
+               question, value, withelse, input, bound,
                 parameters, parametername, arrayname,
-                unary, question, statements,
-                matched, unmatched; 
+               question, statements,
+                matched, unmatched;
 
 // Non-terminals that have a value.
 // nonterminal type  nameList ;
@@ -142,9 +142,10 @@ start with program;
  *  GOES HERE
  */
 
-program        ::=    scope;
-scope          ::=    L_CURLEY declaration R_CURLEY | 
-                        L_CURLEY statement R_CURLEY |
+program        ::=      scope;
+
+scope          ::=      L_CURLEY declarations statements R_CURLEY | 
+                        L_CURLEY statements R_CURLEY |
                         L_CURLEY R_CURLEY;
 
 statement ::= matched |
@@ -157,16 +158,9 @@ matched      ::=        IF expression THEN matched ELSE matched |
                         EXIT |
                         EXIT INTCONST |
                         EXIT WHEN expression |
-
                         EXIT INTCONST WHEN expression |
-
-                        RETURN WITHX expression |
-                        RETURN | 
-                        WRITE output |
-                        READ input |
-                        procedurename |
-                        procedurename L_PAREN arguments R_PAREN |
-                        scope;
+                        RETURN |
+                        RETURN WITHX expression;
 
 unmatched ::= IF expression THEN matched |
               IF expression THEN unmatched | 
@@ -177,71 +171,55 @@ unmatched ::= IF expression THEN matched |
 statements ::= statements statement;
 
 declaration    ::=      VAR variablenames COLON type |
-                        FUNCTION functionname COLON type scope |
-                        FUNCTION functionname L_PAREN parameters R_PAREN COLON type scope |
-                        PROCEDURE procedurename scope |
-                        PROCEDURE procedurename L_PAREN parameters R_PAREN scope |
-                        declaration declaration;
+                        FUNCTION IDENT COLON type scope |
+                        FUNCTION IDENT L_PAREN parameters R_PAREN COLON type scope |
+                        PROCEDURE IDENT scope |
+                        PROCEDURE IDENT L_PAREN parameters R_PAREN scope;
   
+declarations   ::=      declarations declaration |
+                        declaration;
 
-variablenames  ::=      variablename |
-                        variablename L_SQUARE INTCONST R_SQUARE |
-                        variablename L_SQUARE bound DOT DOT bound R_SQUARE |
-                        variablenames COMMA variablenames;
-  
-bound          ::= variablenames COMMA variablenames |
-                   INTCONST |
-                   MINUS INTCONST;
-                
+variablenames  ::=      IDENT |
+                        IDENT L_SQUARE value R_SQUARE |
+                        IDENT L_SQUARE value DOT DOT value R_SQUARE |
+                        variablenames COMMA IDENT;
+
 output         ::=      expression |
+                        output COMMA expression;
+
+type           ::=      INTEGER | 
+                        BOOLEAN;
+
+arguments      ::=      expression |
+                        arguments COMMA expression;
+
+parameters     ::=      IDENT COLON type |
+                        parameters COMMA IDENT COLON type;
+
+expression     ::=      value |
+                        expression PLUS value |
+                        expression MINUS value |
+                        expression TIMES value |
+                        expression DIVIDE value |
+                      /* NOT expression | */
+                        expression AND value |
+                        expression OR value |
+                        expression EQUAL value |
+                        expression NOT EQUAL value |
+                        expression LESS value |
+                        expression LESS EQUAL value |
+                        expression GREATER value |
+                        L_PAREN expression question |
+                        IDENT L_PAREN arguments R_PAREN |
+                        IDENT L_SQUARE expression R_SQUARE |
                         TEXTCONST |
-                        NEWLINE |
-                        output COMMA output;
-  
-input          ::=     VAR |
-                       input COMMA input;
+                        NEWLINE;
 
-type           ::=     INTEGER | 
-                       BOOLEAN;
+value         ::=       INTCONST |
+                        MINUS value |
+                        IDENT |
+                        TRUE |  
+                        FALSE;
 
-arguments      ::=     expression |
-                       arguments COMMA arguments;
-
-parameters     ::=     parametername COLON type |
-                       parameters COMMA parameters;
-
-variable       ::=     variablename |
-                       arrayname L_SQUARE expression R_SQUARE;
-
-variablename   ::= IDENT;
-arrayname      ::= IDENT;
-functionname   ::= IDENT;
-parametername  ::= IDENT;
-procedurename  ::= IDENT;
-
-expression     ::= INTCONST |
-                   MINUS expression |
-                   unary PLUS expression |
-                   unary MINUS expression |
-                   unary TIMES expression |
-                   unary DIVIDE expression |
-                   NOT expression |
-                   unary AND expression |
-                   unary OR expression |
-                   unary EQUAL expression |
-                   unary NOT EQUAL expression |
-                   unary LESS expression |
-                   unary LESS EQUAL expression |
-                   unary GREATER expression
-                   L_PAREN expression question |
-                   unary |
-                   functionname L_PAREN arguments R_PAREN ;
-
-unary           ::= TRUE |
-                    FALSE |
-                    variable |
-                    functionname L_PAREN arguments R_PAREN |
-                    parametername;
-
-question        ::= QUESTION expression COLON expression R_PAREN | 
-                    R_PAREN;
+question      ::=       QUESTION expression COLON expression R_PAREN | 
+                        R_PAREN;
