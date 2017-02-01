@@ -1,0 +1,11 @@
+% Tests error on empty "then" block
+% By: Atheed Thameem
+% UTORid: thameema
+
+{
+    var a: Integer
+    var b: Integer
+    if a = 10
+    then
+    else
+}
