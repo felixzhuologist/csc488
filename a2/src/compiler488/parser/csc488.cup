@@ -151,7 +151,7 @@ statement ::= matched |
 
 matched      ::=        IF expression THEN matched ELSE matched |
                         WHILE expression DO matched |
-                        REPEAT matched UNTIL matched |
+                        REPEAT matched UNTIL expression |
                         variable COLON EQUAL expression |
                         EXIT |
                         EXIT INTCONST |
@@ -160,7 +160,8 @@ matched      ::=        IF expression THEN matched ELSE matched |
                         RETURN |
                         RETURN WITHX expression |
                         WRITE output |
-                        READ input;
+                        READ input |
+                        scope;
 
 unmatched ::= IF expression THEN matched |
               IF expression THEN unmatched | 
