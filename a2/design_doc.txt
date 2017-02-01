@@ -51,3 +51,8 @@ Jeffrey
     - Assisted in translating language specifications to productions
     - Wrote script to run test cases
     - Added A2b as passing test case
+
+Atheed
+    - Helped translate language specifications to productions
+    - Fixed and added A2a as passing test case
+    - Wrote several failing test cases
