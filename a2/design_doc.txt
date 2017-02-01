@@ -61,4 +61,8 @@ Evan
     - Helped with translating language specifications to productions
     - Fixed syntax errors in A2d and added it as passing test case
     - Added many failing test cases
-
+    
+Felix
+    - Helped in defining productions for grammar
+    - Helped in debugging
+    - Wrote several test cases 
