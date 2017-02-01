@@ -110,7 +110,10 @@ terminal String  TEXTCONST    ;
 nonterminal    program, scope, statement, statements, 
                declaration, declarations, expression, output,
                arguments, variablenames, type, parameters,
-               question, value, withelse;
+               question, value, withelse, input, bound,
+                parameters, parametername, arrayname,
+               question, statements,
+                matched, unmatched;
 
 // Non-terminals that have a value.
 // nonterminal type  nameList ;
@@ -145,17 +148,13 @@ scope          ::=      L_CURLEY declarations statements R_CURLEY |
                         L_CURLEY statements R_CURLEY |
                         L_CURLEY R_CURLEY;
 
-statement      ::=      IDENT COLON EQUAL expression |
-                        IF expression THEN statement |
-                        IF expression THEN scope |
-                        IF expression THEN withelse ELSE statement |
-                        IF expression THEN withelse ELSE scope |
-                        WHILE expression DO statement |
-                        WHILE expression DO scope |
-                        REPEAT scope UNTIL expression |
-                        REPEAT statements UNTIL expression |
-                        WRITE output |
-                        READ variablenames |
+statement ::= matched |
+              unmatched;
+
+matched      ::=        IF expression THEN matched ELSE matched |
+                        WHILE expression DO matched |
+                        REPEAT matched UNTIL matched |
+                        variable COLON EQUAL expression |
                         EXIT |
                         EXIT INTCONST |
                         EXIT WHEN expression |
@@ -163,10 +162,13 @@ statement      ::=      IDENT COLON EQUAL expression |
                         RETURN |
                         RETURN WITHX expression;
 
-withelse       ::=      IF expression THEN withelse ELSE withelse;
+unmatched ::= IF expression THEN matched |
+              IF expression THEN unmatched | 
+              IF expression THEN matched ELSE unmatched |
+              WHILE expression DO unmatched |
+              REPEAT matched UNTIL unmatched ;
 
-statements     ::=      statements statement |
-                        statement;
+statements ::= statements statement;
 
 declaration    ::=      VAR variablenames COLON type |
                         FUNCTION IDENT COLON type scope |
