@@ -1,0 +1,9 @@
+% Tests declaration of multiple variables of different
+% types, separated by commas
+
+% By: Evan Klein
+% UtorID: kleinev1
+
+{
+    var i, j : Integer, b : Boolean
+}
