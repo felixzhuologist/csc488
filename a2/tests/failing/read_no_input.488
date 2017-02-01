@@ -1,0 +1,7 @@
+% Tests error when "read" has no input
+% By: Atheed Thameem
+% UTORid: thameema
+
+{
+    read
+}

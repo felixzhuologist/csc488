@@ -1,3 +1,7 @@
+% Tests error when improper function declaration (no params)
+% By: Atheed Thameem
+% UTORid: thameema
+
 {
   function func(): Integer {
     var pi: Integer
@@ -5,5 +9,5 @@
     return with pi
   }
 
-  get_circle_area(1)
+  func()
 }
