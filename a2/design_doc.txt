@@ -16,8 +16,21 @@ and how we fixed them:
   preceding pair.
 
   expression: two sources of recursion
+  many of the production rules for expression include two more expressions in the
+  RHS (e.g. E -> E + E). This leads to a shift reduce conflict, since the parser
+  doesn't know whether to reduce the current E or shift for the next one. We 
+  fixed this conflict by rewriting the grammar so that there is only one E in
+  the RHS of each production rule, by replacing one of the Es with a nonterminal
+  which leads to all of the non recursive expressions (which we call value).
+  We replace specifically the left expression with this new non terminal since
+  otherwise this leads to a shift/reduce conflict with the unary NOT expression
+  rule.
 
   nonterminal COMMA nonterminal:
+  many non terminals have a production rule of the form:
+    A -> A comma A
+  which is a similar conflict as expression, and is fixed in a similar way
+  (by replacing one of recursive non terminals).
 
   variable/array/function/parameter/procedurename:
   we get a reduce/reduce conflict, since these are all defined as IDENT and
