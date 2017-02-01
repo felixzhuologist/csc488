@@ -112,7 +112,8 @@ nonterminal    program, scope, statement, declaration,
                 procedurename, arguments, variablenames,
                 functionname, type, bound, variablename,
                 parameters, parametername, arrayname,
-                unary, question, param; 
+                unary, question, statements,
+                matched, unmatched; 
 
 // Non-terminals that have a value.
 // nonterminal type  nameList ;
@@ -145,11 +146,14 @@ program        ::=    scope;
 scope          ::=    L_CURLEY declaration R_CURLEY | 
                         L_CURLEY statement R_CURLEY |
                         L_CURLEY R_CURLEY;
-statement      ::=    variable COLON EQUAL expression |
-                        IF expression THEN statement |
-                        IF expression THEN statement ELSE statement |
-                        WHILE expression DO statement |
-                        REPEAT statement UNTIL statement |
+
+statement ::= matched |
+              unmatched;
+
+matched      ::=        IF expression THEN matched ELSE matched |
+                        WHILE expression DO matched |
+                        REPEAT matched UNTIL matched |
+                        variable COLON EQUAL expression |
                         EXIT |
                         EXIT INTCONST |
                         EXIT WHEN expression |
@@ -162,8 +166,15 @@ statement      ::=    variable COLON EQUAL expression |
                         READ input |
                         procedurename |
                         procedurename L_PAREN arguments R_PAREN |
-                        scope |
-                        statement statement;
+                        scope;
+
+unmatched ::= IF expression THEN matched |
+              IF expression THEN unmatched | 
+              IF expression THEN matched ELSE unmatched |
+              WHILE expression DO unmatched |
+              REPEAT matched UNTIL unmatched ;
+
+statements ::= statements statement;
 
 declaration    ::=      VAR variablenames COLON type |
                         FUNCTION functionname COLON type scope |
@@ -229,10 +240,8 @@ expression     ::= INTCONST |
 unary           ::= TRUE |
                     FALSE |
                     variable |
-                    functionname param |
+                    functionname L_PAREN arguments R_PAREN |
                     parametername;
-
-param           ::= L_PAREN arguments R_PAREN | ;
 
 question        ::= QUESTION expression COLON expression R_PAREN | 
                     R_PAREN;
