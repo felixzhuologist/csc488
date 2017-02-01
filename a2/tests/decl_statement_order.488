@@ -1,0 +1,61 @@
+% This program uses recursive functions, procedures with and without parameters
+% nested procedures, and nested function declarations. 
+% By: Felix Zhu
+% UtorID: zhufelix
+
+{
+  % recursive function
+  function fib (n: Integer): Integer {
+    if n = 0 then return with 0
+    if n = 1 then return with 1
+    return with fib(n - 1) + fib(n - 2)
+  }
+
+  % procedure without parameter
+  procedure greeting {
+    write "hello world"
+  }
+
+  % procedure with parameter
+  procedure add1(n: Integer) {
+    n := n + 1
+  }
+  var i: Integer
+
+  i := 3
+  write i
+  add1(i)
+  write i
+
+  % nested procedure
+  procedure cake {
+    procedure get_ingredients {
+      write "Get cake mix"
+    }
+    procedure bake_ingredients {
+      write "Put cake mix in oven"
+    }
+    get_ingredients
+    bake_ingredients
+  }
+
+  % nested function
+  function get_circle_area(radius: Integer): Integer {
+    var pi: Integer
+    function square(n: Integer): Integer {
+      return with n * n
+    }
+
+    pi := 3
+    return with pi * square(radius)
+  }
+
+  write fib(1)
+  write fib(10)
+
+  greeting
+  
+  cake
+
+  get_circle_area(1)
+}
