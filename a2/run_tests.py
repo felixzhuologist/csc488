@@ -13,7 +13,7 @@ if __name__ == "__main__":
         print_parse_error()
         sys.exit()
 
-    test_case_path = "";
+    test_case_path = ""
     if sys.argv[1] == "passing":
         test_cases_path = "./tests/passing/"
     elif (sys.argv[1] == "failing"):
