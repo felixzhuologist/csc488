@@ -161,6 +161,8 @@ matched      ::=        IF expression THEN matched ELSE matched |
                         RETURN WITHX expression |
                         WRITE output |
                         READ input |
+                        IDENT |
+                        IDENT L_PAREN arguments R_PAREN |
                         scope;
 
 unmatched ::= IF expression THEN matched |
