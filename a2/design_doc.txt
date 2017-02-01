@@ -45,3 +45,9 @@ failing tests. We also added a number of extra tests - the purpose of each
 test is described in comments at the top of each file
 
 Who did what:
+
+Jeffrey
+    - Assisted in solving debug conflicts
+    - Assisted in translating language specifications to productions
+    - Wrote script to run test cases
+    - Added A2b as passing test case
