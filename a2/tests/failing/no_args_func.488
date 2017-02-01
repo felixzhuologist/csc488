@@ -1,0 +1,9 @@
+{
+  function func(): Integer {
+    var pi: Integer
+    pi := 3
+    return with pi
+  }
+
+  get_circle_area(1)
+}
