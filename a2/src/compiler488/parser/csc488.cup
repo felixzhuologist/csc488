@@ -139,85 +139,85 @@ start with program;
  *  GOES HERE
  */
 
-program        ::=    scope;
+program        ::=      scope;
 
-scope          ::=    L_CURLEY declarations statements R_CURLEY | 
-                      L_CURLEY statements R_CURLEY |
-                      L_CURLEY R_CURLEY;
+scope          ::=      L_CURLEY declarations statements R_CURLEY | 
+                        L_CURLEY statements R_CURLEY |
+                        L_CURLEY R_CURLEY;
 
-statement      ::=    IDENT COLON EQUAL expression |
-                      IF expression THEN statement |
-                      IF expression THEN scope |
-                      IF expression THEN withelse ELSE statement |
-                      IF expression THEN withelse ELSE scope |
-                      WHILE expression DO statement |
-                      WHILE expression DO scope |
-                      REPEAT scope UNTIL expression |
-                      REPEAT statements UNTIL expression |
-                      WRITE output |
-                      READ variablenames |
-                      EXIT |
-					  EXIT INTCONST |
-					  EXIT WHEN expression |
-					  EXIT INTCONST WHEN expression |
-                      RETURN |
-					  RETURN WITHX expression;
-					  
-withelse       ::=    IF expression THEN withelse ELSE withelse;
+statement      ::=      IDENT COLON EQUAL expression |
+                        IF expression THEN statement |
+                        IF expression THEN scope |
+                        IF expression THEN withelse ELSE statement |
+                        IF expression THEN withelse ELSE scope |
+                        WHILE expression DO statement |
+                        WHILE expression DO scope |
+                        REPEAT scope UNTIL expression |
+                        REPEAT statements UNTIL expression |
+                        WRITE output |
+                        READ variablenames |
+                        EXIT |
+                        EXIT INTCONST |
+                        EXIT WHEN expression |
+                        EXIT INTCONST WHEN expression |
+                        RETURN |
+                        RETURN WITHX expression;
 
-statements	   ::=    statements statement |
-					  statement;
+withelse       ::=      IF expression THEN withelse ELSE withelse;
 
-declaration    ::=    VAR variablenames COLON type |
-                      FUNCTION IDENT COLON type scope |
-                      FUNCTION IDENT L_PAREN parameters R_PAREN COLON type scope |
-                      PROCEDURE IDENT scope |
-                      PROCEDURE IDENT L_PAREN parameters R_PAREN scope;
+statements	   ::=      statements statement |
+                        statement;
+
+declaration    ::=      VAR variablenames COLON type |
+                        FUNCTION IDENT COLON type scope |
+                        FUNCTION IDENT L_PAREN parameters R_PAREN COLON type scope |
+                        PROCEDURE IDENT scope |
+                        PROCEDURE IDENT L_PAREN parameters R_PAREN scope;
   
-declarations   ::= 	  declarations declaration |
-					  declaration;
+declarations   ::=      declarations declaration |
+                        declaration;
 
-variablenames  ::=    IDENT |
-                      IDENT L_SQUARE value R_SQUARE |
-                      IDENT L_SQUARE value DOT DOT value R_SQUARE |
-                      variablenames COMMA IDENT;
-		        
-output         ::=    expression |
-                      output COMMA expression;
+variablenames  ::=      IDENT |
+                        IDENT L_SQUARE value R_SQUARE |
+                        IDENT L_SQUARE value DOT DOT value R_SQUARE |
+                        variablenames COMMA IDENT;
 
-type           ::=    INTEGER | 
-                      BOOLEAN;
+output         ::=      expression |
+                        output COMMA expression;
 
-arguments      ::=    expression |
-                      arguments COMMA expression;
+type           ::=      INTEGER | 
+                        BOOLEAN;
 
-parameters     ::=    IDENT COLON type |
-                      parameters COMMA IDENT COLON type;
+arguments      ::=      expression |
+                        arguments COMMA expression;
 
-expression     ::= 	  value |
-                   	  expression PLUS value |
-				      expression MINUS value |
-                      expression TIMES value |
-                      expression DIVIDE value |
+parameters     ::=      IDENT COLON type |
+                        parameters COMMA IDENT COLON type;
+
+expression     ::=      value |
+                        expression PLUS value |
+                        expression MINUS value |
+                        expression TIMES value |
+                        expression DIVIDE value |
                       /* NOT expression | */
-                      expression AND value |
-                      expression OR value |
-                   	  expression EQUAL value |
-                   	  expression NOT EQUAL value |
-                   	  expression LESS value |
-                   	  expression LESS EQUAL value |
-                   	  expression GREATER value |
-                   	  L_PAREN expression question |
-                   	  IDENT L_PAREN arguments R_PAREN |
-					  IDENT L_SQUARE expression R_SQUARE |
-					  TEXTCONST |
-					  NEWLINE;
+                        expression AND value |
+                        expression OR value |
+                        expression EQUAL value |
+                        expression NOT EQUAL value |
+                        expression LESS value |
+                        expression LESS EQUAL value |
+                        expression GREATER value |
+                        L_PAREN expression question |
+                        IDENT L_PAREN arguments R_PAREN |
+                        IDENT L_SQUARE expression R_SQUARE |
+                        TEXTCONST |
+                        NEWLINE;
 
-value         ::=	 INTCONST |
-					 MINUS value |
-					 IDENT |
-                     TRUE |  
-					 FALSE;
+value         ::=       INTCONST |
+                        MINUS value |
+                        IDENT |
+                        TRUE |  
+                        FALSE;
 
-question       ::=   QUESTION expression COLON expression R_PAREN | 
-                     R_PAREN;
+question      ::=       QUESTION expression COLON expression R_PAREN | 
+                        R_PAREN;
