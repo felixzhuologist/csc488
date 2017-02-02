@@ -62,7 +62,12 @@ Evan
     - Fixed syntax errors in A2d and added it as passing test case
     - Added many failing test cases
     
-Felix
-    - Helped in defining productions for grammar
+Felix M
+    - Helped in defining conflict free productions for grammar
     - Helped in debugging
     - Wrote several test cases 
+
+Felix Z
+    - Helped in defining conflict free productions for grammar
+    - Helped debug
+    - Wrote several passing/failing test cases
