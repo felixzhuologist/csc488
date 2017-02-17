@@ -1,0 +1,51 @@
+% This program uses non-recursive functions and 
+% procedures with and without parameters
+% By: Evan Klein
+% UtorID: kleinev1
+
+{
+    % non-recursive function with parameters
+    function max (i: Integer, j: Integer) : Integer {
+        if i > j
+        then
+            return with i
+        else
+            return with j
+    }
+
+    % function without parameters
+    function return_10 : Integer {
+        return with 10
+    }
+
+    % non-recursive procedure with parameters
+    procedure greater_than_5 (n: Integer) {
+        if n > 5
+        then
+            write "true"
+        else
+            write "false"
+        return
+    }
+
+    % non-recursive procedure without parameters
+    procedure print_course_name {
+        write "CSC488: Compilers & Interpreters"
+        return
+    }
+
+    % test positive max
+    write max(2, 5)
+    % test max with negatives
+    write max(-1, -4)
+
+    write return_10
+
+    % should print false
+    greater_than_5(5)
+
+    % should print true
+    greater_than_5(12)
+
+    print_course_name
+}

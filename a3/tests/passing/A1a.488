@@ -1,0 +1,36 @@
+% This program uses all arithmetic, logical, and comparison-based operators
+% By: Atheed Thameem
+% UTORid: thameema
+
+{
+    var i : Integer
+    var j : Integer
+    var b : Boolean
+    var c : Boolean
+    var d : Boolean
+
+    % usage of all arithmetic operators
+    i := 3 + 18     % addition
+    i := i - 10     % subtraction
+    j := i * j      % multiplication
+    j := 15 / 5     % division
+
+    % usage of all logical operators
+    b := false and true     % AND
+    b := b or true          % OR 
+    c := not b              % NOT 
+
+    % usage of all comparison operators
+    if b = true             % equality comparison
+    then 
+        c := c not = b      % inequality comparison
+    else
+        c := i < j          % less-than comparison
+    d := i <= j            % less-than-or-equal-to comparison
+
+    if 10 > 15              % greater-than comparison
+    then 
+        d := 15 >= 15      % greater-than-or-equal-to comparison
+    else 
+        d := ( i = 2 ? true : false )       % conditional expression
+}
