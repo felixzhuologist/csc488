@@ -4,6 +4,16 @@ package compiler488.parser;
 
 import java_cup.runtime.*;		// Must always import this.
 
+import compiler488.ast.decl.*;
+import compiler488.ast.expn.*;
+import compiler488.ast.stmt.*;
+import compiler488.ast.type.*;
+import compiler488.ast.ASTList;
+
+
+//import compiler488.ast.decl.RoutineDecl;
+//import compiler488.ast.decl.ScalarDecl;
+
 /* User code components 1: action code components.
  * Code to be used inside the actions triggered when productions are matched.
  * If any common code is needed for more than one action , put it here.
@@ -113,14 +123,26 @@ terminal String  TEXTCONST	;
 // Non-terminals that have no value.
 // nonterminal xxx
 
-nonterminal	program,	statement,	declaration,	scope	;
-nonterminal	statements,	declarations,	matchedStatement, unmatchedStatement ;
-nonterminal	variablenames,		output			;
-nonterminal	type,  	arguments,	parameters,	variable	;
+nonterminal	Program program;
+nonterminal Stmt statement;
+nonterminal Declaration declaration;
+nonterminal Scope scope;
+nonterminal	ASTList<Stmt> statements;
+nonterminal	ASTList<Declaration> declarations;
+nonterminal	matchedStatement;
+nonterminal unmatchedStatement;
+nonterminal	variablenames;
+nonterminal output;
+nonterminal	Type type;
+nonterminal arguments;
+nonterminal ASTList<ScalarDecl> parameters;
+nonterminal variable;
 nonterminal 	expression,	variablename 			;
 
 nonterminal	inputs, outputs, bound ;
-nonterminal	procedureCall, parameter, conjunction, negation, compareExpn ;
+nonterminal	procedureCall;
+nonterminal ScalarDecl parameter;
+nonterminal conjunction, negation, compareExpn ;
 nonterminal	arithExpn, term, factor, primary, constant ;
 
 // Non-terminals that have a value.
@@ -145,19 +167,25 @@ start with program;
  * reads one more token before it will act on the production.
  */
 
-program		::=	scope	;				// the main program
+program		::=	scope:s	{:	RESULT = new Program(s.getDeclarations(), s.getStatements()); :}	;				// the main program
 
-scope		::=	L_CURLEY  declarations statements  R_CURLEY  	// scope with declarations and statements
+scope		::=	L_CURLEY  declarations:d statements:s  R_CURLEY  	// scope with declarations and statements
+		{:	RESULT = new Scope(d, s); :}
 		|	L_CURLEY statements  R_CURLEY 		// scope with statments only
 		|	L_CURLEY  R_CURLEY			// empty scope
+		{:	RESULT = new Scope(); :}
 		;
 
-statements	::=	statement						// sequence of statements
-		|	statements statement
+statements	::=	statement:s						// sequence of statements
+		{:	RESULT = new ASTList<Stmt>(s); :}
+		|	statements:ss statement:s
+		{:	RESULT = ss.addLast(s);  :}
 		;
 
-declarations	::=	declaration						// sequence of declarations
-		|	declarations declaration
+declarations	::=	declaration:d					// sequence of declarations
+		{:	RESULT = new ASTList<Declaration>(d); :}
+		|	declarations:ds declaration:d
+		{:	RESULT = ds.addLast(d);  :}
 		;
 
 statement	::=	matchedStatement
@@ -189,17 +217,22 @@ procedureCall	::=	IDENT 							// call procedure with no parameters
 		;
 
 declaration	::=	VAR variablenames COLON type			// declare scalar/array variables
-		|	FUNCTION IDENT COLON type scope			// declare function
-		|	FUNCTION  IDENT L_PAREN parameters R_PAREN COLON type scope
+		|	FUNCTION IDENT:i COLON type:t scope:s			// declare function
+		{:	RoutineBody routineBody = new RoutineBody(s);
+			RESULT = new RoutineDecl(i, t, routineBody); :}
+		|	FUNCTION  IDENT:i L_PAREN parameters:p R_PAREN COLON type:t scope:s
+		{:	RoutineBody routineBody = new RoutineBody(p, s);
+			RESULT = new RoutineDecl(i, t, routineBody); :}
 		|	PROCEDURE IDENT scope			//  declare procedure
 		|	PROCEDURE IDENT L_PAREN parameters R_PAREN scope
 		;
 
-variablenames	::=	variablename  				// list of variables being declared
-		|	variablenames COMMA variablename 
+variablenames	::=	variablename:v  				// list of variables being declared
+		|	variablenames:vs COMMA variablename:v
 		;
 
-variablename	::=	IDENT 						// scalar variable
+variablename	::=	IDENT:i 						// scalar variable
+		{:	RESULT = new IdentExpn(i); :}
 		|	IDENT L_SQUARE INTCONST R_SQUARE		// array variable with upper bound
 		|	IDENT L_SQUARE bound DOT DOT bound  R_SQUARE	// array variable with upper/lower bounds
 		;
@@ -209,7 +242,10 @@ bound		::=	INTCONST					// positive array bound
 		;
 
 type		::=	INTEGER			// integer type
+		{:	RESULT = new IntegerType(); :}
 		|	BOOLEAN			// boolean type
+		{:	RESULT = new BooleanType(); :}
+
 		;
 
 outputs		::=	output			// list of output expressions
@@ -229,11 +265,16 @@ arguments	::=	expression			// list of function/procedure arguments
 		|	arguments COMMA expression
 		;
 
-parameters	::=	parameter			// list of function/procedure formal parameters
-		|	parameters COMMA parameter
+parameters	::=	parameter:p			// list of function/procedure formal parameters
+		{:	RESULT = new ASTList<ScalarDecl>(p); :}
+		|	parameters:ps COMMA parameter:p
+		{:	RESULT = ps.addLast(p);  // ps is an ASTList of ScalarDecl
+			:}
+
 		;
 
-parameter	::=	IDENT COLON type 		// declare one parameter
+parameter	::=	IDENT:i COLON type:t 		// declare one parameter
+		{:	RESULT = new ScalarDecl((Type)t, i); :}
 		;
 
 expression	::=	conjunction			// disjunctions, associate left-to-right
@@ -278,13 +319,17 @@ primary		::=	constant				// integer or boolean constant
 		|	L_PAREN  expression QUESTION expression COLON expression R_PAREN
 		;
 
-constant	::=	INTCONST	// integer constant
+constant	::=	INTCONST:n	// integer constant
+		{:	RESULT = new IntConstExpn(n); :}
 		|	TRUE		// constant true
+		{:	RESULT = new BoolConstExpn(true); :}
 		|	FALSE		// constant false
+		{:	RESULT = new BoolConstExpn(false); :}
 		;
 
-variable	::=	IDENT					// scalar variable or function call
-		|	IDENT L_SQUARE expression R_SQUARE	// element of an array
+variable	::=	IDENT:i 					// scalar variable or function call
+		{:	RESULT = i; :}
+		|	IDENT L_SQUARE expression R_SQUARE 	// element of an array
 		;
 
 

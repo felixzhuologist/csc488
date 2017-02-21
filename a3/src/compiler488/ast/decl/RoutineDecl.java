@@ -3,6 +3,7 @@ package compiler488.ast.decl;
 import java.io.PrintStream;
 
 import compiler488.ast.Indentable;
+import compiler488.ast.type.Type;
 
 /**
  * Represents the declaration of a function or procedure.
@@ -13,6 +14,12 @@ public class RoutineDecl extends Declaration {
 	 * statements to execute when the procedure is called.
 	 */
 	private RoutineBody routineBody;
+
+	public RoutineDecl(String name, Type type, RoutineBody routineBody) {
+		this.type = type;
+		this.name = name;
+		this.routineBody = routineBody;
+	}
 
 	/**
 	 * Returns a string indicating that this is a function with

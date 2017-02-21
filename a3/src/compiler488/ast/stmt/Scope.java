@@ -19,6 +19,11 @@ public class Scope extends Stmt {
 		statements = new ASTList<Stmt>();
 	}
 
+	public Scope(ASTList<Declaration> declarations, ASTList<Stmt> statements) {
+		this.declarations = declarations;
+		this.statements = statements;
+	}
+
 	/**
 	 * Print a description of the <b>scope</b> construct.
 	 * 
