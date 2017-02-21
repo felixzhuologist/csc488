@@ -15,7 +15,12 @@ public class MultiDeclarations extends Declaration {
 	public MultiDeclarations () {
 		elements = new ASTList<DeclarationPart> ();
 	}
-	
+
+	public MultiDeclarations(ASTList<DeclarationPart> elements, Type type) {
+		this.elements = elements;
+		this.type = type;
+	}
+
 	/**
 	 * Returns a string that describes the array.
 	 */
