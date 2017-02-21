@@ -131,13 +131,13 @@ nonterminal	ASTList<Stmt> statements;
 nonterminal	ASTList<Declaration> declarations;
 nonterminal	Stmt matchedStatement;
 nonterminal unmatchedStatement;
-nonterminal	variablenames;
+nonterminal	ASTList<DeclarationPart> variablenames;
 nonterminal output;
 nonterminal	Type type;
 nonterminal arguments;
 nonterminal ASTList<ScalarDecl> parameters;
-nonterminal Expn variable;
-nonterminal 	expression,	variablename 			;
+nonterminal Expn variable, expression;
+nonterminal DeclarationPart variablename;
 
 nonterminal	inputs, outputs, bound ;
 nonterminal	procedureCall;

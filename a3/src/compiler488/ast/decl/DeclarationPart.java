@@ -10,6 +10,10 @@ public class DeclarationPart extends AST {
 	/** The name of the thing being declared. */
 	protected String name;
 
+	public DeclarationPart(String name) {
+		this.name = name;
+	}
+
 	public String getName() {
 		return name;
 	}
