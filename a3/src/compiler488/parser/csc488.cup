@@ -129,21 +129,22 @@ nonterminal Declaration declaration;
 nonterminal Scope scope;
 nonterminal	ASTList<Stmt> statements;
 nonterminal	ASTList<Declaration> declarations;
-nonterminal	matchedStatement;
+nonterminal	Stmt matchedStatement;
 nonterminal unmatchedStatement;
 nonterminal	variablenames;
 nonterminal output;
 nonterminal	Type type;
 nonterminal arguments;
 nonterminal ASTList<ScalarDecl> parameters;
-nonterminal variable;
+nonterminal Expn variable;
 nonterminal 	expression,	variablename 			;
 
 nonterminal	inputs, outputs, bound ;
 nonterminal	procedureCall;
 nonterminal ScalarDecl parameter;
-nonterminal conjunction, negation, compareExpn ;
-nonterminal	arithExpn, term, factor, primary, constant ;
+nonterminal Expn conjunction, negation, compareExpn ;
+nonterminal	Expn arithExpn, term, factor, primary;
+nonterminal ConstExpn constant ;
 
 // Non-terminals that have a value.
 // nonterminal type  nameList ;
@@ -188,11 +189,13 @@ declarations	::=	declaration:d					// sequence of declarations
 		{:	RESULT = ds.addLast(d);  :}
 		;
 
-statement	::=	matchedStatement
+statement	::=	matchedStatement:m
+		{:	RESULT = m; :}
 		|	unmatchedStatement
 		;
 
-matchedStatement::=	variable COLON EQUAL expression				// assignment statement
+matchedStatement::=	variable:v COLON EQUAL expression:e				// assignment statement
+		{:	RESULT = new AssignStmt(v, e); :}
 		|	IF expression THEN matchedStatement ELSE matchedStatement // if statements
 		|	WHILE expression DO statement				// while statement
 		|	REPEAT statement  UNTIL expression			// repeat statement
@@ -216,7 +219,8 @@ procedureCall	::=	IDENT 							// call procedure with no parameters
 		|	IDENT L_PAREN arguments R_PAREN  			// call procedure with parameters
 		;
 
-declaration	::=	VAR variablenames COLON type			// declare scalar/array variables
+declaration	::=	VAR variablenames:v COLON type:t			// declare scalar/array variables
+		{:	RESULT = new MultiDeclarations(v, t); :}
 		|	FUNCTION IDENT:i COLON type:t scope:s			// declare function
 		{:	RoutineBody routineBody = new RoutineBody(s);
 			RESULT = new RoutineDecl(i, t, routineBody); :}
@@ -228,11 +232,14 @@ declaration	::=	VAR variablenames COLON type			// declare scalar/array variables
 		;
 
 variablenames	::=	variablename:v  				// list of variables being declared
+		{:	RESULT = new ASTList<DeclarationPart>(v); :}
 		|	variablenames:vs COMMA variablename:v
+		{:	RESULT = vs.addLast(v);  // ps is an ASTList of ScalarDecl
+			:}
 		;
 
 variablename	::=	IDENT:i 						// scalar variable
-		{:	RESULT = new IdentExpn(i); :}
+		{:	RESULT = new DeclarationPart(i); :}
 		|	IDENT L_SQUARE INTCONST R_SQUARE		// array variable with upper bound
 		|	IDENT L_SQUARE bound DOT DOT bound  R_SQUARE	// array variable with upper/lower bounds
 		;
@@ -277,19 +284,24 @@ parameter	::=	IDENT:i COLON type:t 		// declare one parameter
 		{:	RESULT = new ScalarDecl((Type)t, i); :}
 		;
 
-expression	::=	conjunction			// disjunctions, associate left-to-right
+expression	::=	conjunction:c			// disjunctions, associate left-to-right
+		{:	RESULT = c; :}
 		|	expression OR conjunction
 		;
 
-conjunction	::=	negation			// conjunctions, associate left-to-right
+conjunction	::=	negation:n			// conjunctions, associate left-to-right
+		{:	RESULT = n; :}
 		|	conjunction AND negation
 		;
 
-negation	::=	compareExpn 			// negations
+negation	::=	compareExpn:c 			// negations
+		{:	RESULT = c; :}
+
 		|	NOT negation
 		;
 
-compareExpn	::=	arithExpn			// comparisons, do not associate
+compareExpn	::=	arithExpn:a			// comparisons, do not associate
+		{:	RESULT = a; :}
 		|	arithExpn EQUAL arithExpn
 		| 	arithExpn NOT EQUAL arithExpn
 		|	arithExpn LESS arithExpn
@@ -298,22 +310,29 @@ compareExpn	::=	arithExpn			// comparisons, do not associate
 		|	arithExpn GREATER EQUAL arithExpn
 		;
 
-arithExpn	::=	term				// expressions, associate + , - left-to-right
+arithExpn	::=	term:t				// expressions, associate + , - left-to-right
+		{:	RESULT = t; :}
 		|	arithExpn  PLUS  term
+
 		|	arithExpn  MINUS term
 		;
 
-term		::=	factor				// terms, associate * , /   left-to-right
+term		::=	factor:f				// terms, associate * , /   left-to-right
+		{:	RESULT = f; :}
+
 		|	term TIMES factor
 		|	term DIVIDE factor
 		;
 
-factor		::=	primary				// unary minus
+factor		::=	primary:p				// unary minus
+		{:	RESULT = p; :}
 		|	MINUS factor
 		;
 
-primary		::=	constant				// integer or boolean constant
-		|	variable				// scalar, array variable or function call
+primary		::=	constant:c				// integer or boolean constant
+		{:	RESULT = c; :}
+		|	variable:v				// scalar, array variable or function call
+		{:	RESULT = v; :}
 		|	IDENT L_PAREN arguments R_PAREN 	// function call
 		| 	L_PAREN  expression  R_PAREN		// parenthesized expression
 		|	L_PAREN  expression QUESTION expression COLON expression R_PAREN
@@ -328,8 +347,9 @@ constant	::=	INTCONST:n	// integer constant
 		;
 
 variable	::=	IDENT:i 					// scalar variable or function call
-		{:	RESULT = i; :}
-		|	IDENT L_SQUARE expression R_SQUARE 	// element of an array
+		{:	RESULT = new IdentExpn(i); :}
+		|	IDENT:i L_SQUARE expression:e R_SQUARE 	// element of an array
+		{:	RESULT = new SubsExpn(i, e); :}
 		;
 
 
