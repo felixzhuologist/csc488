@@ -15,6 +15,15 @@ public class RoutineBody extends Indentable {
 
 	private Scope body; // Execute this scope when routine is called.
 
+	public RoutineBody(ASTList<ScalarDecl> parameters, Scope body) {
+		this.parameters = parameters;
+		this.body = body;
+	}
+
+	/* Constructor for routines with no parameters. */
+	public RoutineBody(Scope body) {
+		this.body = body;
+	}
 	/**
 	 * Print a description of the formal parameters and the scope for this
 	 * routine.

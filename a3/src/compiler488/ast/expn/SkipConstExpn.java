@@ -7,6 +7,9 @@ import compiler488.ast.Printable;
  * character on the output device.
  */
 public class SkipConstExpn extends ConstExpn implements Printable {
+	public SkipConstExpn() {
+	}
+
 	/** Returns the string <b>"skip"</b>. */
 	@Override
 	public String toString() {

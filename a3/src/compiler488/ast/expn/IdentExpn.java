@@ -9,7 +9,11 @@ public class IdentExpn extends Expn implements Readable
     {
     private String ident;  	// name of the identifier
 
-    /**
+	public IdentExpn(String ident) {
+		this.ident = ident;
+	}
+
+		/**
      * Returns the name of the variable or function.
      */
     @Override

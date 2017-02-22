@@ -4,6 +4,18 @@ package compiler488.parser;
 
 import java_cup.runtime.*;		// Must always import this.
 
+import compiler488.ast.decl.*;
+import compiler488.ast.expn.*;
+import compiler488.ast.stmt.*;
+import compiler488.ast.type.*;
+import compiler488.ast.ASTList;
+import compiler488.ast.Readable;
+import compiler488.ast.Printable;
+
+
+//import compiler488.ast.decl.RoutineDecl;
+//import compiler488.ast.decl.ScalarDecl;
+
 /* User code components 1: action code components.
  * Code to be used inside the actions triggered when productions are matched.
  * If any common code is needed for more than one action , put it here.
@@ -113,15 +125,31 @@ terminal String  TEXTCONST	;
 // Non-terminals that have no value.
 // nonterminal xxx
 
-nonterminal	program,	statement,	declaration,	scope	;
-nonterminal	statements,	declarations,	matchedStatement, unmatchedStatement ;
-nonterminal	variablenames,		output			;
-nonterminal	type,  	arguments,	parameters,	variable	;
-nonterminal 	expression,	variablename 			;
+nonterminal	Program program;
+nonterminal Stmt statement;
+nonterminal Declaration declaration;
+nonterminal Scope scope;
+nonterminal	ASTList<Stmt> statements;
+nonterminal	ASTList<Declaration> declarations;
+nonterminal	Stmt matchedStatement;
+nonterminal Stmt unmatchedStatement;
+nonterminal	ASTList<DeclarationPart> variablenames;
+nonterminal Expn output;
+nonterminal	Type type;
+nonterminal ASTList<Expn> arguments;
+nonterminal ASTList<ScalarDecl> parameters;
+nonterminal Expn variable; 
+nonterminal Expn expression;
+nonterminal DeclarationPart variablename;
 
-nonterminal	inputs, outputs, bound ;
-nonterminal	procedureCall, parameter, conjunction, negation, compareExpn ;
-nonterminal	arithExpn, term, factor, primary, constant ;
+nonterminal	ASTList<Readable> inputs;
+nonterminal ASTList<Printable> outputs;
+nonterminal Integer bound ;
+nonterminal	ProcedureCallStmt procedureCall;
+nonterminal ScalarDecl parameter;
+nonterminal Expn conjunction, negation, compareExpn ;
+nonterminal	Expn arithExpn, term, factor, primary;
+nonterminal ConstExpn constant ;
 
 // Non-terminals that have a value.
 // nonterminal type  nameList ;
@@ -145,146 +173,299 @@ start with program;
  * reads one more token before it will act on the production.
  */
 
-program		::=	scope	;				// the main program
+program		::=	scope:s	{: RESULT = new Program(s.getDeclarations(), s.getStatements()); :}	;				// the main program
 
-scope		::=	L_CURLEY  declarations statements  R_CURLEY  	// scope with declarations and statements
-		|	L_CURLEY statements  R_CURLEY 		// scope with statments only
+scope		::=	L_CURLEY  declarations:d statements:s  R_CURLEY  	// scope with declarations and statements
+		{:	RESULT = new Scope(d, s); :}
+		
+		|	L_CURLEY statements:s  R_CURLEY 		// scope with statments only
+		{:	RESULT = new Scope(s); :}
+
 		|	L_CURLEY  R_CURLEY			// empty scope
+		{:	RESULT = new Scope(); :}
 		;
 
-statements	::=	statement						// sequence of statements
-		|	statements statement
+statements	::=	statement:s						// sequence of statements
+		{:	RESULT = new ASTList<Stmt>(s); :}
+		|	statements:ss statement:s
+		{:	RESULT = ss.addLast(s);  :}
 		;
 
-declarations	::=	declaration						// sequence of declarations
-		|	declarations declaration
+declarations	::=	declaration:d					// sequence of declarations
+		{:	RESULT = new ASTList<Declaration>(d); :}
+		
+		|	declarations:ds declaration:d
+		{:	RESULT = ds.addLast(d);  :}
 		;
 
-statement	::=	matchedStatement
-		|	unmatchedStatement
+statement	::=	matchedStatement:m
+		{:	RESULT = m; :}
+		
+		|	unmatchedStatement:u
+		{:	RESULT = u; :}
+
 		;
 
-matchedStatement::=	variable COLON EQUAL expression				// assignment statement
-		|	IF expression THEN matchedStatement ELSE matchedStatement // if statements
-		|	WHILE expression DO statement				// while statement
-		|	REPEAT statement  UNTIL expression			// repeat statement
+matchedStatement::=	variable:v COLON EQUAL expression:e				// assignment statement
+		{:	RESULT = new AssignStmt(v, e); :}
+		
+		|	IF expression:e THEN matchedStatement:m ELSE matchedStatement:u // if statements
+		{:	RESULT = new IfStmt(e, m, u); :}
+
+		|	WHILE expression:expr DO statement:body				// while statement
+		{:	RESULT = new WhileDoStmt(body, expr); :}
+		
+		|	REPEAT statement:body  UNTIL expression:expr			// repeat statement
+		{:	RESULT = new RepeatUntilStmt(body, expr); :}
+		
 		|	EXIT							// exit statements
-		|	EXIT INTCONST
-		|	EXIT WHEN expression
-		|	EXIT INTCONST WHEN expression
-		|	RETURN WITHX  expression 
+		{:	RESULT = new ExitStmt(); :}
+
+		|	EXIT INTCONST:level
+		{:	RESULT = new ExitStmt(level); :}
+
+		|	EXIT WHEN expression:e
+		{:	RESULT = new ExitStmt(e); :}
+
+		|	EXIT INTCONST:level WHEN expression:e
+		{:	RESULT = new ExitStmt(level, e); :}
+		
+		|	RETURN WITHX  expression:e
+		{:	RESULT = new ReturnStmt(e); :}
+		
 		|	RETURN 							// return statements
-		|	WRITE outputs						// input/output statments
-		|	READ  inputs
-		|	procedureCall						// procedure call
-		|	scope							// embedded scope
+		{:	RESULT = new ReturnStmt(); :}
+		
+		|	WRITE outputs:o						// input/output statments
+		{:	RESULT = new WriteStmt(o); :}
+		
+		|	READ  inputs:i
+		{:	RESULT = new ReadStmt(i); :}
+		
+		|	procedureCall:p						// procedure call
+		{:	RESULT = p; :}
+		
+		|	scope:s							// embedded scope
+		{:	RESULT = s; :}
+
 		;
 
-unmatchedStatement::=	IF expression THEN statement	
-		|	IF expression THEN matchedStatement ELSE unmatchedStatement
+unmatchedStatement::=	IF expression:e THEN statement:s
+		{:	RESULT = new IfStmt(e, s); :}
+		
+		|	IF expression:e THEN matchedStatement:m ELSE unmatchedStatement:u
+		{:	RESULT = new IfStmt(e, m, u); :}
 		;
 
-procedureCall	::=	IDENT 							// call procedure with no parameters
-		|	IDENT L_PAREN arguments R_PAREN  			// call procedure with parameters
+procedureCall	::=	IDENT:i 							// call procedure with no parameters
+		{:	RESULT = new ProcedureCallStmt(i); :}
+
+		|	IDENT:i L_PAREN arguments:as R_PAREN  			// call procedure with parameters
+		{:	RESULT = new ProcedureCallStmt(i, as); :}
+
 		;
 
-declaration	::=	VAR variablenames COLON type			// declare scalar/array variables
-		|	FUNCTION IDENT COLON type scope			// declare function
-		|	FUNCTION  IDENT L_PAREN parameters R_PAREN COLON type scope
-		|	PROCEDURE IDENT scope			//  declare procedure
-		|	PROCEDURE IDENT L_PAREN parameters R_PAREN scope
+declaration	::=	VAR variablenames:v COLON type:t			// declare scalar/array variables
+		{:  RESULT = new MultiDeclarations(v, t); :}
+		
+		|	FUNCTION IDENT:i COLON type:t scope:s			// declare function
+		{:	RoutineBody routineBody = new RoutineBody(s);
+			RESULT = new RoutineDecl(i, routineBody, t); :}
+		
+		|	FUNCTION  IDENT:i L_PAREN parameters:p R_PAREN COLON type:t scope:s
+		{:	RoutineBody routineBody = new RoutineBody(p, s);
+			RESULT = new RoutineDecl(i, routineBody, t); :}
+		
+		|	PROCEDURE IDENT:i scope:s			//  declare procedure
+		{:	RoutineBody routineBody = new RoutineBody(s);
+			RESULT = new RoutineDecl(i, routineBody); :}
+		
+		|	PROCEDURE IDENT:i L_PAREN parameters:p R_PAREN scope:s
+		{:	RoutineBody routineBody = new RoutineBody(p, s);
+			RESULT = new RoutineDecl(i, routineBody); :}
 		;
 
-variablenames	::=	variablename  				// list of variables being declared
-		|	variablenames COMMA variablename 
+variablenames	::=	variablename:v  				// list of variables being declared
+		{:	RESULT = new ASTList<DeclarationPart>(v); :}
+		
+		|	variablenames:vs COMMA variablename:v
+		{:	RESULT = vs.addLast(v);  // vs is an ASTList of DeclarationPart
+			:}
 		;
 
-variablename	::=	IDENT 						// scalar variable
-		|	IDENT L_SQUARE INTCONST R_SQUARE		// array variable with upper bound
-		|	IDENT L_SQUARE bound DOT DOT bound  R_SQUARE	// array variable with upper/lower bounds
+variablename	::=	IDENT:i 						// scalar variable
+		{:	RESULT = new ScalarDeclPart(i); :}
+		
+		|	IDENT:i L_SQUARE INTCONST:ub R_SQUARE		// array variable with upper bound
+		{:	RESULT = new ArrayDeclPart(i, ub); :}
+		
+		|	IDENT:i L_SQUARE bound:lb DOT DOT bound:ub  R_SQUARE	// array variable with upper/lower bounds
+		{:	RESULT = new ArrayDeclPart(i, lb, ub); :}
 		;
 
-bound		::=	INTCONST					// positive array bound
-		|	MINUS INTCONST					// negative array bound
+bound		::=	INTCONST:b					// positive array bound
+		{:	RESULT = b; :}
+		
+		|	MINUS INTCONST:b					// negative array bound
+		{:	RESULT = -b; :}
 		;
 
 type		::=	INTEGER			// integer type
+		{:	RESULT = new IntegerType(); :}
+		
 		|	BOOLEAN			// boolean type
+		{:	RESULT = new BooleanType(); :}
+
 		;
 
-outputs		::=	output			// list of output expressions
-		|	outputs COMMA output
+outputs		::=	output:o			// list of output expressions
+		{:	RESULT = new ASTList<Printable>(o); :}
+		
+		|	outputs:os COMMA output:o
+		{:	RESULT = os.addLast(o);  // os is an ASTList of Printable
+			:}
 		;
 
-output		::=	expression		// integer expression
-		|	TEXTCONST		// text constant
+output		::=	expression:e		// integer expression
+		{:	RESULT = e; :}
+		
+		|	TEXTCONST:t		// text constant
+		{:	RESULT = new TextConstExpn(t); :}
+		
 		|	NEWLINE			// newline constant
+		{:	RESULT = new SkipConstExpn(); :}
 		;
 
-inputs		::=	variable		// list of variables being read into
-		|	inputs COMMA variable
+inputs		::=	variable:v		// list of variables being read into
+		{:	RESULT = new ASTList<Readable>((Readable)v); :}
+		
+		|	inputs:is COMMA variable:v
+		{:	RESULT = is.addLast((Readable)v);  // is is an ASTList of Readable
+			:}
 		;
 
-arguments	::=	expression			// list of function/procedure arguments
-		|	arguments COMMA expression
+arguments	::=	expression:e			// list of function/procedure arguments
+		{:	RESULT = new ASTList<Expn>(e); :}
+		
+		|	arguments:as COMMA expression:e
+		{:	RESULT = as.addLast(e);  // as is an ASTList of Expn
+			:}
 		;
 
-parameters	::=	parameter			// list of function/procedure formal parameters
-		|	parameters COMMA parameter
+parameters	::=	parameter:p			// list of function/procedure formal parameters
+		{:	RESULT = new ASTList<ScalarDecl>(p); :}
+		
+		|	parameters:ps COMMA parameter:p
+		{:	RESULT = ps.addLast(p);  // ps is an ASTList of ScalarDecl
+			:}
+
 		;
 
-parameter	::=	IDENT COLON type 		// declare one parameter
+parameter	::=	IDENT:i COLON type:t 		// declare one parameter
+		{:	RESULT = new ScalarDecl(t, i); :}
 		;
 
-expression	::=	conjunction			// disjunctions, associate left-to-right
-		|	expression OR conjunction
+expression	::=	conjunction:c			// disjunctions, associate left-to-right
+		{:	RESULT = c; :}
+		
+		|	expression:e OR conjunction:c
+		{:	RESULT = new BoolExpn(e, c, "or"); :}
 		;
 
-conjunction	::=	negation			// conjunctions, associate left-to-right
-		|	conjunction AND negation
+conjunction	::=	negation:n			// conjunctions, associate left-to-right
+		{:	RESULT = n; :}
+		
+		|	conjunction:c AND negation:n
+		{:	RESULT = new BoolExpn(c, n, "and"); :}
 		;
 
-negation	::=	compareExpn 			// negations
-		|	NOT negation
+negation	::=	compareExpn:c 			// negations
+		{:	RESULT = c; :}
+		
+		|	NOT negation:n
+		{:	RESULT = new NotExpn(n); :}
 		;
 
-compareExpn	::=	arithExpn			// comparisons, do not associate
-		|	arithExpn EQUAL arithExpn
-		| 	arithExpn NOT EQUAL arithExpn
-		|	arithExpn LESS arithExpn
-		|	arithExpn LESS EQUAL arithExpn
-		|	arithExpn GREATER arithExpn
-		|	arithExpn GREATER EQUAL arithExpn
+compareExpn	::=	arithExpn:a			// comparisons, do not associate
+		{:	RESULT = a; :}
+		
+		|	arithExpn:left EQUAL arithExpn:right
+		{:	RESULT = new EqualsExpn(left, right, "="); :}
+
+		| 	arithExpn:left NOT EQUAL arithExpn:right
+		{:	RESULT = new EqualsExpn(left, right, "!="); :}
+
+		|	arithExpn:left LESS arithExpn:right
+		{:	RESULT = new CompareExpn(left, right, "<"); :}
+
+		|	arithExpn:left LESS EQUAL arithExpn:right
+		{:	RESULT = new CompareExpn(left, right, "<="); :}
+		
+		|	arithExpn:left GREATER arithExpn:right
+		{:	RESULT = new CompareExpn(left, right, ">"); :}
+		
+		|	arithExpn:left GREATER EQUAL arithExpn:right
+		{:	RESULT = new CompareExpn(left, right, ">="); :}
 		;
 
-arithExpn	::=	term				// expressions, associate + , - left-to-right
-		|	arithExpn  PLUS  term
-		|	arithExpn  MINUS term
+arithExpn	::=	term:t				// expressions, associate + , - left-to-right
+		{:	RESULT = t; :}
+
+		|	arithExpn:a  PLUS  term:t
+		{:	RESULT = new ArithExpn(a, t, "+"); :}
+		
+		|	arithExpn:a  MINUS term:t
+		{:	RESULT = new ArithExpn(a, t, "-"); :}
 		;
 
-term		::=	factor				// terms, associate * , /   left-to-right
-		|	term TIMES factor
-		|	term DIVIDE factor
+term		::=	factor:f				// terms, associate * , /   left-to-right
+		{:	RESULT = f; :}
+
+		|	term:t TIMES factor:f
+		{:	RESULT = new ArithExpn(t, f, "*"); :}
+
+		|	term:t DIVIDE factor:f
+		{:	RESULT = new ArithExpn(t, f, "/"); :}
 		;
 
-factor		::=	primary				// unary minus
-		|	MINUS factor
+factor		::=	primary:p				// unary minus
+		{:	RESULT = p; :}
+		
+		|	MINUS factor:f
+		{:	RESULT = new UnaryMinusExpn(f); :}
 		;
 
-primary		::=	constant				// integer or boolean constant
-		|	variable				// scalar, array variable or function call
-		|	IDENT L_PAREN arguments R_PAREN 	// function call
-		| 	L_PAREN  expression  R_PAREN		// parenthesized expression
-		|	L_PAREN  expression QUESTION expression COLON expression R_PAREN
+primary		::=	constant:c				// integer or boolean constant
+		{:	RESULT = c; :}
+		
+		|	variable:v				// scalar, array variable or function call
+		{:	RESULT = v; :}
+		
+		|	IDENT:i L_PAREN arguments:a R_PAREN 	// function call
+		{:	RESULT = new FunctionCallExpn(i, a); :}
+		
+		| 	L_PAREN  expression:e  R_PAREN		// parenthesized expression
+		{:	RESULT = e; :} // TODO: does this work with BEDMAS?
+		
+		|	L_PAREN  expression:cond QUESTION expression:iftrue COLON expression:iffalse R_PAREN
+		{:	RESULT = new ConditionalExpn(cond, iftrue, iffalse); :}
 		;
 
-constant	::=	INTCONST	// integer constant
+constant	::=	INTCONST:n	// integer constant
+		{:	RESULT = new IntConstExpn(n); :}
+		
 		|	TRUE		// constant true
+		{:	RESULT = new BoolConstExpn(true); :}
+		
 		|	FALSE		// constant false
+		{:	RESULT = new BoolConstExpn(false); :}
 		;
 
-variable	::=	IDENT					// scalar variable or function call
-		|	IDENT L_SQUARE expression R_SQUARE	// element of an array
+variable	::=	IDENT:i 					// scalar variable or function call
+		{:	RESULT = new IdentExpn(i); :}
+		
+		|	IDENT:i L_SQUARE expression:e R_SQUARE 	// element of an array
+		{:	RESULT = new SubsExpn(i, e); :}
 		;
 
 

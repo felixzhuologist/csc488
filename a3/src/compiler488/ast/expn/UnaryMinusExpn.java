@@ -5,4 +5,9 @@ package compiler488.ast.expn;
  */
 public class UnaryMinusExpn extends UnaryExpn {
 
+    public UnaryMinusExpn(Expn operand) {
+        this.operand = operand;
+        this.opSymbol = "-";
+    }
+
 }
