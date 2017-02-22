@@ -13,7 +13,11 @@ public class ReadStmt extends Stmt {
 	public ReadStmt () {
 		inputs = new ASTList<Readable> ();
 	}
-	
+
+	public ReadStmt(ASTList<Readable> inputs) {
+		this.inputs = inputs;
+	}
+
 	/** Returns a string describing the <b>read</b> statement. */
 	@Override
 	public String toString() {

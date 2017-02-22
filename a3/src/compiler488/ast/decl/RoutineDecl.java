@@ -15,10 +15,15 @@ public class RoutineDecl extends Declaration {
 	 */
 	private RoutineBody routineBody;
 
-	public RoutineDecl(String name, Type type, RoutineBody routineBody) {
-		this.type = type;
+	public RoutineDecl(String name, RoutineBody routineBody) {
 		this.name = name;
 		this.routineBody = routineBody;
+	}
+
+	public RoutineDecl(String name, RoutineBody routineBody, Type type) {
+		this.name = name;
+		this.routineBody = routineBody;
+		this.type = type;
 	}
 
 	/**

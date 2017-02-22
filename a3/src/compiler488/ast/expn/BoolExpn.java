@@ -6,4 +6,10 @@ package compiler488.ast.expn;
  */
 public class BoolExpn extends BinaryExpn {
 
+    public BoolExpn(Expn left, Expn right, String opSymbol) {
+        this.left = left;
+        this.right = right;
+        this.opSymbol = opSymbol;
+    }
+
 }

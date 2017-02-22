@@ -12,6 +12,14 @@ public class ReturnStmt extends Stmt {
 	// The value to be returned by a function.
 	private Expn value = null;
 
+	public ReturnStmt() {
+	}
+
+	public ReturnStmt(Expn value) {
+
+		this.value = value;
+	}
+
 	/**
 	 * Print <b>return</b> or <b>return with </b> expression on a line, by itself.
 	 * 

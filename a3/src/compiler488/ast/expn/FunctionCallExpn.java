@@ -10,6 +10,11 @@ public class FunctionCallExpn extends Expn {
 
 	private ASTList<Expn> arguments; // The arguments passed to the function.
 
+	public FunctionCallExpn(String ident, ASTList<Expn> arguments) {
+		this.ident = ident;
+		this.arguments = arguments;
+	}
+
 	/** Returns a string describing the function call. */
 	@Override
 	public String toString() {

@@ -12,7 +12,11 @@ public class WriteStmt extends Stmt {
 	public WriteStmt () {
 		outputs = new ASTList<Printable> ();
 	}
-	
+
+	public WriteStmt(ASTList<Printable> outputs) {
+		this.outputs = outputs;
+	}
+
 	/** Returns a description of the <b>write</b> statement. */
 	@Override
 	public String toString() {

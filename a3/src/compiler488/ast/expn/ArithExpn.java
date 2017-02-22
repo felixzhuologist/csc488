@@ -6,4 +6,11 @@ package compiler488.ast.expn;
  */
 public class ArithExpn extends BinaryExpn {
 
+
+    public ArithExpn(Expn left, Expn right, String opSymbol) {
+        this.left = left;
+        this.right = right;
+        this.opSymbol = opSymbol;
+    }
+
 }

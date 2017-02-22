@@ -12,6 +12,24 @@ public class ExitStmt extends Stmt {
         private Expn expn = null;
 	private Integer level = -1 ;
 
+	public ExitStmt(Integer level, Expn expn) {
+		this.level = level;
+		this.expn = expn;
+	}
+
+	public ExitStmt(Expn expn) {
+		this.expn = expn;
+	}
+
+	public ExitStmt(Integer level) {
+
+		this.level = level;
+	}
+
+	public ExitStmt() {
+
+	}
+
 	/** Returns the string <b>"exit"</b> or <b>"exit when e"</b>" 
             or  <b>"exit"</b> level  or  <b>"exit"</b> level  when e 
 	*/

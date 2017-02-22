@@ -14,6 +14,10 @@ public class Scope extends Stmt {
 
 	protected ASTList<Stmt> statements; // The statements to execute.
 
+	public Scope(ASTList<Stmt> statements) {
+		this.statements = statements;
+	}
+
 	public Scope() {
 		declarations = new ASTList<Declaration>();
 		statements = new ASTList<Stmt>();

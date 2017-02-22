@@ -11,6 +11,16 @@ public class ProcedureCallStmt extends Stmt {
 
 	private ASTList<Expn> arguments; // The arguments passed to the procedure.
 
+	public ProcedureCallStmt(String name) {
+		this.name = name;
+	}
+
+	public ProcedureCallStmt(String name, ASTList<Expn> arguments) {
+
+		this.name = name;
+		this.arguments = arguments;
+	}
+
 	/** Returns a string describing the procedure call. */
 	@Override
 	public String toString() {
