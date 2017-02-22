@@ -168,7 +168,7 @@ start with program;
  * reads one more token before it will act on the production.
  */
 
-program		::=	scope:s	{:	RESULT = new Program(s.getDeclarations(), s.getStatements()); :}	;				// the main program
+program		::=	scope:s	{: RESULT = new Program(s.getDeclarations(), s.getStatements()); :}	;				// the main program
 
 scope		::=	L_CURLEY  declarations:d statements:s  R_CURLEY  	// scope with declarations and statements
 		{:	RESULT = new Scope(d, s); :}
@@ -184,7 +184,8 @@ statements	::=	statement:s						// sequence of statements
 		;
 
 declarations	::=	declaration:d					// sequence of declarations
-		{:	RESULT = new ASTList<Declaration>(d); :}
+		{:	
+			RESULT = new ASTList<Declaration>(d); :}
 		|	declarations:ds declaration:d
 		{:	RESULT = ds.addLast(d);  :}
 		;
@@ -220,7 +221,8 @@ procedureCall	::=	IDENT 							// call procedure with no parameters
 		;
 
 declaration	::=	VAR variablenames:v COLON type:t			// declare scalar/array variables
-		{:	RESULT = new MultiDeclarations(v, t); :}
+		{:
+			RESULT = new MultiDeclarations(v, t); :}
 		|	FUNCTION IDENT:i COLON type:t scope:s			// declare function
 		{:	RoutineBody routineBody = new RoutineBody(s);
 			RESULT = new RoutineDecl(i, t, routineBody); :}

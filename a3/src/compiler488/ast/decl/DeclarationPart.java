@@ -18,6 +18,12 @@ public class DeclarationPart extends AST {
 		return name;
 	}
 
+	/** Returns a string that describes the assignment statement. */
+	@Override
+	public String toString() {
+		return "Declaration Part: " + name;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}

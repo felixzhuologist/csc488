@@ -27,7 +27,7 @@ public class MultiDeclarations extends Declaration {
 	 */
 	@Override
 	public String toString() {
-		return  " : " + type ;
+		return  elements + " : " + type ;
 	}
 
 
