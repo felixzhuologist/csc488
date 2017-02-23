@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 public abstract class SymbolTableEntry {
     protected String name;
-    protected SymbolTableEntry prev = null;
+    protected SymbolTableEntry prev = null;     // if exists, previously-declared symbol of same name in an outer scope
     protected Integer depth;
-    protected ArrayList<SymbolTableEntry> level;
+    protected ArrayList<SymbolTableEntry> level;    // list of all other symbols declared in this scope
 
     public String getName() {
         return name;
