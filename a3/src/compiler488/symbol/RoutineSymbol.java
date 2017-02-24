@@ -5,7 +5,6 @@ import compiler488.ast.type.Type;
 import java.util.ArrayList;
 
 public class RoutineSymbol extends SymbolTableEntry {
-    protected String name;
     protected ArrayList<Type> paramTypes;
 
     public RoutineSymbol(String name, ArrayList<Type> paramTypes) {
