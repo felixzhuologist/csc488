@@ -12,7 +12,8 @@ public class AssignStmt extends Stmt {
 	 */
 	private Expn lval, rval;
 
-	public AssignStmt(Expn lval, Expn rval) {
+	public AssignStmt(Integer lineNumber, Expn lval, Expn rval) {
+		super(lineNumber);
 		this.lval = lval;
 		this.rval = rval;
 	}

@@ -9,4 +9,8 @@ public class BooleanType extends Type {
 	public String toString() {
 		return "boolean";
 	}
+
+	public BooleanType(Integer lineNumber) {
+		super(lineNumber);
+	}
 }

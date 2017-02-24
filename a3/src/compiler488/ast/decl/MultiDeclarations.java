@@ -13,11 +13,13 @@ public class MultiDeclarations extends Declaration {
 	/* The elements being declared */
 	private ASTList<DeclarationPart> elements;
 
-	public MultiDeclarations () {
+	public MultiDeclarations (Integer lineNumber) {
+		super(lineNumber);
 		elements = new ASTList<DeclarationPart> ();
 	}
 
-	public MultiDeclarations(ASTList<DeclarationPart> elements, Type type) {
+	public MultiDeclarations(Integer lineNumber, ASTList<DeclarationPart> elements, Type type) {
+		super(lineNumber);
 		this.elements = elements;
 		this.type = type;
 	}

@@ -5,10 +5,10 @@ package compiler488.ast.decl;
  */
 public class ScalarDeclPart extends DeclarationPart {
 
-	public ScalarDeclPart(String name) {
+	public ScalarDeclPart(Integer lineNumber, String name) {
+		super(lineNumber);
 		this.name = name;
 	}
-
 
 	/**
 	 * Returns a string describing the name of the object being

@@ -11,7 +11,11 @@ public abstract class LoopingStmt extends Stmt
     protected Stmt body ;	  // body of ther loop
     protected Expn expn;          // Loop condition
 
-	public Expn getExpn() {
+    public LoopingStmt(Integer lineNumber) {
+    	super(lineNumber);
+    }
+
+    public Expn getExpn() {
 		return expn;
 	}
 

@@ -9,11 +9,13 @@ import compiler488.ast.Printable;
 public class WriteStmt extends Stmt {
 	private ASTList<Printable> outputs; // The objects to be printed.
 
-	public WriteStmt () {
+	public WriteStmt (Integer lineNumber) {
+		super(lineNumber);
 		outputs = new ASTList<Printable> ();
 	}
 
-	public WriteStmt(ASTList<Printable> outputs) {
+	public WriteStmt(Integer lineNumber, ASTList<Printable> outputs) {
+		super(lineNumber);
 		this.outputs = outputs;
 	}
 

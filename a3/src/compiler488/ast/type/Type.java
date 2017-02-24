@@ -6,4 +6,7 @@ import compiler488.ast.AST;
  * A placeholder for types.
  */
 public class Type extends AST {
+    public Type(Integer lineNumber) {
+        super(lineNumber);
+    }
 }

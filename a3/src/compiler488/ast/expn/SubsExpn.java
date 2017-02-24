@@ -12,10 +12,12 @@ public class SubsExpn extends UnaryExpn implements Readable {
 
 	private String variable; // name of the array variable
 
-	public SubsExpn(String variable, Expn operand) {
+	public SubsExpn(Integer lineNumber, String variable, Expn operand) {
+		super(lineNumber);
 		this.variable = variable;
 		this.operand = operand;
 	}
+
 
 	/** Returns a string that represents the array subscript. */
 	@Override

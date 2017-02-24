@@ -9,7 +9,11 @@ public class BinaryExpn extends Expn
     Expn left, right;	/* Left and right operands of the binary operator. */
     String opSymbol;	/* Name of the operator. */
 
-		/** Returns a string that represents the binary expression. */
+	public BinaryExpn(Integer lineNumber) {
+		super(lineNumber);
+	}
+
+        /** Returns a string that represents the binary expression. */
     @Override
 	public String toString ()
 	{

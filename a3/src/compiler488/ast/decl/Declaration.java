@@ -13,6 +13,10 @@ public class Declaration extends Indentable {
 	/** The name of the thing being declared. */
 	protected String name;
 
+	public Declaration(Integer lineNumber) {
+		super(lineNumber);
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -28,4 +32,6 @@ public class Declaration extends Indentable {
 	public void setType(Type type) {
 		this.type = type;
 	}
+
+
 }

@@ -8,7 +8,8 @@ import compiler488.ast.type.Type;
 
 public class ScalarDecl extends Declaration {
 
-	public ScalarDecl(Type type, String name) {
+	public ScalarDecl(Integer lineNumber, Type type, String name) {
+		super(lineNumber);
 		this.type = type;
 		this.name = name;
 	}

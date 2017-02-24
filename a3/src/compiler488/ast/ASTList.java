@@ -24,7 +24,8 @@ public class ASTList<E> extends AST {
 	/**
 	 * Create a list with one element.
 	 */
-	public ASTList(E ast) {
+	public ASTList(Integer lineNumber, E ast) {
+		super(lineNumber);
 		ll = new LinkedList<E>();
 		ll.addLast(ast);
 	}

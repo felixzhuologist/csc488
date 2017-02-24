@@ -9,7 +9,8 @@ public class ConditionalExpn extends Expn {
 
 	private Expn falseValue; // Otherwise, the value is this.
 
-	public ConditionalExpn(Expn condition, Expn trueValue, Expn falseValue) {
+	public ConditionalExpn(Integer lineNumber, Expn condition, Expn trueValue, Expn falseValue) {
+		super(lineNumber);
 		this.condition = condition;
 		this.trueValue = trueValue;
 		this.falseValue = falseValue;

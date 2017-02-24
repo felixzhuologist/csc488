@@ -12,11 +12,12 @@ public class ReturnStmt extends Stmt {
 	// The value to be returned by a function.
 	private Expn value = null;
 
-	public ReturnStmt() {
+	public ReturnStmt(Integer lineNumber) {
+		super(lineNumber);
 	}
 
-	public ReturnStmt(Expn value) {
-
+	public ReturnStmt(Integer lineNumber, Expn value) {
+		super(lineNumber);
 		this.value = value;
 	}
 

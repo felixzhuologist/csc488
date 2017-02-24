@@ -12,14 +12,16 @@ public class ArrayDeclPart extends DeclarationPart {
 	/* The number of objects the array holds. */
 	private Integer size;
 
-	public ArrayDeclPart(String name, Integer lb, Integer ub) {
+	public ArrayDeclPart(Integer lineNumber, String name, Integer lb, Integer ub) {
+		super(lineNumber);
 		this.name = name;
 		this.lb = lb;
 		this.ub = ub;
 		this.size = ub - lb + 1;
 	}
 
-	public ArrayDeclPart(String name, Integer ub) {
+	public ArrayDeclPart(Integer lineNumber, String name, Integer ub) {
+		super(lineNumber);
 		this.name = name;
 		this.lb = 1;
 		this.ub = ub;

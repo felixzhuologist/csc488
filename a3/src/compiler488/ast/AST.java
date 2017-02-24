@@ -7,6 +7,28 @@ package compiler488.ast;
  */
 public class AST {
 
+	protected Integer lineNumber;
+
+	public AST() {
+	}
+
+	public AST(Integer lineNumber) {
+		this.lineNumber = lineNumber;
+	}
+
+	public Integer getLineNumber() {
+		return lineNumber;
+	}
+
+	public void setLineNumber(Integer lineNumber) {
+		this.lineNumber = lineNumber;
+	}
+
+	public String printLineNumber() {
+		return "Line: " + lineNumber.toString();
+	}
+
 	public final static String version = "Winter 2017";
+
 
 }

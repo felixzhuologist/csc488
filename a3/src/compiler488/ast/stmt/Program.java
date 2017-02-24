@@ -9,7 +9,8 @@ import compiler488.ast.decl.Declaration;
  */
 public class Program extends Scope {
 
-    public Program(ASTList<Declaration> declarations, ASTList<Stmt> statements) {
+    public Program(Integer lineNumber, ASTList<Declaration> declarations, ASTList<Stmt> statements) {
+        super(lineNumber);
         this.declarations = declarations;
         this.statements = statements;
     }

@@ -7,7 +7,8 @@ public class IntConstExpn extends ConstExpn
     {
     private Integer value;	// The value of this literal.
 
-	public IntConstExpn(Integer value) {
+	public IntConstExpn(Integer lineNumber, Integer value) {
+		super(lineNumber);
 		this.value = value;
 	}
 

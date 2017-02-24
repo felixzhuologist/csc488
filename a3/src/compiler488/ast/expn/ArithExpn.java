@@ -7,7 +7,8 @@ package compiler488.ast.expn;
 public class ArithExpn extends BinaryExpn {
 
 
-    public ArithExpn(Expn left, Expn right, String opSymbol) {
+    public ArithExpn(Integer lineNumber, Expn left, Expn right, String opSymbol) {
+        super(lineNumber);
         this.left = left;
         this.right = right;
         this.opSymbol = opSymbol;
