@@ -9,7 +9,8 @@ public class IdentExpn extends Expn implements Readable
     {
     private String ident;  	// name of the identifier
 
-	public IdentExpn(String ident) {
+	public IdentExpn(Integer lineNumber, String ident) {
+		super(lineNumber);
 		this.ident = ident;
 	}
 

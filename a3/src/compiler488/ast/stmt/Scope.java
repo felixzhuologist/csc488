@@ -14,17 +14,20 @@ public class Scope extends Stmt {
 
 	protected ASTList<Stmt> statements; // The statements to execute.
 
-	public Scope(ASTList<Stmt> statements) {
+	public Scope(Integer lineNumber, ASTList<Stmt> statements) {
+		super(lineNumber);
 		this.declarations = new ASTList<Declaration>();
 		this.statements = statements;
 	}
 
-	public Scope() {
+	public Scope(Integer lineNumber) {
+		super(lineNumber);
 		this.declarations = new ASTList<Declaration>();
 		this.statements = new ASTList<Stmt>();
 	}
 
-	public Scope(ASTList<Declaration> declarations, ASTList<Stmt> statements) {
+	public Scope(Integer lineNumber, ASTList<Declaration> declarations, ASTList<Stmt> statements) {
+		super(lineNumber);
 		this.declarations = declarations;
 		this.statements = statements;
 	}

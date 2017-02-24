@@ -11,12 +11,13 @@ public class ProcedureCallStmt extends Stmt {
 
 	private ASTList<Expn> arguments; // The arguments passed to the procedure.
 
-	public ProcedureCallStmt(String name) {
+	public ProcedureCallStmt(Integer lineNumber, String name) {
+		super(lineNumber);
 		this.name = name;
 	}
 
-	public ProcedureCallStmt(String name, ASTList<Expn> arguments) {
-
+	public ProcedureCallStmt(Integer lineNumber, String name, ASTList<Expn> arguments) {
+		super(lineNumber);
 		this.name = name;
 		this.arguments = arguments;
 	}

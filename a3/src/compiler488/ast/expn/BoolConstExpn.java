@@ -7,7 +7,8 @@ public class BoolConstExpn extends ConstExpn
     {
     private boolean  value ;	/* value of the constant */
 
-	public BoolConstExpn(boolean value) {
+	public BoolConstExpn(Integer lineNumber, boolean value) {
+		super(lineNumber);
 		this.value = value;
 	}
 

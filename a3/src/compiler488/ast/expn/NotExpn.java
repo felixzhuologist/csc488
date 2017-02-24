@@ -5,7 +5,8 @@ package compiler488.ast.expn;
  */
 public class NotExpn extends UnaryExpn {
 
-    public NotExpn(Expn operand) {
+    public NotExpn(Integer lineNumber, Expn operand) {
+        super(lineNumber);
         this.operand = operand;
         this.opSymbol = "not";
     }

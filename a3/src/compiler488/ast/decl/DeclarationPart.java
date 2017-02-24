@@ -10,6 +10,9 @@ public class DeclarationPart extends AST {
 	/** The name of the thing being declared. */
 	protected String name;
 
+	public DeclarationPart(Integer lineNumber) {
+		super(lineNumber);
+	}
 
 	public String getName() {
 		return name;

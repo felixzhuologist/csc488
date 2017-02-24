@@ -6,7 +6,8 @@ package compiler488.ast.expn;
  */
 public class CompareExpn extends BinaryExpn {
 
-    public CompareExpn(Expn left, Expn right, String opSymbol) {
+    public CompareExpn(Integer lineNumber, Expn left, Expn right, String opSymbol) {
+        super(lineNumber);
         this.left = left;
         this.right = right;
         this.opSymbol = opSymbol;

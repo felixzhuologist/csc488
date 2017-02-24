@@ -19,13 +19,14 @@ public class IfStmt extends Stmt {
 	private Stmt whenFalse = null;
 
 
-	public IfStmt(Expn condition, Stmt whenTrue) {
-
+	public IfStmt(Integer lineNumber, Expn condition, Stmt whenTrue) {
+		super(lineNumber);
 		this.condition = condition;
 		this.whenTrue = whenTrue;
 	}
 
-	public IfStmt(Expn condition, Stmt whenTrue, Stmt whenFalse) {
+	public IfStmt(Integer lineNumber, Expn condition, Stmt whenTrue, Stmt whenFalse) {
+		super(lineNumber);
 		this.condition = condition;
 		this.whenTrue = whenTrue;
 		this.whenFalse = whenFalse;

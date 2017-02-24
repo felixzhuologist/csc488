@@ -173,26 +173,27 @@ start with program;
  * reads one more token before it will act on the production.
  */
 
-program		::=	scope:s	{: RESULT = new Program(s.getDeclarations(), s.getStatements()); :}	;				// the main program
+program		::=	scope:s	{: 
+			RESULT = new Program(sleft, s.getDeclarations(), s.getStatements()); :}	;				// the main program
 
-scope		::=	L_CURLEY  declarations:d statements:s  R_CURLEY  	// scope with declarations and statements
-		{:	RESULT = new Scope(d, s); :}
+scope		::=	L_CURLEY:c  declarations:d statements:s  R_CURLEY  	// scope with declarations and statements
+		{:	RESULT = new Scope(cleft, d, s); :}
 		
-		|	L_CURLEY statements:s  R_CURLEY 		// scope with statments only
-		{:	RESULT = new Scope(s); :}
+		|	L_CURLEY:c statements:s  R_CURLEY 		// scope with statments only
+		{:	RESULT = new Scope(cleft, s); :}
 
-		|	L_CURLEY  R_CURLEY			// empty scope
-		{:	RESULT = new Scope(); :}
+		|	L_CURLEY:c  R_CURLEY			// empty scope
+		{:	RESULT = new Scope(cleft); :}
 		;
 
 statements	::=	statement:s						// sequence of statements
-		{:	RESULT = new ASTList<Stmt>(s); :}
+		{:	RESULT = new ASTList<Stmt>(sleft, s); :}
 		|	statements:ss statement:s
 		{:	RESULT = ss.addLast(s);  :}
 		;
 
 declarations	::=	declaration:d					// sequence of declarations
-		{:	RESULT = new ASTList<Declaration>(d); :}
+		{:	RESULT = new ASTList<Declaration>(dleft, d); :}
 		
 		|	declarations:ds declaration:d
 		{:	RESULT = ds.addLast(d);  :}
@@ -207,40 +208,40 @@ statement	::=	matchedStatement:m
 		;
 
 matchedStatement::=	variable:v COLON EQUAL expression:e				// assignment statement
-		{:	RESULT = new AssignStmt(v, e); :}
+		{:	RESULT = new AssignStmt(vleft, v, e); :}
 		
-		|	IF expression:e THEN matchedStatement:m ELSE matchedStatement:u // if statements
-		{:	RESULT = new IfStmt(e, m, u); :}
+		|	IF:i expression:e THEN matchedStatement:m ELSE matchedStatement:u // if statements
+		{:	RESULT = new IfStmt(ileft, e, m, u); :}
 
-		|	WHILE expression:expr DO statement:body				// while statement
-		{:	RESULT = new WhileDoStmt(body, expr); :}
+		|	WHILE:w expression:expr DO statement:body				// while statement
+		{:	RESULT = new WhileDoStmt(wleft, body, expr); :}
 		
-		|	REPEAT statement:body  UNTIL expression:expr			// repeat statement
-		{:	RESULT = new RepeatUntilStmt(body, expr); :}
+		|	REPEAT:r statement:body  UNTIL expression:expr			// repeat statement
+		{:	RESULT = new RepeatUntilStmt(rleft, body, expr); :}
 		
-		|	EXIT							// exit statements
-		{:	RESULT = new ExitStmt(); :}
+		|	EXIT:exit							// exit statements
+		{:	RESULT = new ExitStmt(exitleft); :}
 
-		|	EXIT INTCONST:level
-		{:	RESULT = new ExitStmt(level); :}
+		|	EXIT:exit INTCONST:level
+		{:	RESULT = new ExitStmt(exitleft, level); :}
 
-		|	EXIT WHEN expression:e
-		{:	RESULT = new ExitStmt(e); :}
+		|	EXIT:exit WHEN expression:e
+		{:	RESULT = new ExitStmt(exitleft, e); :}
 
-		|	EXIT INTCONST:level WHEN expression:e
-		{:	RESULT = new ExitStmt(level, e); :}
+		|	EXIT:exit INTCONST:level WHEN expression:e
+		{:	RESULT = new ExitStmt(exitleft, level, e); :}
 		
-		|	RETURN WITHX  expression:e
-		{:	RESULT = new ReturnStmt(e); :}
+		|	RETURN:r WITHX  expression:e
+		{:	RESULT = new ReturnStmt(rleft, e); :}
 		
-		|	RETURN 							// return statements
-		{:	RESULT = new ReturnStmt(); :}
+		|	RETURN:r 							// return statements
+		{:	RESULT = new ReturnStmt(rleft); :}
 		
-		|	WRITE outputs:o						// input/output statments
-		{:	RESULT = new WriteStmt(o); :}
+		|	WRITE:w outputs:o						// input/output statments
+		{:	RESULT = new WriteStmt(wleft, o); :}
 		
-		|	READ  inputs:i
-		{:	RESULT = new ReadStmt(i); :}
+		|	READ:r  inputs:i
+		{:	RESULT = new ReadStmt(rleft, i); :}
 		
 		|	procedureCall:p						// procedure call
 		{:	RESULT = p; :}
@@ -250,43 +251,43 @@ matchedStatement::=	variable:v COLON EQUAL expression:e				// assignment stateme
 
 		;
 
-unmatchedStatement::=	IF expression:e THEN statement:s
-		{:	RESULT = new IfStmt(e, s); :}
+unmatchedStatement::=	IF:i expression:e THEN statement:s
+		{:	RESULT = new IfStmt(ileft, e, s); :}
 		
-		|	IF expression:e THEN matchedStatement:m ELSE unmatchedStatement:u
-		{:	RESULT = new IfStmt(e, m, u); :}
+		|	IF:i expression:e THEN matchedStatement:m ELSE unmatchedStatement:u
+		{:	RESULT = new IfStmt(ileft, e, m, u); :}
 		;
 
 procedureCall	::=	IDENT:i 							// call procedure with no parameters
-		{:	RESULT = new ProcedureCallStmt(i); :}
+		{:	RESULT = new ProcedureCallStmt(ileft, i); :}
 
 		|	IDENT:i L_PAREN arguments:as R_PAREN  			// call procedure with parameters
-		{:	RESULT = new ProcedureCallStmt(i, as); :}
+		{:	RESULT = new ProcedureCallStmt(ileft, i, as); :}
 
 		;
 
-declaration	::=	VAR variablenames:v COLON type:t			// declare scalar/array variables
-		{:  RESULT = new MultiDeclarations(v, t); :}
+declaration	::=	VAR:var variablenames:v COLON type:t			// declare scalar/array variables
+		{:  RESULT = new MultiDeclarations(varleft, v, t); :}
 		
-		|	FUNCTION IDENT:i COLON type:t scope:s			// declare function
-		{:	RoutineBody routineBody = new RoutineBody(s);
-			RESULT = new RoutineDecl(i, routineBody, t); :}
+		|	FUNCTION:f IDENT:i COLON type:t scope:s			// declare function
+		{:	RoutineBody routineBody = new RoutineBody(fleft, s);
+			RESULT = new RoutineDecl(fleft, i, routineBody, t); :}
 		
-		|	FUNCTION  IDENT:i L_PAREN parameters:p R_PAREN COLON type:t scope:s
-		{:	RoutineBody routineBody = new RoutineBody(p, s);
-			RESULT = new RoutineDecl(i, routineBody, t); :}
+		|	FUNCTION:f  IDENT:i L_PAREN parameters:p R_PAREN COLON type:t scope:s
+		{:	RoutineBody routineBody = new RoutineBody(fleft, p, s);
+			RESULT = new RoutineDecl(fleft, i, routineBody, t); :}
 		
-		|	PROCEDURE IDENT:i scope:s			//  declare procedure
-		{:	RoutineBody routineBody = new RoutineBody(s);
-			RESULT = new RoutineDecl(i, routineBody); :}
+		|	PROCEDURE:proc IDENT:i scope:s			//  declare procedure
+		{:	RoutineBody routineBody = new RoutineBody(procleft, s);
+			RESULT = new RoutineDecl(procleft, i, routineBody); :}
 		
-		|	PROCEDURE IDENT:i L_PAREN parameters:p R_PAREN scope:s
-		{:	RoutineBody routineBody = new RoutineBody(p, s);
-			RESULT = new RoutineDecl(i, routineBody); :}
+		|	PROCEDURE:proc IDENT:i L_PAREN parameters:p R_PAREN scope:s
+		{:	RoutineBody routineBody = new RoutineBody(procleft, p, s);
+			RESULT = new RoutineDecl(procleft, i, routineBody); :}
 		;
 
 variablenames	::=	variablename:v  				// list of variables being declared
-		{:	RESULT = new ASTList<DeclarationPart>(v); :}
+		{:	RESULT = new ASTList<DeclarationPart>(vleft, v); :}
 		
 		|	variablenames:vs COMMA variablename:v
 		{:	RESULT = vs.addLast(v);  // vs is an ASTList of DeclarationPart
@@ -294,13 +295,13 @@ variablenames	::=	variablename:v  				// list of variables being declared
 		;
 
 variablename	::=	IDENT:i 						// scalar variable
-		{:	RESULT = new ScalarDeclPart(i); :}
+		{:	RESULT = new ScalarDeclPart(ileft, i); :}
 		
 		|	IDENT:i L_SQUARE INTCONST:ub R_SQUARE		// array variable with upper bound
-		{:	RESULT = new ArrayDeclPart(i, ub); :}
+		{:	RESULT = new ArrayDeclPart(ileft, i, ub); :}
 		
 		|	IDENT:i L_SQUARE bound:lb DOT DOT bound:ub  R_SQUARE	// array variable with upper/lower bounds
-		{:	RESULT = new ArrayDeclPart(i, lb, ub); :}
+		{:	RESULT = new ArrayDeclPart(ileft, i, lb, ub); :}
 		;
 
 bound		::=	INTCONST:b					// positive array bound
@@ -310,16 +311,16 @@ bound		::=	INTCONST:b					// positive array bound
 		{:	RESULT = -b; :}
 		;
 
-type		::=	INTEGER			// integer type
-		{:	RESULT = new IntegerType(); :}
+type		::=	INTEGER:i			// integer type
+		{:	RESULT = new IntegerType(ileft); :}
 		
-		|	BOOLEAN			// boolean type
-		{:	RESULT = new BooleanType(); :}
+		|	BOOLEAN:b			// boolean type
+		{:	RESULT = new BooleanType(bleft); :}
 
 		;
 
 outputs		::=	output:o			// list of output expressions
-		{:	RESULT = new ASTList<Printable>(o); :}
+		{:	RESULT = new ASTList<Printable>(oleft, o); :}
 		
 		|	outputs:os COMMA output:o
 		{:	RESULT = os.addLast(o);  // os is an ASTList of Printable
@@ -330,14 +331,14 @@ output		::=	expression:e		// integer expression
 		{:	RESULT = e; :}
 		
 		|	TEXTCONST:t		// text constant
-		{:	RESULT = new TextConstExpn(t); :}
+		{:	RESULT = new TextConstExpn(tleft, t); :}
 		
-		|	NEWLINE			// newline constant
-		{:	RESULT = new SkipConstExpn(); :}
+		|	NEWLINE:n			// newline constant
+		{:	RESULT = new SkipConstExpn(nleft); :}
 		;
 
 inputs		::=	variable:v		// list of variables being read into
-		{:	RESULT = new ASTList<Readable>((Readable)v); :}
+		{:	RESULT = new ASTList<Readable>(vleft, (Readable)v); :}
 		
 		|	inputs:is COMMA variable:v
 		{:	RESULT = is.addLast((Readable)v);  // is is an ASTList of Readable
@@ -345,7 +346,7 @@ inputs		::=	variable:v		// list of variables being read into
 		;
 
 arguments	::=	expression:e			// list of function/procedure arguments
-		{:	RESULT = new ASTList<Expn>(e); :}
+		{:	RESULT = new ASTList<Expn>(eleft, e); :}
 		
 		|	arguments:as COMMA expression:e
 		{:	RESULT = as.addLast(e);  // as is an ASTList of Expn
@@ -353,7 +354,7 @@ arguments	::=	expression:e			// list of function/procedure arguments
 		;
 
 parameters	::=	parameter:p			// list of function/procedure formal parameters
-		{:	RESULT = new ASTList<ScalarDecl>(p); :}
+		{:	RESULT = new ASTList<ScalarDecl>(pleft, p); :}
 		
 		|	parameters:ps COMMA parameter:p
 		{:	RESULT = ps.addLast(p);  // ps is an ASTList of ScalarDecl
@@ -362,77 +363,77 @@ parameters	::=	parameter:p			// list of function/procedure formal parameters
 		;
 
 parameter	::=	IDENT:i COLON type:t 		// declare one parameter
-		{:	RESULT = new ScalarDecl(t, i); :}
+		{:	RESULT = new ScalarDecl(ileft, t, i); :}
 		;
 
 expression	::=	conjunction:c			// disjunctions, associate left-to-right
 		{:	RESULT = c; :}
 		
 		|	expression:e OR conjunction:c
-		{:	RESULT = new BoolExpn(e, c, "or"); :}
+		{:	RESULT = new BoolExpn(eleft, e, c, "or"); :}
 		;
 
 conjunction	::=	negation:n			// conjunctions, associate left-to-right
 		{:	RESULT = n; :}
 		
 		|	conjunction:c AND negation:n
-		{:	RESULT = new BoolExpn(c, n, "and"); :}
+		{:	RESULT = new BoolExpn(cleft, c, n, "and"); :}
 		;
 
 negation	::=	compareExpn:c 			// negations
 		{:	RESULT = c; :}
 		
-		|	NOT negation:n
-		{:	RESULT = new NotExpn(n); :}
+		|	NOT:not negation:n
+		{:	RESULT = new NotExpn(notleft, n); :}
 		;
 
 compareExpn	::=	arithExpn:a			// comparisons, do not associate
 		{:	RESULT = a; :}
 		
-		|	arithExpn:left EQUAL arithExpn:right
-		{:	RESULT = new EqualsExpn(left, right, "="); :}
+		|	arithExpn:a1 EQUAL arithExpn:a2
+		{:	RESULT = new EqualsExpn(a1left, a1, a2, "="); :}
 
-		| 	arithExpn:left NOT EQUAL arithExpn:right
-		{:	RESULT = new EqualsExpn(left, right, "!="); :}
+		| 	arithExpn:a1 NOT EQUAL arithExpn:a2
+		{:	RESULT = new EqualsExpn(a1left, a1, a2, "!="); :}
 
-		|	arithExpn:left LESS arithExpn:right
-		{:	RESULT = new CompareExpn(left, right, "<"); :}
+		|	arithExpn:a1 LESS arithExpn:a2
+		{:	RESULT = new CompareExpn(a1left, a1, a2, "<"); :}
 
-		|	arithExpn:left LESS EQUAL arithExpn:right
-		{:	RESULT = new CompareExpn(left, right, "<="); :}
+		|	arithExpn:a1 LESS EQUAL arithExpn:a2
+		{:	RESULT = new CompareExpn(a1left, a1, a2, "<="); :}
 		
-		|	arithExpn:left GREATER arithExpn:right
-		{:	RESULT = new CompareExpn(left, right, ">"); :}
+		|	arithExpn:a1 GREATER arithExpn:a2
+		{:	RESULT = new CompareExpn(a1left, a1, a2, ">"); :}
 		
-		|	arithExpn:left GREATER EQUAL arithExpn:right
-		{:	RESULT = new CompareExpn(left, right, ">="); :}
+		|	arithExpn:a1 GREATER EQUAL arithExpn:a2
+		{:	RESULT = new CompareExpn(a1left, a1, a2, ">="); :}
 		;
 
 arithExpn	::=	term:t				// expressions, associate + , - left-to-right
 		{:	RESULT = t; :}
 
 		|	arithExpn:a  PLUS  term:t
-		{:	RESULT = new ArithExpn(a, t, "+"); :}
+		{:	RESULT = new ArithExpn(aleft, a, t, "+"); :}
 		
 		|	arithExpn:a  MINUS term:t
-		{:	RESULT = new ArithExpn(a, t, "-"); :}
+		{:	RESULT = new ArithExpn(aleft, a, t, "-"); :}
 		;
 
 term		::=	factor:f				// terms, associate * , /   left-to-right
 		{:	RESULT = f; :}
 
 		|	term:t TIMES factor:f
-		{:	RESULT = new ArithExpn(t, f, "*"); :}
+		{:	RESULT = new ArithExpn(tleft, t, f, "*"); :}
 
 		|	term:t DIVIDE factor:f
-		{:	RESULT = new ArithExpn(t, f, "/"); :}
+		{:	RESULT = new ArithExpn(tleft, t, f, "/"); :}
 		;
 
 factor		::=	primary:p				// unary minus
 		{:	RESULT = p; :}
 		
-		|	MINUS factor:f
-		{:	RESULT = new UnaryMinusExpn(f); :}
+		|	MINUS:m factor:f
+		{:	RESULT = new UnaryMinusExpn(mleft, f); :}
 		;
 
 primary		::=	constant:c				// integer or boolean constant
@@ -442,30 +443,30 @@ primary		::=	constant:c				// integer or boolean constant
 		{:	RESULT = v; :}
 		
 		|	IDENT:i L_PAREN arguments:a R_PAREN 	// function call
-		{:	RESULT = new FunctionCallExpn(i, a); :}
+		{:	RESULT = new FunctionCallExpn(ileft, i, a); :}
 		
 		| 	L_PAREN  expression:e  R_PAREN		// parenthesized expression
 		{:	RESULT = e; :} // TODO: does this work with BEDMAS?
 		
-		|	L_PAREN  expression:cond QUESTION expression:iftrue COLON expression:iffalse R_PAREN
-		{:	RESULT = new ConditionalExpn(cond, iftrue, iffalse); :}
+		|	L_PAREN:lp  expression:cond QUESTION expression:iftrue COLON expression:iffalse R_PAREN
+		{:	RESULT = new ConditionalExpn(lpleft, cond, iftrue, iffalse); :}
 		;
 
 constant	::=	INTCONST:n	// integer constant
-		{:	RESULT = new IntConstExpn(n); :}
+		{:	RESULT = new IntConstExpn(nleft, n); :}
 		
-		|	TRUE		// constant true
-		{:	RESULT = new BoolConstExpn(true); :}
+		|	TRUE:t		// constant true
+		{:	RESULT = new BoolConstExpn(tleft, true); :}
 		
-		|	FALSE		// constant false
-		{:	RESULT = new BoolConstExpn(false); :}
+		|	FALSE:f		// constant false
+		{:	RESULT = new BoolConstExpn(fleft, false); :}
 		;
 
 variable	::=	IDENT:i 					// scalar variable or function call
-		{:	RESULT = new IdentExpn(i); :}
+		{:	RESULT = new IdentExpn(ileft, i); :}
 		
 		|	IDENT:i L_SQUARE expression:e R_SQUARE 	// element of an array
-		{:	RESULT = new SubsExpn(i, e); :}
+		{:	RESULT = new SubsExpn(ileft, i, e); :}
 		;
 
 

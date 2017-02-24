@@ -8,7 +8,8 @@ import compiler488.ast.Printable;
 public class TextConstExpn extends ConstExpn implements Printable {
 	private String value; // The value of this literal.
 
-	public TextConstExpn(String value) {
+	public TextConstExpn(Integer lineNumber, String value) {
+		super(lineNumber);
 		this.value = value;
 	}
 

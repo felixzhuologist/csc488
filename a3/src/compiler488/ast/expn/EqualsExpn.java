@@ -6,7 +6,8 @@ package compiler488.ast.expn;
  */
 public class EqualsExpn extends BinaryExpn {
 
-    public EqualsExpn(Expn left, Expn right, String opSymbol) {
+    public EqualsExpn(Integer lineNumber, Expn left, Expn right, String opSymbol) {
+        super(lineNumber);
         this.left = left;
         this.right = right;
         this.opSymbol = opSymbol;

@@ -5,7 +5,8 @@ package compiler488.ast.expn;
  */
 public class UnaryMinusExpn extends UnaryExpn {
 
-    public UnaryMinusExpn(Expn operand) {
+    public UnaryMinusExpn(Integer lineNumber, Expn operand) {
+        super(lineNumber);
         this.operand = operand;
         this.opSymbol = "-";
     }

@@ -10,7 +10,8 @@ import compiler488.ast.expn.Expn;
  */
 public class WhileDoStmt extends LoopingStmt {
 
-	public WhileDoStmt(Stmt body, Expn expn) {
+	public WhileDoStmt(Integer lineNumber, Stmt body, Expn expn) {
+		super(lineNumber);
 		this.body = body;
 		this.expn = expn;
 	}
