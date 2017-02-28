@@ -46,7 +46,10 @@ public class ArrayDeclPart extends DeclarationPart {
 	}
 
 	@Override
-	public void doSemantics() {
+	public void doSemantics() throws Exception {
+		if (this.lb > this.ub) {
+			throw new Exception();
+		}
 		SymbolTableEntry newSymbol = new ArraySymbol(this.name, this.type, this.lb, this.ub, this.size);
 	}
 
