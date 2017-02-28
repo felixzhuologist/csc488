@@ -463,11 +463,7 @@ public class Main {
 	       }
 
 	try{
-	   // INSERT CODE HERE TO DO SEMANTIC ANALYSIS
-           // e.g.
-	   // programAST.doSemantics() ;
-	   // or
-	   // Semantics.doIt( programAST );
+	   programAST.doSemantics();
 	}
         catch( Exception e) 
 	    {

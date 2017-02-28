@@ -4,6 +4,7 @@ import java.io.PrintStream;
 
 import compiler488.ast.Indentable;
 import compiler488.ast.expn.Expn;
+import compiler488.ast.expn.BoolExpn;
 
 /**
  * Represents an if-then or an if-then-else construct.
@@ -74,5 +75,11 @@ public class IfStmt extends Stmt {
 
 	public void setWhenTrue(Stmt whenTrue) {
 		this.whenTrue = whenTrue;
+	}
+
+	public void doSemantics() throws Exception {
+	    if (!(condition instanceof BoolExpn)) {
+	        throw new Exception();
+	    }
 	}
 }

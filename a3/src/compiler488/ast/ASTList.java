@@ -3,6 +3,7 @@ package compiler488.ast;
 import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.lang.reflect.*;
 
 /**
  * For nodes with an arbitrary number of children.
@@ -69,6 +70,10 @@ public class ASTList<E> extends AST {
 			Indentable.printIndentOn(out, depth, ">>empty<<\n");
 	}
 
+    public ListIterator getIter() {
+        return ll.listIterator();
+    }
+
 	/**
 	 * Return the contatenation of the strings obtained by sending
 	 * <b>toString</b> to each element.
@@ -87,4 +92,17 @@ public class ASTList<E> extends AST {
 			return result.toString();
 		}
 	}
+	
+	@Override
+    public void doSemantics() {
+        for (E elem : this.ll) {
+            try {
+                Method method = elem.getClass().getMethod("doSemantics");
+                method.invoke(elem);
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 }
