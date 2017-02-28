@@ -44,6 +44,12 @@ public class RoutineBody extends Indentable {
 		body.printOn(out, depth);
 	}
 
+	@Override
+	public void doSemantics() {
+		this.parameters.doSemantics();
+		this.body.doSemantics();
+	}
+
 	public Scope getBody() {
 		return body;
 	}

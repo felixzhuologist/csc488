@@ -65,16 +65,20 @@ public class RoutineDecl extends Declaration {
 
 	@Override
 	public void doSemantics() {
-		ArrayList<Type> paramTypes = new ArrayList<Type>(); // Added in body semantics
-		SymbolTableEntry newSymbol;
+		SymbolTableEntry routineSymbol;
 
+		ListIterator<ScalarDecl> params = this.routineBody.getParameters().getIter();
+		ArrayList<Type> paramTypes = this.getTypesFromParams(params);
+
+
+		this.routineBody.doSemantics();
 		if (type == null) {
-			newSymbol = new ProcedureSymbol(this.name, paramTypes);
+			routineSymbol = new ProcedureSymbol(this.name, paramTypes);
 		} else {
-			newSymbol = new FunctionSymbol(this.name, paramTypes, this.type);
+			routineSymbol = new FunctionSymbol(this.name, paramTypes, this.type);
 		}
 
-		Main.symbolTable.addEntry(newSymbol);
+		Main.symbolTable.addEntry(routineSymbol);
 	}
 
 	public RoutineBody getRoutineBody() {
@@ -83,5 +87,13 @@ public class RoutineDecl extends Declaration {
 
 	public void setRoutineBody(RoutineBody routineBody) {
 		this.routineBody = routineBody;
+	}
+
+	private ArrayList<Type> getTypesFromParams(ListIterator<ScalarDecl> params) {
+		ArrayList<Type> paramTypes = new ArrayList<Type>();
+		for (ScalarDecl param : params) {
+			paramTypes.add(param.type);
+		}
+		return paramTypes;
 	}
 }
