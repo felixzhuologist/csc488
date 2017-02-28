@@ -45,7 +45,7 @@ public class RoutineBody extends Indentable {
 	}
 
 	@Override
-	public void doSemantics() {
+	public void doSemantics() throws Exception {
 		this.parameters.doSemantics();
 		this.body.doSemantics();
 	}
