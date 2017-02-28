@@ -50,7 +50,7 @@ public class MultiDeclarations extends Declaration {
 	}
 
 	@Override
-	public void doSemantics() {
+	public void doSemantics() throws Exception {
 		elements.doSemantics();
 	}
 
