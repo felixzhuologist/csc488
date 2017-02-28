@@ -69,7 +69,7 @@ public class ASTList<E> extends AST {
 			Indentable.printIndentOn(out, depth, ">>empty<<\n");
 	}
 
-    public ListIterator getElements() {
+    public ListIterator getIter() {
         return ll.listIterator();
     }
 
