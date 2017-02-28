@@ -30,7 +30,7 @@ public class AST {
 
 	public final static String version = "Winter 2017";
 	
-	public void doSemantics() {
+	public void doSemantics() throws Exception {
         // Do nothing by default.
 	}
 }
