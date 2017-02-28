@@ -5,6 +5,10 @@ import compiler488.ast.type.Type;
 public class VariableSymbol extends SymbolTableEntry {
     protected Type type;
 
+    public VariableSymbol(String name) {
+        this.name = name;
+    }
+
     public VariableSymbol(String name, Type type) {
         this.name = name;
         this.type = type;

@@ -24,7 +24,7 @@ public class ScalarDeclPart extends DeclarationPart {
 
 	@Override
 	public void doSemantics() {
-		SymbolTableEntry newSymbol = new ScalarSymbol(this.name, null);
+		SymbolTableEntry newSymbol = new ScalarSymbol(this.name);
 		Main.symbolTable.addEntry(newSymbol);
 	}
 }

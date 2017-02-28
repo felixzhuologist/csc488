@@ -26,7 +26,12 @@ public class ScalarDecl extends Declaration {
 
 	@Override
 	public void doSemantics() {
-		SymbolTableEntry newSymbol = new ScalarSymbol(this.name, this.type);
-		Main.symbolTable.addEntry(newSymbol);
+		VariableSymbol existingSymbol = (VariableSymbol) Main.symbolTable.getEntry(this.name);
+		if (existingSymbol == null) {
+			SymbolTableEntry newSymbol = new ScalarSymbol(this.name, this.type);
+			Main.symbolTable.addEntry(newSymbol);			
+		} else {
+			existingSymbol.setType(this.type);
+		}
 	}
 }
