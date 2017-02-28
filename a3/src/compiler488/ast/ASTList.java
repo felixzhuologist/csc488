@@ -94,7 +94,7 @@ public class ASTList<E> extends AST {
 	}
 	
 	@Override
-    public void doSemantics() {
+    public void doSemantics() throws Exception {
         for (E elem : this.ll) {
             try {
                 Method method = elem.getClass().getMethod("doSemantics");
