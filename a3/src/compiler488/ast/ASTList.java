@@ -70,6 +70,10 @@ public class ASTList<E> extends AST {
 			Indentable.printIndentOn(out, depth, ">>empty<<\n");
 	}
 
+    public ListIterator getElements() {
+        return ll.listIterator();
+    }
+
 	/**
 	 * Return the contatenation of the strings obtained by sending
 	 * <b>toString</b> to each element.
