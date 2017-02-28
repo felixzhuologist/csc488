@@ -8,6 +8,7 @@ import compiler488.symbol.*;
 import compiler488.compiler.Main;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 /**
  * Represents the declaration of a function or procedure.
@@ -64,7 +65,7 @@ public class RoutineDecl extends Declaration {
 	}
 
 	@Override
-	public void doSemantics() {
+	public void doSemantics() throws Exception {
 		SymbolTableEntry routineSymbol;
 
 		ListIterator<ScalarDecl> params = this.routineBody.getParameters().getIter();
@@ -91,8 +92,8 @@ public class RoutineDecl extends Declaration {
 
 	private ArrayList<Type> getTypesFromParams(ListIterator<ScalarDecl> params) {
 		ArrayList<Type> paramTypes = new ArrayList<Type>();
-		for (ScalarDecl param : params) {
-			paramTypes.add(param.type);
+		while (params.hasNext()) {
+			paramTypes.add(params.next().type);
 		}
 		return paramTypes;
 	}

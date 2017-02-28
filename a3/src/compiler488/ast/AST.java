@@ -27,10 +27,6 @@ public class AST {
 	public String printLineNumber() {
 		return "Line: " + lineNumber.toString();
 	}
-
-	public void doSemantics() {
-
-	}
 	
 	public final static String version = "Winter 2017";
 	
