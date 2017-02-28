@@ -4,6 +4,10 @@ import java.io.PrintStream;
 
 import compiler488.ast.Indentable;
 import compiler488.ast.type.Type;
+import compiler488.symbol.*;
+import compiler488.compiler.Main;
+
+import java.util.ArrayList;
 
 /**
  * Represents the declaration of a function or procedure.
@@ -57,6 +61,20 @@ public class RoutineDecl extends Declaration {
 	public void printOn(PrintStream out, int depth) {
 		Indentable.printIndentOn(out, depth, this + " ");
 		routineBody.printOn(out, depth);
+	}
+
+	@Override
+	public void doSemantics() {
+		ArrayList<Type> paramTypes = new ArrayList<Type>(); // Added in body semantics
+		SymbolTableEntry newSymbol;
+
+		if (type == null) {
+			newSymbol = new ProcedureSymbol(this.name, paramTypes);
+		} else {
+			newSymbol = new FunctionSymbol(this.name, paramTypes, this.type);
+		}
+
+		Main.symbolTable.addEntry(newSymbol);
 	}
 
 	public RoutineBody getRoutineBody() {

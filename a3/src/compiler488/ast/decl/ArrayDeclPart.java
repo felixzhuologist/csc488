@@ -1,5 +1,10 @@
 package compiler488.ast.decl;
 
+
+import compiler488.ast.type.Type;
+import compiler488.symbol.*;
+import compiler488.compiler.Main;
+
 /**
  * Holds the declaration part of an array.
  */
