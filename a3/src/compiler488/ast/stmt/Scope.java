@@ -71,7 +71,7 @@ public class Scope extends Stmt {
 	}
 	
 	@Override
-    public void doSemantics() {
+    public void doSemantics() throws Exception {
         this.declarations.doSemantics();
         this.statements.doSemantics();
     }
