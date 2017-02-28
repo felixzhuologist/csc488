@@ -4,6 +4,11 @@ import java.io.PrintStream;
 
 import compiler488.ast.Indentable;
 import compiler488.ast.type.Type;
+import compiler488.symbol.*;
+import compiler488.compiler.Main;
+
+import java.util.ArrayList;
+import java.util.ListIterator;
 
 /**
  * Represents the declaration of a function or procedure.
@@ -59,11 +64,37 @@ public class RoutineDecl extends Declaration {
 		routineBody.printOn(out, depth);
 	}
 
+	@Override
+	public void doSemantics() throws Exception {
+		SymbolTableEntry routineSymbol;
+
+		ListIterator<ScalarDecl> params = this.routineBody.getParameters().getIter();
+		ArrayList<Type> paramTypes = this.getTypesFromParams(params);
+
+
+		this.routineBody.doSemantics();
+		if (type == null) {
+			routineSymbol = new ProcedureSymbol(this.name, paramTypes);
+		} else {
+			routineSymbol = new FunctionSymbol(this.name, paramTypes, this.type);
+		}
+
+		Main.symbolTable.addEntry(routineSymbol);
+	}
+
 	public RoutineBody getRoutineBody() {
 		return routineBody;
 	}
 
 	public void setRoutineBody(RoutineBody routineBody) {
 		this.routineBody = routineBody;
+	}
+
+	private ArrayList<Type> getTypesFromParams(ListIterator<ScalarDecl> params) {
+		ArrayList<Type> paramTypes = new ArrayList<Type>();
+		while (params.hasNext()) {
+			paramTypes.add(params.next().type);
+		}
+		return paramTypes;
 	}
 }

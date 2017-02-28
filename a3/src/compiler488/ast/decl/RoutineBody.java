@@ -24,6 +24,7 @@ public class RoutineBody extends Indentable {
 	/* Constructor for routines with no parameters. */
 	public RoutineBody(Integer lineNumber, Scope body) {
 		super(lineNumber);
+		this.parameters = new ASTList<ScalarDecl>();
 		this.body = body;
 	}
 	/**
@@ -42,6 +43,12 @@ public class RoutineBody extends Indentable {
 		else
 			out.println(" ");
 		body.printOn(out, depth);
+	}
+
+	@Override
+	public void doSemantics() throws Exception {
+		this.parameters.doSemantics();
+		this.body.doSemantics();
 	}
 
 	public Scope getBody() {

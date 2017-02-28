@@ -5,6 +5,8 @@ import java.io.PrintStream;
 import compiler488.ast.ASTList;
 import compiler488.ast.Indentable;
 import compiler488.ast.type.Type;
+import compiler488.symbol.*;
+import compiler488.compiler.Main;
 
 /**
  * Holds the declaration of multiple elements.
@@ -47,6 +49,10 @@ public class MultiDeclarations extends Declaration {
 		Indentable.printIndentOn (out, depth, this + " ");
 	}
 
+	@Override
+	public void doSemantics() throws Exception {
+		elements.doSemantics();
+	}
 
 	public ASTList<DeclarationPart> getElements() {
 		return elements;
