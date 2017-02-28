@@ -29,6 +29,8 @@ public class AST {
 	}
 
 	public final static String version = "Winter 2017";
-
-
+	
+	public void doSemantics() {
+        // Do nothing by default.
+	}
 }

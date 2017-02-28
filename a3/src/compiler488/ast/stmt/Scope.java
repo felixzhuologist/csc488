@@ -69,5 +69,10 @@ public class Scope extends Stmt {
 	public void setStatements(ASTList<Stmt> statements) {
 		this.statements = statements;
 	}
-
+	
+	@Override
+    public void doSemantics() {
+        this.declarations.doSemantics();
+        this.statements.doSemantics();
+    }
 }
