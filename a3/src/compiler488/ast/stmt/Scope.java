@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import compiler488.ast.ASTList;
 import compiler488.ast.Indentable;
 import compiler488.ast.decl.Declaration;
+import compiler488.compiler.Main;
 
 /**
  * Represents the declarations and instructions of a scope construct.
@@ -72,7 +73,9 @@ public class Scope extends Stmt {
 	
 	@Override
     public void doSemantics() throws Exception {
+        Main.symbolTable.openScope();
         this.declarations.doSemantics();
         this.statements.doSemantics();
+        Main.symbolTable.closeScope();
     }
 }
