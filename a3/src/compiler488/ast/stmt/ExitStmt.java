@@ -63,6 +63,7 @@ public class ExitStmt extends Stmt {
 		this.level = level;
 	}
 
+	@Override
     public void doSemantics() throws Exception {
 	    if (expn != null && !(expn instanceof BoolExpn)) {
 	        throw new Exception();

@@ -32,6 +32,7 @@ public class WhileDoStmt extends LoopingStmt {
 		Indentable.printIndentOnLn(out, depth, "End while-do");
 	}
 
+    @Override
 	public void doSemantics() throws Exception {
 	    if (!(expn instanceof BoolExpn)) {
 	        throw new Exception();
