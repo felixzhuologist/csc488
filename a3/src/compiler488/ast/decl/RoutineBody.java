@@ -24,6 +24,7 @@ public class RoutineBody extends Indentable {
 	/* Constructor for routines with no parameters. */
 	public RoutineBody(Integer lineNumber, Scope body) {
 		super(lineNumber);
+		this.parameters = new ASTList<ScalarDecl>();
 		this.body = body;
 	}
 	/**
