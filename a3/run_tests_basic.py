@@ -44,12 +44,15 @@ if __name__ == "__main__":
     
     # Run compile on all test cases
     for file in files:
-        print "Testing file: " + file
+        print "Testing file: " + file,
         test_case_path = test_cases_path + "/" + file
         compile_args = ["sh", "RUNCOMPILER.SH", test_case_path]
         compile_out = subprocess.check_output(compile_args, stderr=subprocess.STDOUT)
         if (fail_string in compile_out):
+            print 'F'
             fail_count += 1
+        else:
+            print 
         
     print "-----------------------------------------"        
     print str(fail_count) + " test cases failed out of " + str(num_test_cases)
