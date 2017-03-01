@@ -1,6 +1,6 @@
 package compiler488.ast.stmt;
 
-import compiler488.ast.expn.Expn;
+import compiler488.ast.expn.*;
 
 
 /**
@@ -30,5 +30,16 @@ public abstract class LoopingStmt extends Stmt
 	public void setBody(Stmt body) {
 		this.body = body;
 	}
+
+  @Override
+  public void doSemantics() throws Exception {
+      System.out.println("ok");
+      if (!(expn instanceof BoolExpn || expn instanceof BoolConstExpn ||
+            expn instanceof CompareExpn || expn instanceof EqualsExpn ||
+            expn instanceof NotExpn)) {
+          // TODO: check for FunctionCallExpn && return type is boolean
+          throw new Exception();
+      }
+  }
 
 }

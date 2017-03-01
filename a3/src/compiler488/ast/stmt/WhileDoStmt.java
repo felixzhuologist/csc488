@@ -3,7 +3,8 @@ package compiler488.ast.stmt;
 import java.io.PrintStream;
 
 import compiler488.ast.Indentable;
-import compiler488.ast.expn.*;
+import compiler488.ast.expn.Expn;
+
 
 /**
  * Represents a loop in which the exit condition is evaluated before each pass.
@@ -29,15 +30,5 @@ public class WhileDoStmt extends LoopingStmt {
 		Indentable.printIndentOnLn(out, depth, "while " + expn + " do");
 		body.printOn(out, depth + 1);
 		Indentable.printIndentOnLn(out, depth, "End while-do");
-	}
-
-    @Override
-	public void doSemantics() throws Exception {
-	    if (!(expn instanceof BoolExpn || expn instanceof BoolConstExpn ||
-	    			expn instanceof CompareExpn || expn instanceof EqualsExpn ||
-	    			expn instanceof NotExpn)) {
-	    		// TODO: check for FunctionCallExpn && return type is boolean
-	        throw new Exception();
-	    }
 	}
 }
