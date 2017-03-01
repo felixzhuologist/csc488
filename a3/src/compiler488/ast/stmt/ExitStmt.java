@@ -1,6 +1,7 @@
 package compiler488.ast.stmt;
 
 import compiler488.ast.expn.*;
+import compiler488.semantics.Util;
 
 /**
  * Represents the command to exit from a loop.
@@ -11,7 +12,6 @@ public class ExitStmt extends Stmt {
 	// condition for 'exit when'
   private Expn expn = null;
 	private Integer level = -1;
-	private boolean isInsideLoop = false;
 
 	public ExitStmt(Integer lineNumber, Integer level, Expn expn) { // exit integer when expression
 		super(lineNumber);
@@ -64,15 +64,12 @@ public class ExitStmt extends Stmt {
 		this.level = level;
 	}
 
-	// Mark this node as inside a loop
-	public void markInsideLoop() {
-		this.isInsideLoop = true;
-	}
-	
 	@Override
     public void doSemantics() throws Exception {
-	    if (expn != null && !(expn instanceof BoolExpn)) {
-	        throw new Exception();
+	    if (expn != null && !Util.expnEvaluatesToBool(expn)) {
+	        throw new Exception("Expected exit condition that evaluates to boolean but got " + 
+                              expn.getClass().getName() + 
+                              " instead");
 	    }
 	}
 

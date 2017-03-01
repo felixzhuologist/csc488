@@ -38,6 +38,10 @@ public class Main {
    */
   private Main() { }
 
+  /* Globals used for semantic analysis */
+  public static SymbolTable symbolTable = new SymbolTable();
+  public static int currNumLoops = 0; // keep track of number of loops we are in
+
   /**  public error flag  
    *   Setting this flag to true will suppress further processing 
    *   This can be used by parsing, semantic analysis or code generation
@@ -51,8 +55,6 @@ public class Main {
 
   /** User option -- supress execution */
   public static boolean supressExecution   = false ;
-
-  public static SymbolTable symbolTable = new SymbolTable(); 
 
   // DUMP Options 
   /** User option -- dump AST after parsing */
