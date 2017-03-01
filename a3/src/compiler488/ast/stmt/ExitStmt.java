@@ -2,6 +2,7 @@ package compiler488.ast.stmt;
 
 import compiler488.ast.expn.*;
 import compiler488.semantics.Util;
+import compiler488.compiler.Main;
 
 /**
  * Represents the command to exit from a loop.
@@ -11,7 +12,7 @@ public class ExitStmt extends Stmt {
 
 	// condition for 'exit when'
   private Expn expn = null;
-	private Integer level = -1;
+	private Integer level = 1; // exit from 1 loop by default
 
 	public ExitStmt(Integer lineNumber, Integer level, Expn expn) { // exit integer when expression
 		super(lineNumber);
@@ -66,10 +67,21 @@ public class ExitStmt extends Stmt {
 
 	@Override
     public void doSemantics() throws Exception {
-	    if (expn != null && !Util.expnEvaluatesToBool(expn)) {
-	        throw new Exception("Expected exit condition that evaluates to boolean but got " + 
-                              expn.getClass().getName() + 
-                              " instead");
+	    if (expn != null) {
+	    		if (!Util.expnEvaluatesToBool(expn)) {
+			        throw new Exception("Expected exit condition that evaluates to boolean but got " + 
+		                              expn.getClass().getName() + 
+		                              " instead");
+			    }
+			    this.expn.doSemantics(); 
+	    }
+
+	    if (level < 0) {
+	    	throw new Exception("Invalid break depth");
+	    }
+	    if (level > Main.currNumLoops) {
+	    	throw new Exception("Attempt to break out of " + level + " loops when " +
+	    											"current depth is only " + Main.currNumLoops);
 	    }
 	}
 
