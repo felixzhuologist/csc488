@@ -38,7 +38,7 @@ public abstract class LoopingStmt extends Stmt
             expn instanceof CompareExpn || expn instanceof EqualsExpn ||
             expn instanceof NotExpn)) {
           // TODO: check for FunctionCallExpn && return type is boolean
-          throw new Exception("Expected expression that evaluates to boolean but got " + 
+          throw new Exception("Expected loop condition that evaluates to boolean but got " + 
                               expn.getClass().getName() + 
                               " instead");
       }

@@ -7,6 +7,15 @@ import re
 def print_parse_error():
     print "Error parsing parameters.\n Usage: %s <passing | failing>" % sys.argv[0]
 
+def get_semantic_error_msg(output):
+    try:
+        fail_string = "java.lang.Exception: "
+        msg_start = output.find(fail_string) + len(fail_string)
+        msg_end = output.rfind("at compiler488.ast")
+        return output[msg_start:msg_end]
+    except:
+        return ""
+
 if __name__ == "__main__":
 
     if len(sys.argv) != 2:
@@ -44,17 +53,15 @@ if __name__ == "__main__":
     
     # Run compile on all test cases
     for file in files:
-        print "Testing file: " + file,
+        print "Testing file: " + file
         test_case_path = test_cases_path + "/" + file
         compile_args = ["sh", "RUNCOMPILER.SH", test_case_path]
         compile_out = subprocess.check_output(compile_args, stderr=subprocess.STDOUT)
         if "Syntax error" in compile_out:
-            print 'S'
+            print '\tSyntax error'
         elif (fail_string in compile_out):
-            print 'F'
+            print '\tSemantic error: ' + get_semantic_error_msg(compile_out)
             fail_count += 1
-        else:
-            print 
         
     print "-----------------------------------------"        
     print str(fail_count) + " test cases failed out of " + str(num_test_cases)
