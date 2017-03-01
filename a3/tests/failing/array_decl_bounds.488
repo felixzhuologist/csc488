@@ -1,0 +1,3 @@
+{
+    var invalidBounds[10 .. 4] : Integer
+}
