@@ -1,7 +1,7 @@
 package compiler488.ast.stmt;
 
 import compiler488.ast.expn.*;
-
+import compiler488.compiler.Main;
 
 /**
  * Represents the common parts of loops.
@@ -33,13 +33,21 @@ public abstract class LoopingStmt extends Stmt
 
   @Override
   public void doSemantics() throws Exception {
-      System.out.println("ok");
+      // expn semantics:
       if (!(expn instanceof BoolExpn || expn instanceof BoolConstExpn ||
             expn instanceof CompareExpn || expn instanceof EqualsExpn ||
             expn instanceof NotExpn)) {
           // TODO: check for FunctionCallExpn && return type is boolean
-          throw new Exception();
+          throw new Exception("Expected expression that evaluates to boolean but got " + 
+                              expn.getClass().getName() + 
+                              " instead");
       }
+      expn.doSemantics();
+
+      // body semantics:
+      Main.currNumLoops++;
+      this.body.doSemantics();
+      Main.currNumLoops--;
   }
 
 }

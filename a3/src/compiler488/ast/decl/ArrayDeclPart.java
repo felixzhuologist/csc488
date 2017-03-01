@@ -48,7 +48,7 @@ public class ArrayDeclPart extends DeclarationPart {
 	@Override
 	public void doSemantics() throws Exception {
 		if (this.lb > this.ub) {
-			throw new Exception();
+			throw new Exception("Lower bound is greater than upper bound");
 		}
 		SymbolTableEntry newSymbol = new ArraySymbol(this.name, this.type, this.lb, this.ub, this.size);
 	}
