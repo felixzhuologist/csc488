@@ -48,7 +48,9 @@ if __name__ == "__main__":
         test_case_path = test_cases_path + "/" + file
         compile_args = ["sh", "RUNCOMPILER.SH", test_case_path]
         compile_out = subprocess.check_output(compile_args, stderr=subprocess.STDOUT)
-        if (fail_string in compile_out):
+        if "Syntax error" in compile_out:
+            print 'S'
+        elif (fail_string in compile_out):
             print 'F'
             fail_count += 1
         else:
