@@ -24,6 +24,16 @@ public class AssignStmt extends Stmt {
 		return "Assignment: " + lval + " := " + rval;
 	}
 
+	@Override
+	public void doSemantics() throws Exception {
+		lval.doSemantics();
+		rval.doSemantics();
+
+		if (!(lval.getResultType().getClass().equals(rval.getResultType().getClass()))) {
+			throw new Exception("lval and rval types do not match");
+		}
+	}
+
 	public Expn getLval() {
 		return lval;
 	}

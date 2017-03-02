@@ -19,10 +19,12 @@ public class BoolExpn extends BinaryExpn {
     public void doSemantics() throws Exception {
         left.doSemantics();
         right.doSemantics();
-        if (!(left.getResultType() instanceof BooleanType &&
-              right.getResultType() instanceof BooleanType)) {
-            throw new Exception("Unexpected types for BoolExpn: " + left.getClass().getSimpleName() + " and " +  right.getClass().getSimpleName());
+
+        if (!(left.getResultType() instanceof BooleanType && right.getResultType() instanceof BooleanType)) {
+            throw new Exception(opSymbol + " expects two booleans but got a " +
+                                left.getResultType().getClass().getName() + " and " +
+                                right.getResultType().getClass().getName() + " instead");
         }
-        resultType = new BooleanType(lineNumber);
+        this.resultType = new BooleanType(lineNumber);
     }
 }

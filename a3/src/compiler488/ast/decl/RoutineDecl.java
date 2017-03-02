@@ -66,7 +66,7 @@ public class RoutineDecl extends Declaration {
 
 	@Override
 	public void doSemantics() throws Exception {
-		SymbolTableEntry routineSymbol;
+		RoutineSymbol routineSymbol;
 
 		// Add function to symbol table: must be done first to support recursion
 		ListIterator<ScalarDecl> params = this.routineBody.getParameters().getIter();
@@ -79,9 +79,9 @@ public class RoutineDecl extends Declaration {
 		Main.symbolTable.addEntry(routineSymbol);
 
 
-		Main.currNumRoutines++;
+		Main.routineStack.push(routineSymbol);
 		this.routineBody.doSemantics();
-		Main.currNumRoutines--;
+		Main.routineStack.pop();
 
 	}
 

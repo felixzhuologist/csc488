@@ -2,8 +2,11 @@ package compiler488.ast.stmt;
 
 import compiler488.ast.ASTList;
 import compiler488.ast.expn.Expn;
+import compiler488.ast.type.*;
 import compiler488.symbol.*;
 import compiler488.compiler.Main;
+
+import java.util.ArrayList;
 
 /**
  * Represents calling a procedure.
@@ -40,15 +43,23 @@ public class ProcedureCallStmt extends Stmt {
 			throw new Exception("Calling undeclared procedure " + name);
 		}
 
-		if (arguments != null) {
-			arguments.doSemantics();
+		// verify args
+		ProcedureSymbol procEntry = (ProcedureSymbol) entry;
+		ArrayList<Expn> args = arguments.getList();
+		ArrayList<Type> expectedArgTypes = procEntry.getParamTypes();
+
+		if (args.size() != expectedArgTypes.size()) {
+				throw new Exception("Procedure " + name + " was called with " +
+													args.size() + " args but expected " + expectedArgTypes.size());		
 		}
 
-		int numGivenArgs = (arguments == null) ? 0 : arguments.size();
-		int numExpectedArgs = ((ProcedureSymbol) entry).getNumParams();
-		if (numGivenArgs != numExpectedArgs) {
-			throw new Exception("Procedure " + name + " was called with " +
-													numGivenArgs + " args but expected " + numExpectedArgs);
+		for (int i = 0; i < args.size(); i++) {
+			Type got = args.get(i).getResultType();
+			Type expected = expectedArgTypes.get(i);
+			if (!got.getClass().equals(expected.getClass())) {
+				throw new Exception("Expected " + expected.getClass().getName() + " for param number " + (i + 1) + " of procedure " +
+														name + " but got " + got.getClass().getName() + " instead");
+			}
 		}
 	}
 

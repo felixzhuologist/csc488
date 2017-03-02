@@ -1,12 +1,14 @@
 package compiler488.compiler;
 
 import java.io.*;
+import java.util.Stack;
 
 import compiler488.parser.*;
 import compiler488.ast.AST ;
 import compiler488.ast.stmt.Program;
 import compiler488.semantics.Semantics;
 import compiler488.symbol.SymbolTable;
+import compiler488.symbol.RoutineSymbol;
 import compiler488.codegen.CodeGen;
 import compiler488.runtime.*;
 
@@ -43,7 +45,7 @@ public class Main {
   // keep track of number of loops we are in to check exit semantics
   public static int currNumLoops = 0;
   // keep track of whether we are in a function/proc to check return semantics
-  public static int currNumRoutines = 0;
+  public static Stack<RoutineSymbol> routineStack = new Stack();
 
   /**  public error flag  
    *   Setting this flag to true will suppress further processing 
