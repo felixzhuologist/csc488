@@ -4,6 +4,7 @@ import java.io.PrintStream;
 
 import compiler488.ast.Indentable;
 import compiler488.ast.expn.Expn;
+import compiler488.compiler.Main;
 
 /**
  * The command to return from a function or procedure.
@@ -36,6 +37,13 @@ public class ReturnStmt extends Stmt {
 			out.println("return ");
 		else
 			out.println("return with " + value );
+	}
+
+	@Override
+	public void doSemantics() throws Exception {
+		if (Main.currNumRoutines == 0) {
+			throw new Exception("Returning outside of function or procedure");
+		}
 	}
 
 	public Expn getValue() {

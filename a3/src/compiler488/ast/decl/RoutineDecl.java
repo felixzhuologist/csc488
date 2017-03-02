@@ -71,8 +71,10 @@ public class RoutineDecl extends Declaration {
 		ListIterator<ScalarDecl> params = this.routineBody.getParameters().getIter();
 		ArrayList<Type> paramTypes = this.getTypesFromParams(params);
 
-
+		Main.currNumRoutines++;
 		this.routineBody.doSemantics();
+		Main.currNumRoutines--;
+
 		if (type == null) {
 			routineSymbol = new ProcedureSymbol(this.name, paramTypes);
 		} else {

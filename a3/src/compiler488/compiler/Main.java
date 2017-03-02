@@ -40,7 +40,10 @@ public class Main {
 
   /* Globals used for semantic analysis */
   public static SymbolTable symbolTable = new SymbolTable();
-  public static int currNumLoops = 0; // keep track of number of loops we are in
+  // keep track of number of loops we are in to check exit semantics
+  public static int currNumLoops = 0;
+  // keep track of whether we are in a function/proc to check return semantics
+  public static int currNumRoutines = 0;
 
   /**  public error flag  
    *   Setting this flag to true will suppress further processing 
