@@ -9,8 +9,8 @@
   a := 5
   if a = 5
   then {
-    READ b
-    WRITE a
+    read b
+    write a
   }
   else
     a := 3
