@@ -4,9 +4,9 @@ import java.io.PrintStream;
 
 import compiler488.ast.Indentable;
 import compiler488.ast.expn.Expn;
-import compiler488.ast.expn.BoolExpn;
-import compiler488.ast.expn.CompareExpn;
-import compiler488.ast.expn.EqualsExpn;
+import compiler488.ast.type.BooleanType;
+
+
 /**
  * Represents an if-then or an if-then-else construct.
  */
@@ -78,13 +78,11 @@ public class IfStmt extends Stmt {
 		this.whenTrue = whenTrue;
 	}
 
-	@Override
-	public void doSemantics() throws Exception {
-
-	    if (!(condition instanceof CompareExpn ||
-	          condition instanceof BoolExpn ||
-	          condition instanceof EqualsExpn)) {
-	        throw new Exception("Unexpected type: " + condition.getClass().getSimpleName());
-	    }
-	}
+    @Override
+    public void doSemantics() throws Exception {
+        condition.doSemantics();
+        if (!(condition.getResultType() instanceof BooleanType)) {
+            throw new Exception("Unexpected type: " + condition.getClass().getSimpleName());
+        }
+    }
 }

@@ -4,6 +4,7 @@ import java.io.PrintStream;
 
 import compiler488.ast.Indentable;
 import compiler488.ast.expn.Expn;
+import compiler488.ast.type.BooleanType;
 
 
 /**
@@ -31,4 +32,12 @@ public class WhileDoStmt extends LoopingStmt {
 		body.printOn(out, depth + 1);
 		Indentable.printIndentOnLn(out, depth, "End while-do");
 	}
+	
+    @Override
+    public void doSemantics() throws Exception {
+        expn.doSemantics();
+        if (!(expn.getResultType() instanceof BooleanType)) {
+            throw new Exception("Unexpected type: " + expn.getClass().getSimpleName());
+        }
+    }
 }

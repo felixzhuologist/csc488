@@ -4,6 +4,7 @@ import java.io.PrintStream;
 
 import compiler488.ast.Indentable;
 import compiler488.ast.expn.Expn;
+import compiler488.ast.type.BooleanType;
 
 /**
  * Represents a loop in which the exit condition is evaluated after each pass.
@@ -31,4 +32,13 @@ public class RepeatUntilStmt extends LoopingStmt {
 		Indentable.printIndentOnLn(out, depth, " until "  + expn );
 
 	}
+
+    @Override
+    public void doSemantics() throws Exception {
+        expn.doSemantics();
+        if (!(expn.getResultType() instanceof BooleanType)) {
+            throw new Exception("Unexpected type: " + expn.getClass().getSimpleName());
+        }
+    }
+
 }
