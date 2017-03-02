@@ -1,6 +1,5 @@
 package compiler488.ast.expn;
 
-
 /**
  * The common features of binary expressions.
  */

@@ -1,5 +1,7 @@
 package compiler488.ast.expn;
 
+import compiler488.ast.type.BooleanType;
+
 /**
  * Boolean literal constants.
  */
@@ -17,6 +19,11 @@ public class BoolConstExpn extends ConstExpn
 	public String toString () { 
 	return ( value ? "(true)" : "(false)" );
     }
+
+  @Override
+  public void doSemantics() {
+    this.resultType = new BooleanType(lineNumber);
+  }
 
 	public boolean getValue() {
 		return value;
