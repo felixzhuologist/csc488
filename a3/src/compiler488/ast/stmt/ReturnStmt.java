@@ -4,6 +4,8 @@ import java.io.PrintStream;
 
 import compiler488.ast.Indentable;
 import compiler488.ast.expn.Expn;
+import compiler488.ast.type.Type;
+import compiler488.symbol.*;
 import compiler488.compiler.Main;
 
 /**
@@ -41,8 +43,29 @@ public class ReturnStmt extends Stmt {
 
 	@Override
 	public void doSemantics() throws Exception {
-		if (Main.currNumRoutines == 0) {
+		if (Main.routineStack.empty()) {
 			throw new Exception("Returning outside of function or procedure");
+		}
+
+		boolean returningValue = (value != null);
+		boolean insideProcedure = (Main.routineStack.peek() instanceof ProcedureSymbol);
+
+		if (returningValue && insideProcedure) {
+			throw new Exception("Returning a value inside of a procedure");
+		} else if (!returningValue && !insideProcedure) {
+			throw new Exception("Not returning anything inside of a function");
+		}
+
+		value.doSemantics();
+		if (returningValue && !insideProcedure) { // check that return type matches function decl
+			Type expectedReturnType = ((FunctionSymbol) Main.routineStack.peek()).getReturnType();
+			if (!expectedReturnType.getClass().equals(value.getResultType().getClass())) {
+				throw new Exception("Expected return value of type " + 
+														expectedReturnType.getClass().getName() +
+														" but got one of type " +
+														value.getResultType().getClass().getName() +
+														" instead");
+			}
 		}
 	}
 

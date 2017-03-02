@@ -22,7 +22,6 @@ public class ArrayDeclPart extends DeclarationPart {
 	public ArrayDeclPart(Integer lineNumber, String name, Integer lb, Integer ub) {
 		super(lineNumber);
 		this.name = name;
-		this.type = new IntegerType(lineNumber);
 		this.lb = lb;
 		this.ub = ub;
 		this.size = ub - lb + 1;
@@ -31,7 +30,6 @@ public class ArrayDeclPart extends DeclarationPart {
 	public ArrayDeclPart(Integer lineNumber, String name, Integer ub) {
 		super(lineNumber);
 		this.name = name;
-		this.type = new IntegerType(lineNumber);
 		this.lb = 1;
 		this.ub = ub;
 		this.size = ub - lb + 1;
@@ -51,6 +49,7 @@ public class ArrayDeclPart extends DeclarationPart {
 			throw new Exception("Lower bound is greater than upper bound in array decl");
 		}
 		SymbolTableEntry newSymbol = new ArraySymbol(this.name, this.type, this.lb, this.ub, this.size);
+		Main.symbolTable.addEntry(newSymbol);
 	}
 
 	public Integer getSize() {

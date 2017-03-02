@@ -7,6 +7,7 @@ import compiler488.ast.expn.Expn;
 import compiler488.ast.expn.BoolExpn;
 import compiler488.ast.expn.CompareExpn;
 import compiler488.ast.expn.EqualsExpn;
+import compiler488.ast.type.BooleanType;
 /**
  * Represents an if-then or an if-then-else construct.
  */
@@ -54,6 +55,19 @@ public class IfStmt extends Stmt {
 		Indentable.printIndentOnLn(out, depth, "End if");
 	}
 
+	@Override
+	public void doSemantics() throws Exception {
+		condition.doSemantics();
+		if (!(condition.getResultType() instanceof BooleanType)) {
+			throw new Exception("If condition must evaluate to boolean");
+		}
+
+		whenTrue.doSemantics();
+		if (whenFalse != null) {
+			whenFalse.doSemantics();
+		}
+	}
+
 	public Expn getCondition() {
 		return condition;
 	}
@@ -76,15 +90,5 @@ public class IfStmt extends Stmt {
 
 	public void setWhenTrue(Stmt whenTrue) {
 		this.whenTrue = whenTrue;
-	}
-
-	@Override
-	public void doSemantics() throws Exception {
-
-	    if (!(condition instanceof CompareExpn ||
-	          condition instanceof BoolExpn ||
-	          condition instanceof EqualsExpn)) {
-	        throw new Exception("Unexpected type: " + condition.getClass().getSimpleName());
-	    }
 	}
 }

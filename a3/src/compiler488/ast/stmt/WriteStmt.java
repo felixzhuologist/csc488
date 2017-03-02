@@ -2,6 +2,11 @@ package compiler488.ast.stmt;
 
 import compiler488.ast.ASTList;
 import compiler488.ast.Printable;
+import compiler488.ast.type.IntegerType;
+import compiler488.ast.expn.SkipConstExpn;
+import compiler488.ast.expn.TextConstExpn;
+import compiler488.ast.expn.Expn;
+import java.util.ListIterator;
 
 /**
  * The command to write data on the output device.
@@ -28,6 +33,15 @@ public class WriteStmt extends Stmt {
 	@Override
 	public void doSemantics() throws Exception {
 		this.outputs.doSemantics();
+
+		ListIterator<Printable> outputIter = outputs.getIter();
+		while (outputIter.hasNext()) {
+			Printable output = outputIter.next();
+			if (!(output instanceof SkipConstExpn || output instanceof TextConstExpn || 
+						((Expn) output).getResultType() instanceof IntegerType)) {
+				throw new Exception("Write output must be text, newline, or integer");
+			}
+		}
 	}
 	
 	public ASTList<Printable> getOutputs() {

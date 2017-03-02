@@ -2,6 +2,9 @@ package compiler488.ast.stmt;
 
 import compiler488.ast.ASTList;
 import compiler488.ast.Readable;
+import compiler488.ast.type.IntegerType;
+import compiler488.ast.expn.Expn;
+import java.util.ListIterator;
 
 /**
  * The command to read data into one or more variables.
@@ -25,6 +28,19 @@ public class ReadStmt extends Stmt {
 	@Override
 	public String toString() {
 		return "read " + inputs;
+	}
+
+	@Override
+	public void doSemantics() throws Exception {
+		inputs.doSemantics();
+
+		ListIterator<Readable> inputIter = inputs.getIter();
+		while (inputIter.hasNext()) {
+			Readable input = inputIter.next();
+			if (!(((Expn) input).getResultType() instanceof IntegerType)) {
+				throw new Exception("Can't read input into non integer variable");
+			}
+		}
 	}
 
 	public ASTList<Readable> getInputs() {

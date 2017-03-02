@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.lang.reflect.*;
 
+import java.util.ArrayList;
+
 /**
  * For nodes with an arbitrary number of children.
  */
@@ -70,9 +72,13 @@ public class ASTList<E> extends AST {
 			Indentable.printIndentOn(out, depth, ">>empty<<\n");
 	}
 
-    public ListIterator getIter() {
-        return ll.listIterator();
-    }
+  public ListIterator getIter() {
+    return ll.listIterator();
+  }
+
+  public ArrayList getList() {
+  	return new ArrayList(ll);
+  }
 
 	/**
 	 * Return the contatenation of the strings obtained by sending

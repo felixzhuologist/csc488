@@ -17,7 +17,15 @@ public class ArithExpn extends BinaryExpn {
     }
 
     @Override
-    public void doSemantics() {
-      this.resultType = new IntegerType(lineNumber);
+    public void doSemantics() throws Exception {
+        left.doSemantics();
+        right.doSemantics();
+
+        if (!(left.getResultType() instanceof IntegerType && right.getResultType() instanceof IntegerType)) {
+            throw new Exception(opSymbol + " expects two integers but got a " +
+                                left.getResultType().getClass().getName() + " and " +
+                                right.getResultType().getClass().getName() + " instead");
+        }
+        this.resultType = new IntegerType(lineNumber);
     }
 }

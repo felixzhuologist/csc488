@@ -16,7 +16,15 @@ public class BoolExpn extends BinaryExpn {
     }
 
     @Override
-    public void doSemantics() {
-      this.resultType = new BooleanType(lineNumber);
+    public void doSemantics() throws Exception {
+        left.doSemantics();
+        right.doSemantics();
+
+        if (!(left.getResultType() instanceof BooleanType && right.getResultType() instanceof BooleanType)) {
+            throw new Exception(opSymbol + " expects two booleans but got a " +
+                                left.getResultType().getClass().getName() + " and " +
+                                right.getResultType().getClass().getName() + " instead");
+        }
+        this.resultType = new BooleanType(lineNumber);
     }
 }
