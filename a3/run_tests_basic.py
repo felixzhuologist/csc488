@@ -4,13 +4,15 @@ import sys
 import subprocess
 import re
 
+# String to determine if semantic error
+semantic_error_string = "java.lang.Exception"
+
 def print_parse_error():
     print "Error parsing parameters.\n Usage: %s <passing | failing>" % sys.argv[0]
 
 def get_semantic_error_msg(output):
     try:
-        fail_string = "java.lang.Exception: "
-        msg_start = output.find(fail_string) + len(fail_string)
+        msg_start = output.find(semantic_error_string) + len(semantic_error_string)
         msg_end = output.find("at compiler488.ast", msg_start + 1)
         return output[msg_start:msg_end]
     except:
@@ -42,8 +44,6 @@ if __name__ == "__main__":
     files = re.split(r'\n+', ls_out)
     files.pop(-1)
 
-    # String to determine if case passes
-    fail_string = "java.lang.Exception"
     fail_count = 0
     num_test_cases = len(files)
     
@@ -59,9 +59,11 @@ if __name__ == "__main__":
         compile_out = subprocess.check_output(compile_args, stderr=subprocess.STDOUT)
         if "Syntax error" in compile_out:
             print '\tSyntax error'
-        elif (fail_string in compile_out):
+        elif (semantic_error_string in compile_out):
             print '\tSemantic error: ' + get_semantic_error_msg(compile_out)
             fail_count += 1
+        elif "Exception" in compile_out:
+            print '\tOther error'
         
     print "-----------------------------------------"        
     print str(fail_count) + " test cases failed out of " + str(num_test_cases)

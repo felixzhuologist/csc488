@@ -43,16 +43,21 @@ public class ProcedureCallStmt extends Stmt {
 			throw new Exception("Calling undeclared procedure " + name);
 		}
 
+		if (arguments == null) {
+			return;
+		}
 		// verify args
 		ProcedureSymbol procEntry = (ProcedureSymbol) entry;
 		ArrayList<Expn> args = arguments.getList();
 		ArrayList<Type> expectedArgTypes = procEntry.getParamTypes();
+
 
 		if (args.size() != expectedArgTypes.size()) {
 				throw new Exception("Procedure " + name + " was called with " +
 													args.size() + " args but expected " + expectedArgTypes.size());		
 		}
 
+		arguments.doSemantics();
 		for (int i = 0; i < args.size(); i++) {
 			Type got = args.get(i).getResultType();
 			Type expected = expectedArgTypes.get(i);

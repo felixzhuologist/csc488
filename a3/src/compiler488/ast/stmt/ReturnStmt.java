@@ -47,17 +47,17 @@ public class ReturnStmt extends Stmt {
 			throw new Exception("Returning outside of function or procedure");
 		}
 
-		boolean returningValue = (value != null);
-		boolean insideProcedure = (Main.routineStack.peek() instanceof ProcedureSymbol);
+		boolean isReturningValue = (value != null);
+		boolean isInsideProcedure = (Main.routineStack.peek() instanceof ProcedureSymbol);
 
-		if (returningValue && insideProcedure) {
+		if (isReturningValue && isInsideProcedure) {
 			throw new Exception("Returning a value inside of a procedure");
-		} else if (!returningValue && !insideProcedure) {
+		} else if (!isReturningValue && !isInsideProcedure) {
 			throw new Exception("Not returning anything inside of a function");
 		}
 
-		value.doSemantics();
-		if (returningValue && !insideProcedure) { // check that return type matches function decl
+		if (isReturningValue && !isInsideProcedure) { // check that return type matches function decl
+			value.doSemantics();
 			Type expectedReturnType = ((FunctionSymbol) Main.routineStack.peek()).getReturnType();
 			if (!expectedReturnType.getClass().equals(value.getResultType().getClass())) {
 				throw new Exception("Expected return value of type " + 

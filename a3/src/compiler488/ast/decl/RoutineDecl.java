@@ -96,7 +96,7 @@ public class RoutineDecl extends Declaration {
 	private ArrayList<Type> getTypesFromParams(ListIterator<ScalarDecl> params) {
 		ArrayList<Type> paramTypes = new ArrayList<Type>();
 		while (params.hasNext()) {
-			paramTypes.add(params.next().type);
+			paramTypes.add(params.next().getType());
 		}
 		return paramTypes;
 	}

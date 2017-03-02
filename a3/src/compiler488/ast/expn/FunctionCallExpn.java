@@ -39,11 +39,10 @@ public class FunctionCallExpn extends Expn {
 			throw new Exception("Calling undeclared function " + ident);
 		}
 
-		if (arguments != null) {
-			arguments.doSemantics();
-		}
-
 		// verify args
+		if (arguments == null) {
+			return;
+		}
 		FunctionSymbol funcEntry = (FunctionSymbol) entry;
 		ArrayList<Expn> args = arguments.getList();
 		ArrayList<Type> expectedArgTypes = funcEntry.getParamTypes();
@@ -53,6 +52,7 @@ public class FunctionCallExpn extends Expn {
 													args.size() + " args but expected " + expectedArgTypes.size());		
 		}
 
+		arguments.doSemantics();
 		for (int i = 0; i < args.size(); i++) {
 			Type got = args.get(i).getResultType();
 			Type expected = expectedArgTypes.get(i);
