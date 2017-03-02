@@ -25,6 +25,11 @@ public class WriteStmt extends Stmt {
 		return "write " + outputs;
 	}
 
+	@Override
+	public void doSemantics() throws Exception {
+		this.outputs.doSemantics();
+	}
+	
 	public ASTList<Printable> getOutputs() {
 		return outputs;
 	}

@@ -7,5 +7,5 @@
             return with j
     }
 
-    write max(6, 9)
+    write min(6, 9)
 }

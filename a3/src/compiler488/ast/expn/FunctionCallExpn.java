@@ -41,7 +41,6 @@ public class FunctionCallExpn extends Expn {
 
 		int numGivenArgs = (arguments == null) ? 0 : arguments.size();
 		int numExpectedArgs = ((FunctionSymbol) entry).getNumParams();
-		System.out.println(numExpectedArgs);
 		if (numGivenArgs != numExpectedArgs) {
 			throw new Exception("Function " + ident + " was called with " +
 													numGivenArgs + " args but expected " + numExpectedArgs);
