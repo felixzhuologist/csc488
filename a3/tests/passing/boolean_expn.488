@@ -1,0 +1,33 @@
+% Tests valid boolean expressions
+% wrapped in a scope 
+% By: Jeffrey Deng
+% UtorID: dengjeff
+
+{
+  var a: Integer
+  var b: Integer
+  
+  a := 0
+  b := 0
+  
+  
+  repeat {
+    a := a + 1
+    repeat {
+        exit when b > 2
+        b := b + 1
+    } until b > 10
+    
+    repeat {
+        exit 1 when b > 4
+        b := b + 1
+    } until b > 10
+    
+  } until a > 2
+  
+  if not a > 100 and not b > 100 then {
+    if b < 100 or a < 100 then {
+        a := (b < 100 ? 100 : 0)
+    }
+  }
+}
