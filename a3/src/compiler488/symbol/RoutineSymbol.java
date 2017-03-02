@@ -16,6 +16,10 @@ public class RoutineSymbol extends SymbolTableEntry {
         return paramTypes;
     }
 
+    public int getNumParams() {
+        return paramTypes.size();
+    }
+
     public void setParamTypes(ArrayList<Type> paramTypes) {
         this.paramTypes = paramTypes;
     }

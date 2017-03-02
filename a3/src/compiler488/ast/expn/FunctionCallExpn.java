@@ -1,6 +1,8 @@
 package compiler488.ast.expn;
 
 import compiler488.ast.ASTList;
+import compiler488.symbol.*;
+import compiler488.compiler.Main;
 
 /**
  * Represents a function call with or without arguments.
@@ -24,6 +26,26 @@ public class FunctionCallExpn extends Expn {
 		}
 		else
 			return ident + " " ;
+	}
+
+	@Override
+	public void doSemantics() throws Exception {
+		SymbolTableEntry entry = Main.symbolTable.getEntry(ident);
+		if (entry == null || !(entry instanceof FunctionSymbol)) {
+			throw new Exception("Calling undeclared function " + ident);
+		}
+
+		if (arguments != null) {
+			arguments.doSemantics();
+		}
+
+		int numGivenArgs = (arguments == null) ? 0 : arguments.size();
+		int numExpectedArgs = ((FunctionSymbol) entry).getNumParams();
+		System.out.println(numExpectedArgs);
+		if (numGivenArgs != numExpectedArgs) {
+			throw new Exception("Function " + ident + " was called with " +
+													numGivenArgs + " args but expected " + numExpectedArgs);
+		}
 	}
 
 	public ASTList<Expn> getArguments() {

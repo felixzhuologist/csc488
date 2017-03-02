@@ -2,6 +2,8 @@ package compiler488.ast.stmt;
 
 import compiler488.ast.ASTList;
 import compiler488.ast.expn.Expn;
+import compiler488.symbol.*;
+import compiler488.compiler.Main;
 
 /**
  * Represents calling a procedure.
@@ -29,6 +31,25 @@ public class ProcedureCallStmt extends Stmt {
 			return "Procedure call: " + name + " (" + arguments + ")";
 		else
 			return "Procedure call: " + name + " ";
+	}
+
+	@Override
+	public void doSemantics() throws Exception {
+		SymbolTableEntry entry = Main.symbolTable.getEntry(name);
+		if (entry == null || !(entry instanceof ProcedureSymbol)) {
+			throw new Exception("Calling undeclared procedure " + name);
+		}
+
+		if (arguments != null) {
+			arguments.doSemantics();
+		}
+
+		int numGivenArgs = (arguments == null) ? 0 : arguments.size();
+		int numExpectedArgs = ((ProcedureSymbol) entry).getNumParams();
+		if (numGivenArgs != numExpectedArgs) {
+			throw new Exception("Procedure " + name + " was called with " +
+													numGivenArgs + " args but expected " + numExpectedArgs);
+		}
 	}
 
 	public ASTList<Expn> getArguments() {

@@ -1,0 +1,6 @@
+{
+  while (3 + 14) do
+  {
+    write "error"
+  }
+}

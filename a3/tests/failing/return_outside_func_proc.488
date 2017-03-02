@@ -1,0 +1,9 @@
+{
+    var a : Integer
+    var b : Integer
+
+    a := 70
+    b := 1
+
+    return with a - b
+}

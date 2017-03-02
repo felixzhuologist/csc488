@@ -1,0 +1,12 @@
+{
+    procedure greater_than_5 (n: Integer) {
+        if n > 5
+        then
+            write "true"
+        else
+            write "false"
+        return
+    }
+
+    greater_than_you(5)
+}

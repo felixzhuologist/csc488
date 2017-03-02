@@ -68,20 +68,21 @@ public class RoutineDecl extends Declaration {
 	public void doSemantics() throws Exception {
 		SymbolTableEntry routineSymbol;
 
+		// Add function to symbol table: must be done first to support recursion
 		ListIterator<ScalarDecl> params = this.routineBody.getParameters().getIter();
 		ArrayList<Type> paramTypes = this.getTypesFromParams(params);
-
-		Main.currNumRoutines++;
-		this.routineBody.doSemantics();
-		Main.currNumRoutines--;
-
 		if (type == null) {
 			routineSymbol = new ProcedureSymbol(this.name, paramTypes);
 		} else {
 			routineSymbol = new FunctionSymbol(this.name, paramTypes, this.type);
 		}
-
 		Main.symbolTable.addEntry(routineSymbol);
+
+
+		Main.currNumRoutines++;
+		this.routineBody.doSemantics();
+		Main.currNumRoutines--;
+
 	}
 
 	public RoutineBody getRoutineBody() {

@@ -1,0 +1,7 @@
+{
+  repeat
+  {
+    write "error"
+  } 
+  until (0 - 5)
+}

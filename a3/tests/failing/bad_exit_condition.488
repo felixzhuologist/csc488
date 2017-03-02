@@ -1,0 +1,6 @@
+{
+  while true do
+  {
+    exit when (60 + 9)
+  }
+}
