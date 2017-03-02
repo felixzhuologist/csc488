@@ -5,7 +5,7 @@ import compiler488.symbol.*;
 import compiler488.compiler.Main;
 
 /**
- * Represents the declaration of a simple variable.
+ * Represents the declaration of a parameter.
  */
 
 public class ScalarDecl extends Declaration {
@@ -25,13 +25,8 @@ public class ScalarDecl extends Declaration {
 	}
 
 	@Override
-	public void doSemantics() {
-		VariableSymbol existingSymbol = (VariableSymbol) Main.symbolTable.getEntry(this.name);
-		if (existingSymbol == null) {
-			SymbolTableEntry newSymbol = new ScalarSymbol(this.name, this.type);
-			Main.symbolTable.addEntry(newSymbol);			
-		} else {
-			existingSymbol.setType(this.type);
-		}
+	public void doSemantics() throws Exception {
+		SymbolTableEntry newSymbol = new ScalarSymbol(this.name, this.type);
+		Main.symbolTable.addEntry(newSymbol);			
 	}
 }

@@ -1,0 +1,11 @@
+{
+    function max (i: Integer, j: Integer) : Boolean {
+        if i > j
+        then
+            return with i
+        else
+            return with j
+    }
+
+    write max(3, 4)
+}

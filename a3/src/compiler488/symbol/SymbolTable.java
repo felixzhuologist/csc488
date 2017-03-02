@@ -91,12 +91,12 @@ public class SymbolTable {
 	/**
 	 * Add a new symbol entry into the symbol table and scopeDisplay
      */
-	public Boolean addEntry(SymbolTableEntry newSymbol) {
+	public Boolean addEntry(SymbolTableEntry newSymbol) throws Exception {
 		SymbolTableEntry oldSymbol = getEntry(newSymbol.getName());
 
 		// if the symbol has already been declared at this depth, then we return false
 		if (oldSymbol != null && oldSymbol.getDepth() == depth) {
-			return false;
+			throw new Exception(newSymbol.name + " has already been declared in this scope");
 		}
 
 		// set level to be all the symbols that are already declared in this scope
