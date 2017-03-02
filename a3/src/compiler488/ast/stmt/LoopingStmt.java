@@ -1,7 +1,7 @@
 package compiler488.ast.stmt;
 
 import compiler488.ast.expn.*;
-import compiler488.semantics.Util;
+import compiler488.ast.type.BooleanType;
 import compiler488.compiler.Main;
 
 /**
@@ -35,13 +35,10 @@ public abstract class LoopingStmt extends Stmt
   @Override
   public void doSemantics() throws Exception {
       // expn semantics:
-      if (!Util.expnEvaluatesToBool(expn)) {
-          // TODO: check for FunctionCallExpn && return type is boolean
-          throw new Exception("Expected loop condition that evaluates to boolean but got " + 
-                              expn.getClass().getName() + 
-                              " instead");
-      }
       expn.doSemantics();
+      if (!(expn.getResultType() instanceof BooleanType)) {
+          throw new Exception("Expected loop condition that evaluates to boolean");
+      }
 
       // body semantics:
       Main.currNumLoops++;

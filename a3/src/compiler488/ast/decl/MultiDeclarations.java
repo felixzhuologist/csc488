@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import compiler488.ast.ASTList;
 import compiler488.ast.Indentable;
 import compiler488.ast.type.Type;
+import java.util.ListIterator;
 import compiler488.symbol.*;
 import compiler488.compiler.Main;
 
@@ -52,6 +53,14 @@ public class MultiDeclarations extends Declaration {
 	@Override
 	public void doSemantics() throws Exception {
 		elements.doSemantics();
+
+		// Set type for all of its elements
+		ListIterator<DeclarationPart> elementsIter = elements.getIter();
+		while (elementsIter.hasNext()) {
+			String elementName = elementsIter.next().getName();
+			VariableSymbol elementSymbolTableEntry =  (VariableSymbol) Main.symbolTable.getEntry(elementName);
+			elementSymbolTableEntry.setType(this.type);
+		}
 	}
 
 	public ASTList<DeclarationPart> getElements() {

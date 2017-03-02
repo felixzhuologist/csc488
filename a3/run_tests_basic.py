@@ -11,7 +11,7 @@ def get_semantic_error_msg(output):
     try:
         fail_string = "java.lang.Exception: "
         msg_start = output.find(fail_string) + len(fail_string)
-        msg_end = output.rfind("at compiler488.ast")
+        msg_end = output.find("at compiler488.ast", msg_start + 1)
         return output[msg_start:msg_end]
     except:
         return ""

@@ -14,7 +14,11 @@ public class UnaryMinusExpn extends UnaryExpn {
     }
 
     @Override
-    public void doSemantics() {
+    public void doSemantics() throws Exception {
+      this.operand.doSemantics();
+      if (!(operand.getResultType() instanceof IntegerType)) {
+        throw new Exception("Unary minussing a non integer expression");
+      }
       this.resultType = new IntegerType(lineNumber);
     }
 }

@@ -14,7 +14,11 @@ public class NotExpn extends UnaryExpn {
     }
 
     @Override
-    public void doSemantics() {
-      this.resultType = new BooleanType(lineNumber);
+    public void doSemantics() throws Exception {
+      operand.doSemantics();
+      if (!(operand.getResultType() instanceof BooleanType)) {
+        throw new Exception("Negating non boolean expression");
+      }
+      resultType = new BooleanType(lineNumber);
     }
 }
