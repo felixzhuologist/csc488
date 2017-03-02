@@ -1,5 +1,7 @@
 package compiler488.ast.expn;
 
+import compiler488.ast.type.IntegerType;
+
 /**
  * Represents negation of an integer expression
  */
@@ -11,4 +13,8 @@ public class UnaryMinusExpn extends UnaryExpn {
         this.opSymbol = "-";
     }
 
+    @Override
+    public void doSemantics() {
+      this.resultType = new IntegerType(lineNumber);
+    }
 }

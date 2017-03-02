@@ -18,4 +18,8 @@ public class Expn extends AST implements Printable {
     public void setResultType(Type resultType) {
       this.resultType = resultType;
     }
+
+    public Type getResultType() {
+      return this.resultType;
+    }
 }

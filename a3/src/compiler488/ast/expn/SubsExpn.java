@@ -1,6 +1,10 @@
 package compiler488.ast.expn;
 
 import compiler488.ast.Readable;
+import compiler488.symbol.*;
+import compiler488.compiler.Main;
+import compiler488.ast.type.*;
+import compiler488.semantics.Util;
 
 /**
  * References to an array element variable
@@ -23,6 +27,22 @@ public class SubsExpn extends UnaryExpn implements Readable {
 	@Override
 	public String toString() {
 		return (variable + "[" + operand + "]");
+	}
+
+	@Override
+	public void doSemantics() throws Exception {
+		operand.doSemantics();
+		if (!(operand.getResultType() instanceof IntegerType)) {
+			throw new Exception("Indexing into array with non integer type");
+		}
+
+    SymbolTableEntry entry = Main.symbolTable.getEntry(variable);
+    if (entry == null || !(entry instanceof ArraySymbol)) {
+      throw new Exception("Reference to undeclared array variable " + variable);
+    }
+
+    ArraySymbol arrEntry = (ArraySymbol) entry;
+    this.resultType = Util.getTypeWithLineNumber(arrEntry.getType(), lineNumber);
 	}
 
 	public String getVariable() {

@@ -27,7 +27,7 @@ public class IdentExpn extends Expn implements Readable
   @Override
   public void doSemantics() throws Exception {
     SymbolTableEntry entry = Main.symbolTable.getEntry(ident);
-    if (entry == null || !(entry instanceof FunctionSymbol)) {
+    if (entry == null || !(entry instanceof ScalarSymbol)) {
       throw new Exception("Reference to undeclared variable " + ident);
     }
 

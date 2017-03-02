@@ -1,5 +1,6 @@
 package compiler488.ast.expn;
 
+import compiler488.ast.type.IntegerType;
 /**
  * Represents a literal integer constant.
  */
@@ -15,6 +16,11 @@ public class IntConstExpn extends ConstExpn
 		/** Returns a string representing the value of the literal. */
     @Override
 	public String toString () { return value.toString (); }
+
+	@Override
+	public void doSemantics() {
+		this.resultType = new IntegerType(lineNumber);
+	}
 
 	public Integer getValue() {
 		return value;

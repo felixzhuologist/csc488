@@ -31,15 +31,15 @@ public class ConditionalExpn extends Expn {
 		trueValue.doSemantics();
 		falseValue.doSemantics();
 
-		if (!(condition.resultType instanceof BooleanType)) {
+		if (!(condition.getResultType() instanceof BooleanType)) {
 			throw new Exception("Condition in conditional does not evaluate to boolean");
 		}
 
-		if (!(trueValue.resultType.getClass()).equals(falseValue.resultType.getClass())) {
+		if (!(trueValue.getResultType().getClass()).equals(falseValue.getResultType().getClass())) {
 			throw new Exception("Statement types in conditional do not match");
 		}
 
-		this.resultType = Util.getTypeWithLineNumber(trueValue.resultType, lineNumber);
+		this.resultType = Util.getTypeWithLineNumber(trueValue.getResultType(), lineNumber);
 	}
 
 	public Expn getCondition() {
