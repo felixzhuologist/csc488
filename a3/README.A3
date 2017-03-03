@@ -1,18 +1,19 @@
 Contributions of each team member:
 
-Jeffrey
-    - 
+##### Jeffrey
+- Implemented part of the Semantic checks for Boolean types
+- Added passing and failing test cases for boolean type checks, and other semantic checks
+- Debugged semantic checks for Scope, Function, and Procedure semantic checks
 
-Atheed
-    - Designed and implemented the symbol table class for semantic analysis,
-      and the various symbol types in the grammar
-    - Helped modify, design, and debug the parser to generate a complete AST
+##### Atheed
+- Designed and implemented the symbol table class for semantic analysis, and the various symbol types in the grammar
+- Helped modify, design, and debug the parser to generate a complete AST
 
-Evan
-    - 
+##### Evan
+- 
 
-Felix M 
-    - 
+##### Felix M 
+- 
 
-Felix Z
-    - 
+##### Felix Z
+- 
