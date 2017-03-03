@@ -14,7 +14,8 @@ Contributions of each team member:
 - 
 
 ##### Felix M 
-- 
+- Implemented traversal of AST for semantic analysis
+- Helped implement semantic analysis for scopes and program
 
 ##### Felix Z
 - 
