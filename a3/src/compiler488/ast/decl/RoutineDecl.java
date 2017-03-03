@@ -76,13 +76,15 @@ public class RoutineDecl extends Declaration {
 		} else {
 			routineSymbol = new FunctionSymbol(this.name, paramTypes, this.type);
 		}
+
 		Main.symbolTable.addEntry(routineSymbol);
 		Main.routineStack.push(routineSymbol);
 		Main.symbolTable.openScope();
+
 		this.routineBody.doSemantics();
+
 		Main.symbolTable.closeScope();
 		Main.routineStack.pop();
-
 	}
 
 	public RoutineBody getRoutineBody() {
