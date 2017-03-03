@@ -1,0 +1,6 @@
+The passing tests are self explanatory - they contain the programs in addition
+to some specific cases which are not included in those programs.
+
+The failing tests each test a specific error which is described by the test's
+filename - there is at least one test for any possible error that might occur
+during semantic analysis.
