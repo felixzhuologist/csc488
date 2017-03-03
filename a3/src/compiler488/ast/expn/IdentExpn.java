@@ -18,7 +18,7 @@ public class IdentExpn extends Expn implements Readable
 		this.ident = ident;
 	}
 
-		/**
+	/**
      * Returns the name of the variable or function.
      */
     @Override
@@ -27,12 +27,21 @@ public class IdentExpn extends Expn implements Readable
   @Override
   public void doSemantics() throws Exception {
     SymbolTableEntry entry = Main.symbolTable.getEntry(ident);
-    if (entry == null || !(entry instanceof ScalarSymbol)) {
+    if (entry == null) {
       throw new Exception("Reference to undeclared variable " + ident);
     }
 
-    ScalarSymbol identEntry = (ScalarSymbol) entry;
-    this.resultType = Util.getTypeWithLineNumber(identEntry.getType(), lineNumber);
+    if (entry instanceof ScalarSymbol) {
+      ScalarSymbol identEntry = (ScalarSymbol) entry;
+      this.resultType = Util.getTypeWithLineNumber(identEntry.getType(), lineNumber);
+    }
+    else if (entry instanceof FunctionSymbol) {
+      FunctionSymbol identEntry = (FunctionSymbol) entry;
+      this.resultType = identEntry.getReturnType();
+    }
+    else {
+      throw new Exception("variable is not a scalar symbol or function symbol " + ident);
+    }
   }
 
 	public String getIdent() {
