@@ -3,6 +3,7 @@ package compiler488.ast.stmt;
 import compiler488.ast.expn.*;
 import compiler488.ast.type.BooleanType;
 import compiler488.compiler.Main;
+import compiler488.semantics.SemanticErrorException;
 
 /**
  * Represents the common parts of loops.
@@ -33,17 +34,16 @@ public abstract class LoopingStmt extends Stmt
 	}
 
   @Override
-  public void doSemantics() throws Exception {
-      // expn semantics:
+  public void doSemantics() throws SemanticErrorException {
       expn.doSemantics();
+
       if (!(expn.getResultType() instanceof BooleanType)) {
-          throw new Exception("Expected loop condition that evaluates to boolean");
+          throw new SemanticErrorException("Expected loop condition that evaluates to boolean");
       }
 
-      // body semantics:
-      Main.currNumLoops++;
+      Main.currNumLoops++; // mark that we are entering a loop
       this.body.doSemantics();
-      Main.currNumLoops--;
+      Main.currNumLoops--; // mark that we are exiting a loop
   }
 
 }

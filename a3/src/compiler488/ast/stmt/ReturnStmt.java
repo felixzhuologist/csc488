@@ -7,6 +7,7 @@ import compiler488.ast.expn.Expn;
 import compiler488.ast.type.Type;
 import compiler488.symbol.*;
 import compiler488.compiler.Main;
+import compiler488.semantics.SemanticErrorException;
 
 /**
  * The command to return from a function or procedure.
@@ -42,25 +43,25 @@ public class ReturnStmt extends Stmt {
 	}
 
 	@Override
-	public void doSemantics() throws Exception {
+	public void doSemantics() throws SemanticErrorException {
 		if (Main.routineStack.empty()) {
-			throw new Exception("Returning outside of function or procedure");
+			throw new SemanticErrorException("Returning outside of function or procedure");
 		}
 
 		boolean isReturningValue = (value != null);
 		boolean isInsideProcedure = (Main.routineStack.peek() instanceof ProcedureSymbol);
 
 		if (isReturningValue && isInsideProcedure) {
-			throw new Exception("Returning a value inside of a procedure");
+			throw new SemanticErrorException("Returning a value inside of a procedure");
 		} else if (!isReturningValue && !isInsideProcedure) {
-			throw new Exception("Not returning anything inside of a function");
+			throw new SemanticErrorException("Not returning anything inside of a function");
 		}
 
 		if (isReturningValue && !isInsideProcedure) { // check that return type matches function decl
 			value.doSemantics();
 			Type expectedReturnType = ((FunctionSymbol) Main.routineStack.peek()).getReturnType();
 			if (!expectedReturnType.getClass().equals(value.getResultType().getClass())) {
-				throw new Exception("Expected return value of type " + 
+				throw new SemanticErrorException("Expected return value of type " + 
 														expectedReturnType.getClass().getName() +
 														" but got one of type " +
 														value.getResultType().getClass().getName() +

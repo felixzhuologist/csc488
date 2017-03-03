@@ -5,6 +5,7 @@ import compiler488.symbol.*;
 import compiler488.compiler.Main;
 import compiler488.ast.type.*;
 import compiler488.semantics.Util;
+import compiler488.semantics.SemanticErrorException;
 
 import java.util.ArrayList;
 
@@ -33,22 +34,20 @@ public class FunctionCallExpn extends Expn {
 	}
 
 	@Override
-	public void doSemantics() throws Exception {
+	public void doSemantics() throws SemanticErrorException {
+		// verify that function has been defined
 		SymbolTableEntry entry = Main.symbolTable.getEntry(ident);
 		if (entry == null || !(entry instanceof FunctionSymbol)) {
-			throw new Exception("Calling undeclared function " + ident);
+			throw new SemanticErrorException("Calling undeclared function " + ident);
 		}
 
-		// verify args
-		if (arguments == null) {
-			return;
-		}
+		// Assume that there is at least one arg (since the no arg case is in IdentExpn)
 		FunctionSymbol funcEntry = (FunctionSymbol) entry;
 		ArrayList<Expn> args = arguments.getList();
 		ArrayList<Type> expectedArgTypes = funcEntry.getParamTypes();
 
 		if (args.size() != expectedArgTypes.size()) {
-				throw new Exception("Function " + ident + " was called with " +
+				throw new SemanticErrorException("Function " + ident + " was called with " +
 													args.size() + " args but expected " + expectedArgTypes.size());		
 		}
 
@@ -57,11 +56,12 @@ public class FunctionCallExpn extends Expn {
 			Type got = args.get(i).getResultType();
 			Type expected = expectedArgTypes.get(i);
 			if (!got.getClass().equals(expected.getClass())) {
-				throw new Exception("Expected " + expected.getClass().getName() + " for param number " + (i + 1) + " of function " +
+				throw new SemanticErrorException("Expected " + expected.getClass().getName() + " for param number " + (i + 1) + " of function " +
 														ident + " but got " + got.getClass().getName() + " instead");
 			}
 		}
 
+		// Set the type of this expn to be the return type of the function
 		this.resultType = Util.getTypeWithLineNumber(funcEntry.getReturnType(), lineNumber);
 	}
 

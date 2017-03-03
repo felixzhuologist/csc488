@@ -5,7 +5,7 @@ import subprocess
 import re
 
 # String to determine if semantic error
-semantic_error_string = "java.lang.Exception"
+semantic_error_string = "SemanticErrorException"
 
 def print_parse_error():
     print "Error parsing parameters.\n Usage: %s <passing | failing>" % sys.argv[0]
@@ -60,7 +60,7 @@ if __name__ == "__main__":
         if "Syntax error" in compile_out:
             print '\tSyntax error'
         elif (semantic_error_string in compile_out):
-            print '\tSemantic error: ' + get_semantic_error_msg(compile_out)
+            print '\tSemantic error' + get_semantic_error_msg(compile_out)
             fail_count += 1
         elif "Exception" in compile_out:
             print '\tOther error'

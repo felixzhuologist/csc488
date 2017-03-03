@@ -3,6 +3,7 @@ package compiler488.ast.stmt;
 import compiler488.ast.expn.*;
 import compiler488.ast.type.BooleanType;
 import compiler488.compiler.Main;
+import compiler488.semantics.SemanticErrorException;
 
 /**
  * Represents the command to exit from a loop.
@@ -66,19 +67,19 @@ public class ExitStmt extends Stmt {
 	}
 
 	@Override
-    public void doSemantics() throws Exception {
+    public void doSemantics() throws SemanticErrorException {
 	    if (expn != null) {
 			    this.expn.doSemantics(); 
 	    		if (!(expn.getResultType() instanceof BooleanType)) {
-			        throw new Exception("Expected exit condition that evaluates to boolean");
+			        throw new SemanticErrorException("Expected exit condition that evaluates to boolean");
 			    }
 	    }
 
 	    if (level < 0) {
-	    	throw new Exception("Invalid break depth");
+	    	throw new SemanticErrorException("Invalid break depth");
 	    }
 	    if (level > Main.currNumLoops) {
-	    	throw new Exception("Attempt to break out of " + level + " loops when " +
+	    	throw new SemanticErrorException("Attempt to break out of " + level + " loops when " +
 	    											"current depth is only " + Main.currNumLoops);
 	    }
 	}

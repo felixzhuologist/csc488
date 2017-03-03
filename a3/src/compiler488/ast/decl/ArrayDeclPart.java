@@ -1,9 +1,9 @@
 package compiler488.ast.decl;
 
-
 import compiler488.ast.type.*;
 import compiler488.symbol.*;
 import compiler488.compiler.Main;
+import compiler488.semantics.SemanticErrorException;
 
 /**
  * Holds the declaration part of an array.
@@ -44,9 +44,9 @@ public class ArrayDeclPart extends DeclarationPart {
 	}
 
 	@Override
-	public void doSemantics() throws Exception {
+	public void doSemantics() throws SemanticErrorException {
 		if (this.lb > this.ub) {
-			throw new Exception("Lower bound is greater than upper bound in array decl");
+			throw new SemanticErrorException("Lower bound is greater than upper bound in array decl");
 		}
 		SymbolTableEntry newSymbol = new ArraySymbol(this.name, this.type, this.lb, this.ub, this.size);
 		Main.symbolTable.addEntry(newSymbol);

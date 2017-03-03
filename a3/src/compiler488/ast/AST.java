@@ -1,5 +1,7 @@
 package compiler488.ast;
 
+import compiler488.semantics.SemanticErrorException;
+
 /**
  * This is a placeholder at the top of the Abstract Syntax Tree hierarchy. It is
  * a convenient place to add common behaviour.
@@ -30,7 +32,7 @@ public class AST {
 	
 	public final static String version = "Winter 2017";
 	
-	public void doSemantics() throws Exception {
+	public void doSemantics() throws SemanticErrorException {
         // Do nothing by default.
 	}
 }

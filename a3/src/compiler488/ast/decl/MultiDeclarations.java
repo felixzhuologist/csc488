@@ -8,6 +8,7 @@ import compiler488.ast.type.Type;
 import java.util.ListIterator;
 import compiler488.symbol.*;
 import compiler488.compiler.Main;
+import compiler488.semantics.SemanticErrorException;
 
 /**
  * Holds the declaration of multiple elements.
@@ -51,7 +52,7 @@ public class MultiDeclarations extends Declaration {
 	}
 
 	@Override
-	public void doSemantics() throws Exception {
+	public void doSemantics() throws SemanticErrorException {
 		elements.doSemantics();
 
 		// Set type for all of its elements

@@ -4,6 +4,8 @@ import compiler488.ast.ASTList;
 import compiler488.ast.Readable;
 import compiler488.ast.type.IntegerType;
 import compiler488.ast.expn.Expn;
+import compiler488.semantics.SemanticErrorException;
+
 import java.util.ListIterator;
 
 /**
@@ -31,14 +33,15 @@ public class ReadStmt extends Stmt {
 	}
 
 	@Override
-	public void doSemantics() throws Exception {
+	public void doSemantics() throws SemanticErrorException {
 		inputs.doSemantics();
 
+		// Check that each input variable exists as an int in the symbol table
 		ListIterator<Readable> inputIter = inputs.getIter();
 		while (inputIter.hasNext()) {
 			Readable input = inputIter.next();
 			if (!(((Expn) input).getResultType() instanceof IntegerType)) {
-				throw new Exception("Can't read input into non integer variable");
+				throw new SemanticErrorException("Can't read input into non integer variable");
 			}
 		}
 	}

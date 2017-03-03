@@ -6,6 +6,7 @@ import compiler488.ast.ASTList;
 import compiler488.ast.Indentable;
 import compiler488.ast.decl.Declaration;
 import compiler488.compiler.Main;
+import compiler488.semantics.SemanticErrorException;
 
 /**
  * Represents the declarations and instructions of a scope construct.
@@ -72,7 +73,7 @@ public class Scope extends Stmt {
 	}
 	
 	@Override
-    public void doSemantics() throws Exception {
+    public void doSemantics() throws SemanticErrorException {
         Main.symbolTable.openScope();
         this.declarations.doSemantics();
         this.statements.doSemantics();

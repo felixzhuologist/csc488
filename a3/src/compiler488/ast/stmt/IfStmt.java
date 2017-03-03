@@ -5,9 +5,9 @@ import java.io.PrintStream;
 import compiler488.ast.Indentable;
 import compiler488.ast.expn.Expn;
 import compiler488.ast.type.BooleanType;
-
-
+import compiler488.semantics.SemanticErrorException;
 import compiler488.ast.type.BooleanType;
+
 /**
  * Represents an if-then or an if-then-else construct.
  */
@@ -56,10 +56,11 @@ public class IfStmt extends Stmt {
 	}
 
 	@Override
-	public void doSemantics() throws Exception {
+	public void doSemantics() throws SemanticErrorException {
 		condition.doSemantics();
+		
 		if (!(condition.getResultType() instanceof BooleanType)) {
-			throw new Exception("If condition must evaluate to boolean");
+			throw new SemanticErrorException("If condition must evaluate to boolean");
 		}
 
 		whenTrue.doSemantics();

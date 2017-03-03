@@ -4,8 +4,9 @@ import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.lang.reflect.*;
-
 import java.util.ArrayList;
+
+import compiler488.semantics.SemanticErrorException;
 
 /**
  * For nodes with an arbitrary number of children.
@@ -100,7 +101,7 @@ public class ASTList<E> extends AST {
 	}
 	
 	@Override
-    public void doSemantics() throws Exception {
+    public void doSemantics() throws SemanticErrorException {
         for (E elem : this.ll) {
             try {
                 Method method = elem.getClass().getMethod("doSemantics");

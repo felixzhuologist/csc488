@@ -1,6 +1,7 @@
 package compiler488.ast.expn;
 
 import compiler488.ast.type.IntegerType;
+import compiler488.semantics.SemanticErrorException;
 
 /**
  * Place holder for all binary expression where both operands must be integer
@@ -17,12 +18,12 @@ public class ArithExpn extends BinaryExpn {
     }
 
     @Override
-    public void doSemantics() throws Exception {
+    public void doSemantics() throws SemanticErrorException {
         left.doSemantics();
         right.doSemantics();
 
         if (!(left.getResultType() instanceof IntegerType && right.getResultType() instanceof IntegerType)) {
-            throw new Exception(opSymbol + " expects two integers but got a " +
+            throw new SemanticErrorException(opSymbol + " expects two integers but got a " +
                                 left.getResultType().getClass().getName() + " and " +
                                 right.getResultType().getClass().getName() + " instead");
         }

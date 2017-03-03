@@ -5,6 +5,7 @@ import compiler488.symbol.*;
 import compiler488.compiler.Main;
 import compiler488.ast.type.*;
 import compiler488.semantics.Util;
+import compiler488.semantics.SemanticErrorException;
 
 /**
  *  References to a scalar variable.
@@ -25,10 +26,10 @@ public class IdentExpn extends Expn implements Readable
 	public String toString () { return ident; }
 
   @Override
-  public void doSemantics() throws Exception {
+  public void doSemantics() throws SemanticErrorException {
     SymbolTableEntry entry = Main.symbolTable.getEntry(ident);
     if (entry == null) {
-      throw new Exception("Reference to undeclared variable " + ident);
+      throw new SemanticErrorException("Reference to undeclared variable " + ident);
     }
 
     if (entry instanceof ScalarSymbol) {
@@ -39,13 +40,13 @@ public class IdentExpn extends Expn implements Readable
       FunctionSymbol identEntry = (FunctionSymbol) entry;
 
       if (identEntry.getNumParams() != 0) {
-        throw new Exception("Function " + ident + " was called with no " +
+        throw new SemanticErrorException("Function " + ident + " was called with no " +
                           "args but expected " + identEntry.getParamTypes().size());         }
 
       this.resultType = identEntry.getReturnType();
     }
     else {
-      throw new Exception("variable is not a scalar symbol or function symbol " + ident);
+      throw new SemanticErrorException("variable is not a scalar symbol or function symbol " + ident);
     }
   }
 

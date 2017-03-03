@@ -1,14 +1,14 @@
 package compiler488.ast.decl;
 
-import java.io.PrintStream;
-
 import compiler488.ast.Indentable;
 import compiler488.ast.type.Type;
 import compiler488.symbol.*;
 import compiler488.compiler.Main;
+import compiler488.semantics.SemanticErrorException;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
+import java.io.PrintStream;
 
 /**
  * Represents the declaration of a function or procedure.
@@ -65,7 +65,7 @@ public class RoutineDecl extends Declaration {
 	}
 
 	@Override
-	public void doSemantics() throws Exception {
+	public void doSemantics() throws SemanticErrorException {
 		RoutineSymbol routineSymbol;
 
 		// Add function to symbol table: must be done first to support recursion

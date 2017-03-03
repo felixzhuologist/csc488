@@ -1,6 +1,7 @@
 package compiler488.symbol;
 
 import compiler488.ast.type.Type;
+import compiler488.semantics.SemanticErrorException;
 
 import java.io.*;
 import java.lang.reflect.Array;
@@ -91,12 +92,12 @@ public class SymbolTable {
 	/**
 	 * Add a new symbol entry into the symbol table and scopeDisplay
      */
-	public Boolean addEntry(SymbolTableEntry newSymbol) throws Exception {
+	public Boolean addEntry(SymbolTableEntry newSymbol) throws SemanticErrorException {
 		SymbolTableEntry oldSymbol = getEntry(newSymbol.getName());
 
 		// if the symbol has already been declared at this depth, then we return false
 		if (oldSymbol != null && oldSymbol.getDepth() == depth) {
-			throw new Exception(newSymbol.name + " has already been declared in this scope");
+			throw new SemanticErrorException(newSymbol.name + " has already been declared in this scope");
 		}
 
 		// set level to be all the symbols that are already declared in this scope

@@ -1,6 +1,7 @@
 package compiler488.ast.stmt;
 
 import compiler488.ast.expn.Expn;
+import compiler488.semantics.SemanticErrorException;
 
 /**
  * Holds the assignment of an expression to a variable.
@@ -25,12 +26,12 @@ public class AssignStmt extends Stmt {
 	}
 
 	@Override
-	public void doSemantics() throws Exception {
+	public void doSemantics() throws SemanticErrorException {
 		lval.doSemantics();
 		rval.doSemantics();
 
 		if (!(lval.getResultType().getClass().equals(rval.getResultType().getClass()))) {
-			throw new Exception("lval and rval types do not match");
+			throw new SemanticErrorException("lval and rval types do not match");
 		}
 	}
 

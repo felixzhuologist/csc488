@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import compiler488.ast.ASTList;
 import compiler488.ast.Indentable;
 import compiler488.ast.stmt.Scope;
+import compiler488.semantics.SemanticErrorException;
 
 /**
  * Represents the parameters and instructions associated with a
@@ -46,7 +47,7 @@ public class RoutineBody extends Indentable {
 	}
 
 	@Override
-	public void doSemantics() throws Exception {
+	public void doSemantics() throws SemanticErrorException {
 		this.parameters.doSemantics();
 		this.body.doSemantics();
 	}

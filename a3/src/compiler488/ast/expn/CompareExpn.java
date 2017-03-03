@@ -1,6 +1,7 @@
 package compiler488.ast.expn;
 
 import compiler488.ast.type.*;
+import compiler488.semantics.SemanticErrorException;
 
 /**
  * Place holder for all ordered comparisions expression where both operands must
@@ -16,12 +17,12 @@ public class CompareExpn extends BinaryExpn {
     }
 
     @Override
-    public void doSemantics() throws Exception {
+    public void doSemantics() throws SemanticErrorException {
         left.doSemantics();
         right.doSemantics();
 
         if (!(left.getResultType() instanceof IntegerType && right.getResultType() instanceof IntegerType)) {
-            throw new Exception(opSymbol + " expects two integers but got a " +
+            throw new SemanticErrorException(opSymbol + " expects two integers but got a " +
                                 left.getResultType().getClass().getName() + " and " +
                                 right.getResultType().getClass().getName() + " instead");
         }

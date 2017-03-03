@@ -3,6 +3,7 @@ package compiler488.ast.decl;
 import compiler488.ast.type.Type;
 import compiler488.symbol.*;
 import compiler488.compiler.Main;
+import compiler488.semantics.SemanticErrorException;
 
 /**
  * Represents the declaration of a parameter.
@@ -25,7 +26,7 @@ public class ScalarDecl extends Declaration {
 	}
 
 	@Override
-	public void doSemantics() throws Exception {
+	public void doSemantics() throws SemanticErrorException {
 		SymbolTableEntry newSymbol = new ScalarSymbol(this.name, this.type);
 		Main.symbolTable.addEntry(newSymbol);			
 	}

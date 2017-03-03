@@ -2,6 +2,7 @@ package compiler488.ast.expn;
 
 import compiler488.ast.type.*;
 import compiler488.semantics.Util;
+import compiler488.semantics.SemanticErrorException;
 
 /** Represents a conditional expression (i.e., x>0?3:4). */
 public class ConditionalExpn extends Expn {
@@ -25,18 +26,18 @@ public class ConditionalExpn extends Expn {
 	}
 
 	@Override
-	public void doSemantics() throws Exception {
+	public void doSemantics() throws SemanticErrorException {
 		// Children do semantics first to set their resultTypes
 		condition.doSemantics();
 		trueValue.doSemantics();
 		falseValue.doSemantics();
 
 		if (!(condition.getResultType() instanceof BooleanType)) {
-			throw new Exception("Condition in conditional does not evaluate to boolean");
+			throw new SemanticErrorException("Condition in conditional does not evaluate to boolean");
 		}
 
 		if (!(trueValue.getResultType().getClass()).equals(falseValue.getResultType().getClass())) {
-			throw new Exception("Statement types in conditional do not match");
+			throw new SemanticErrorException("Statement types in conditional do not match");
 		}
 
 		this.resultType = Util.getTypeWithLineNumber(trueValue.getResultType(), lineNumber);

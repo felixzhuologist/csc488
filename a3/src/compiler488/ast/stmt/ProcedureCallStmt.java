@@ -5,6 +5,7 @@ import compiler488.ast.expn.Expn;
 import compiler488.ast.type.*;
 import compiler488.symbol.*;
 import compiler488.compiler.Main;
+import compiler488.semantics.SemanticErrorException;
 
 import java.util.ArrayList;
 
@@ -37,32 +38,35 @@ public class ProcedureCallStmt extends Stmt {
 	}
 
 	@Override
-	public void doSemantics() throws Exception {
+	public void doSemantics() throws SemanticErrorException {
+		// verify that the procedure has been defined
 		SymbolTableEntry entry = Main.symbolTable.getEntry(name);
 		if (entry == null || !(entry instanceof ProcedureSymbol)) {
-			throw new Exception("Calling undeclared procedure " + name);
+			throw new SemanticErrorException("Calling undeclared procedure " + name);
 		}
 
 		if (arguments == null) {
 			return;
 		}
-		// verify args
+
+		// verify number of args
 		ProcedureSymbol procEntry = (ProcedureSymbol) entry;
 		ArrayList<Expn> args = arguments.getList();
 		ArrayList<Type> expectedArgTypes = procEntry.getParamTypes();
 
 
 		if (args.size() != expectedArgTypes.size()) {
-				throw new Exception("Procedure " + name + " was called with " +
+				throw new SemanticErrorException("Procedure " + name + " was called with " +
 													args.size() + " args but expected " + expectedArgTypes.size());		
 		}
 
+		// verify types of args
 		arguments.doSemantics();
 		for (int i = 0; i < args.size(); i++) {
 			Type got = args.get(i).getResultType();
 			Type expected = expectedArgTypes.get(i);
 			if (!got.getClass().equals(expected.getClass())) {
-				throw new Exception("Expected " + expected.getClass().getName() + " for param number " + (i + 1) + " of procedure " +
+				throw new SemanticErrorException("Expected " + expected.getClass().getName() + " for param number " + (i + 1) + " of procedure " +
 														name + " but got " + got.getClass().getName() + " instead");
 			}
 		}
