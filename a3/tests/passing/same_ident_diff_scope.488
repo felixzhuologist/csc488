@@ -1,0 +1,15 @@
+{
+    var n : Integer
+
+    procedure greater_than_5 (n: Integer) {
+        if n > 5
+        then
+            write "true"
+        else
+            write "false"
+        return
+    }
+
+    n := 10
+    greater_than_5(0)
+}
