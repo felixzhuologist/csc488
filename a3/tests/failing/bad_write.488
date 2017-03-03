@@ -1,7 +1,9 @@
 % This program uses non-recursive functions and 
 % procedures with and without parameters
-% By: Evan Klein
-% UtorID: kleinev1
+% This test fails at line 43, when passing a function as a variable without 
+% providing parameters
+% By: Evan Klein, Jeffrey Deng
+% UtorID: kleinev1, dengjeff
 
 {
     % non-recursive function with parameters
