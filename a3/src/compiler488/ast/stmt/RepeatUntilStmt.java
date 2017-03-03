@@ -32,13 +32,4 @@ public class RepeatUntilStmt extends LoopingStmt {
 		Indentable.printIndentOnLn(out, depth, " until "  + expn );
 
 	}
-
-    @Override
-    public void doSemantics() throws Exception {
-        expn.doSemantics();
-        if (!(expn.getResultType() instanceof BooleanType)) {
-            throw new Exception("Unexpected type: " + expn.getClass().getSimpleName());
-        }
-    }
-
 }
