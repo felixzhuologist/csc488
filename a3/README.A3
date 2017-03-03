@@ -18,4 +18,7 @@ Contributions of each team member:
 - Helped implement semantic analysis for scopes and program
 
 ##### Felix Z
-- 
+- Designed/Implemented semantic analysis
+- Wrote semantic analysis test cases
+- Wrote semantic analysis design doc
+- Updated test script from a2 to run a3 tests
