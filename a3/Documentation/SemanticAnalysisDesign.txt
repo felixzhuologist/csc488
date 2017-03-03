@@ -1,0 +1,42 @@
+In order to implement semantic analysis, we decided to follow option 2) in the
+AST handout, which is to add semantic analysis code directly into the AST classes.
+Each AST (which requires some semantic analysis) has a doSemantics() method
+added, and the ASTList runs doSemantics() for each of the elements in its list.
+This allowed a concise implementation where the actual code closely followed the
+semantic rule description in English, and therefore the implementation was very
+straightforward. There are a few design choices worth mentioning:
+
+Running Semantic Analysis:
+Each AST node is responsible for the analysis of itself and all of its descendents,
+and therefore running semantic analysis simply involves invoking the
+programAST's doSemantics method. This leads to a depth first traversal, which
+is necessary for the way we do type tracking.
+
+Type Tracking:
+To keep track of the types of expressions, we have added a resultType attribute
+to Expn. The resultType is determined in a recursive fashion: the base case is
+setting the type of a ConstExpn, since it is a leaf node and its type is known
+after parsing.
+In recursive expressions, we do semantic analysis on the children expression(s) first
+(so that they have a resultType defined) and then use those types in addition to
+any type information from the symbol table we need, to determine its own resultType.
+
+Scope Tracking:
+The symbol table handles scope tracking through methods openScope() and 
+closeScope(), and so as long as those methods are called in the appropriate places
+during semantic analysis, the symbol table will automatically handle things like checking
+if a variable has already been declared in the current scope. However, there
+are two cases which we needed to manage separately, which are 1) checking if we
+are in a while loop to do semantic analysis of break statements, and 2) knowing
+which function we are in to check that we are returning the correct type for
+return with statements.
+We addressed 1) by keeping a global counter which counts how many loops any
+ASTNode is currently in. Whenever we reach a looping statement, we increment
+this count before do semantic analysis on the body, and then decrement it
+when semantic analysis on the body returns.
+We addressed 2) in a similar way by keeping a stack of routine symbols. Instead
+of adding/decrementing a counter, each routine declaration pushes its own symbol
+onto the stack before doing analysis on its body, and then pops it when the analysis
+is finished, so that the top of the stack is always the symbol of the routine
+we are currently in.
+

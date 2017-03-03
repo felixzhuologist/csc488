@@ -7,6 +7,7 @@ Contributions of each team member:
 
 ##### Atheed
 - Designed and implemented the symbol table class for semantic analysis, and the various symbol types in the grammar
+- Wrote up the symbol table design document
 - Helped modify, design, and debug the parser to generate a complete AST
 
 ##### Evan
