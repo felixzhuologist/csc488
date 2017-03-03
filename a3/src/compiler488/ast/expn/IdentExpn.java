@@ -37,6 +37,11 @@ public class IdentExpn extends Expn implements Readable
     }
     else if (entry instanceof FunctionSymbol) {
       FunctionSymbol identEntry = (FunctionSymbol) entry;
+
+      if (identEntry.getNumParams() != 0) {
+        throw new Exception("variable is a function symbol with parameters " + ident);
+      }
+
       this.resultType = identEntry.getReturnType();
     }
     else {
