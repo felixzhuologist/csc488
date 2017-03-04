@@ -2,6 +2,7 @@ package compiler488.ast.decl;
 
 import compiler488.symbol.*;
 import compiler488.compiler.Main;
+import compiler488.semantics.SemanticErrorException;
 
 /**
  * Represents the declaration of a simple variable.
@@ -23,7 +24,7 @@ public class ScalarDeclPart extends DeclarationPart {
 	}
 
 	@Override
-	public void doSemantics() {
+	public void doSemantics() throws SemanticErrorException {
 		SymbolTableEntry newSymbol = new ScalarSymbol(this.name);
 		Main.symbolTable.addEntry(newSymbol);
 	}
