@@ -1,0 +1,31 @@
+The AST for this assignment was designed as follows:
+
+We kept all the original classes from the starter code, so the classes have the 
+same hierarchy. We made the following changes to each class:
+
+Source Tracking
+---------------
+To permit source tracking, we decided to store a line number with each AST node.
+The line number is obtained in the cup file by adding the suffix "-left" to the variables
+in the productions. We store this number with each AST node, which represents the line
+number in the source .488 file where the parser encountered this production and from where
+this AST node is created. The constructor in the AST class sets this line number, and since 
+everything is descended from that class, every node can store the line number by simply 
+calling super(lineNumber) in its constructor. If there were potentially multi-line
+productions, the line number refers to the first line of the production. 
+
+Constructors
+------------
+We added constructors to each class in order to assign all the corresponding attributes to
+each AST node when it is encountered in parsing. Since for any given production, the elements
+on the right hand side of the production will be processed into AST nodes by the time the
+production is evaluated, we can created a new AST parent node using the children involved
+in the production. For the left-recursive productions, an ASTList was created in the base case
+consisting of one element, and in the recursive case the last item in the production was appended
+to the ASTList that had been created from the first elements (since it would have been populated)
+by the time this production was evaluated. 
+
+Type Tracking
+-------------
+The documentation for how we implemented type checking is contained in the Semantic Analysis
+Design document.

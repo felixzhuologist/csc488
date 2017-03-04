@@ -446,7 +446,7 @@ primary		::=	constant:c				// integer or boolean constant
 		{:	RESULT = new FunctionCallExpn(ileft, i, a); :}
 		
 		| 	L_PAREN  expression:e  R_PAREN		// parenthesized expression
-		{:	RESULT = e; :} // TODO: does this work with BEDMAS?
+		{:	RESULT = e; :}
 		
 		|	L_PAREN:lp  expression:cond QUESTION expression:iftrue COLON expression:iffalse R_PAREN
 		{:	RESULT = new ConditionalExpn(lpleft, cond, iftrue, iffalse); :}
