@@ -54,8 +54,8 @@ if __name__ == "__main__":
     # Run compile on all test cases
     for file in files:
         print "Testing file: " + file
-        test_case_path = test_cases_path + "/" + file
-        compile_args = ["sh", "RUNCOMPILER.SH", test_case_path]
+        test_case_path = test_cases_path + file
+        compile_args = ["sh", "RUNCOMPILER.sh", test_case_path]
         compile_out = subprocess.check_output(compile_args, stderr=subprocess.STDOUT)
         if "Syntax error" in compile_out:
             print '\tSyntax error'
