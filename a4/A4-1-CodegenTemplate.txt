@@ -1,0 +1,177 @@
+
+
+PUSH UNDEFINED 
+PUSH 573    % 10 (integers and booleans) + 7 (A) + 151 (B) + 5 (C) + 400 (D) = 573
+DUPN
+
+% 1-7
+ADDR 0 0    % i
+PUSH 1      % 1
+STORE       % i := 1
+
+% 1-8
+ADDR 0 1    % j
+ADDR 0 0    % i
+LOAD
+PUSH 3      % 1
+ADD
+STORE       % i := 1
+
+% 1-9
+ADDR 0 2    % k
+ADDR 0 0    % i
+LOAD
+ADDR 0 1    % j
+LOAD 
+SUB         % i - j
+STORE       % k := i - j
+
+% 1-10
+ADDR 0 3    % l
+ADDR 0 1    % j
+LOAD
+ADDR 0 2    % k
+LOAD 
+MULT
+STORE       % l := j * k
+
+% 1-11
+ADDR 0 4    % m
+ADDR 0 2    % k
+LOAD
+ADDR 0 3    % l
+LOAD 
+DIV
+STORE       % m := k / l
+
+% 1-11 duplicate
+ADDR 0 5    % p
+PUSH MACHINE_TRUE    % true
+STORE       % p := true
+
+% 1-12
+ADDR 0 6    % q
+PUSH MACHINE_FALSE    % false
+STORE       % p := false
+
+% 1-13
+ADDR 0 7    % r
+ADDR 0 6    % q
+LOAD
+PUSH MACHINE_FALSE 
+EQ          % not q
+STORE       % r := not q
+
+% 1-14
+ADDR 0 8    % s
+ADDR 0 5    % p
+LOAD
+ADDR 0 6    % q
+LOAD
+OR
+STORE       % s := p or q
+
+% 1-15
+% uses DeMorgan's Law to create AND. see codegen template document for more details
+ADDR 0 9    % t
+ADDR 0 8    % s
+LOAD
+PUSH MACHINE_FALSE
+EQ
+ADDR 0 5    % p
+LOAD
+PUSH MACHINE_FALSE
+EQ
+OR
+PUSH MACHINE_FALSE
+EQ
+STORE       % t := s and p
+
+% 1-16
+ADDR 0 5    % p
+ADDR 0 0    % i
+LOAD
+ADDR 0 1    % j
+LOAD
+LT
+STORE       % p := i < j
+
+% 1-17
+% uses the fact that Expr1 <= Expr2 is the same as: NOT(Expr2 < Expr1)
+ADDR 0 6    % q
+ADDR 0 2    % k
+LOAD
+ADDR 0 3    % l
+LOAD
+SWAP
+LT
+NOT
+STORE       % q := k <= l
+
+% 1-18
+ADDR 0 7    % r
+ADDR 0 1    % j
+LOAD
+ADDR 0 3    % l
+LOAD
+EQ
+STORE       % r := j = l
+
+% 1-19
+ADDR 0 8    % s
+ADDR 0 2    % k
+LOAD
+ADDR 0 5    % m
+LOAD
+EQ
+NOT
+STORE       % s := k not = m
+
+% 1-20
+% uses the fact that Expr1 > Expr2 is the same as: Expr2 < Expr1
+ADDR 0 9    % t
+ADDR 0 1    % j
+LOAD
+ADDR 0 2    % k
+LOAD
+SWAP
+LT
+STORE       % t := j > k
+
+% 1-21
+% uses the fact that Expr1 >= Expr2 is the same as:  NOT(Expr1 < Expr2)
+ADDR 0 9    % t
+ADDR 0 1    % j
+LOAD
+ADDR 0 2    % k
+LOAD
+LT
+NOT
+STORE       % t := j >= k
+
+% 1-22
+ADDR 0 6    % q
+ADDR 0 7    % r
+LOAD
+ADDR 0 8    % s
+LOAD
+EQ
+STORE       % q := r = s
+
+% 1-23
+ADDR 0 9    % t
+ADDR 0 8    % s
+LOAD
+ADDR 0 7    % r
+LOAD
+EQ
+NOT
+STORE       % t := s not = r
+
+% 1-24
+
+% 1-25
+
+% 1-26
+
+% 1-27
