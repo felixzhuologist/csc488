@@ -11,7 +11,9 @@ Contributions of each team member:
 - Helped modify, design, and debug the parser to generate a complete AST
 
 ##### Evan
-- 
+- Designed and implemented the AST building and generation from the .cup file to a complete AST
+- Helped with the design and implementation of the symbol table and the symbol type classes
+- Wrote up the AST design document
 
 ##### Felix M 
 - Implemented traversal of AST for semantic analysis
