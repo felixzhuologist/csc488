@@ -12,7 +12,10 @@ Contributions of each team member:
 - 
 
 ##### Felix M 
-- 
+- Designed strategy for allocating storage for and addressing variables and constants
+- Wrote template for accessing constants and variables
+- Designed strategy for handling functions and procedures and wrote related templates
+- Wrote template for main program initialization and termination
 
 ##### Felix Z
 - 
