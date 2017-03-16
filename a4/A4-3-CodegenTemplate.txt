@@ -1,3 +1,7 @@
+% setup
+PUSHMT
+SETD 0
+
 % 3-3, 3-4: allocate variables a, b, c, d, p, q, r, s
 PUSH UNDEFINED
 PUSH 8
@@ -259,3 +263,4 @@ PUSHMT
 PUSH start_q_decl_label
 BR
 
+HALT        % end of program
