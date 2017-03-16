@@ -11,7 +11,9 @@ Contributions of each team member:
 - Helped write A4-1 sample program's code generation template
 
 ##### Evan
-- 
+- Designed code generation templates for read and write statements, and handling of minor scopes
+- Reviewed other templates and fixed errors or inconsistencies 
+- Wrote the A4-2 sample program's code generation template
 
 ##### Felix M 
 - Designed strategy for allocating storage for and addressing variables and constants
