@@ -1,0 +1,470 @@
+
+% variables
+% var a, b, c , d  2-3  -- 4
+% var p, q, r      2-4  -- 3
+% var a, b, c   2-16    -- 3
+% var p, q, r   2-19    -- 3
+% var w, x      2-26    -- 2
+% var t, u      2-30    -- 2
+
+% setup
+PUSHMT
+SETD 0
+
+
+
+PUSH UNDEFINED
+PUSH 17     % 4 + 3 + 3 + 3 + 2 + 2, as detailed above
+DUPN
+
+
+
+% 2-5
+ADDR 0 0    % a is at address 0 0 on the stack
+ADDR 0 1    % b
+LOAD
+ADDR 0 2    % c 
+LOAD
+ADD         % b + c
+ADDR 0 3    % d
+LOAD
+ADDR 0 2    % c 
+LOAD
+MUL         % d * c
+SUB         % (b + c) - (d*c)
+ADDR 0 1    % b 
+LOAD
+ADDR 0 2    % c
+LOAD
+DIV         % b/c 
+ADD         % ((b + c) - (d*c)) + (b/c)
+STORE       % a := b + c - d*c + b/c
+
+
+
+% 2-6
+ADDR 0 4    % p
+PUSH MACHINE_FALSE  % push operand of not (false)
+PUSH MACHINE_FALSE  % see codegen design doc for NOT
+EQ          % not false
+ADDR 0 5    % q 
+LOAD
+PUSH MACHINE_FALSE 
+EQ          % not q     
+PUSH MACHINE_FALSE  % see codegen design doc for AND
+EQ          
+ADDR 0 6    % r 
+LOAD
+PUSH MACHINE_FALSE
+EQ
+OR
+PUSH MACHINE_FALSE
+EQ          % (not q) and r 
+OR          % (not false) or (not q and r)
+STORE       % p := not false or not q and r
+
+
+
+% 2-7
+ADDR 0 4    % p
+LOAD
+PUSH label_after7 % if condition is false, jump to code after if stmt
+BF          % if p
+ADDR 0 0    % a 
+PUSH 3
+STORE       % a := 3
+label_after7:
+
+
+
+% 2-8
+ADDR 0 4    % p 
+LOAD
+ADDR 0 4    % p
+LOAD
+PUSH MACHINE_FALSE 
+EQ          % not p 
+OR          % p or not p
+PUSH label_false8
+BF          % if p or not p
+ADDR 0 1    % b 
+PUSH 2
+STORE       % b := 2
+PUSH label_after8
+BR
+label_false8:
+ADDR 0 1    % b 
+PUSH 0
+STORE       % b := 0
+label_after8:
+
+
+
+% 2-9       while c < 7 do  c := 6
+loop_label9:          // set loop_label in label table at the beginning of loop
+ADDR 0 2    % c 
+LOAD
+PUSH 7
+LT		    % c < 7
+PUSH done_label9
+BF
+ADDR 0 2    % c
+PUSH 6
+STORE       % c := 6
+PUSH loop_label9
+BR
+done_label9:
+
+
+
+% 2-10      while true do  b := b + 1
+loop_label10:
+PUSH MACHINE_TRUE
+PUSH done_label10
+BF          % while true do
+ADDR 0 1    % b
+ADDR 0 1    % b
+LOAD
+PUSH 1
+ADD         % b + 1
+STORE       % b := b + 1
+PUSH loop_label10
+BR
+done_label10:
+
+
+
+% 2-11
+loop_label11:   % repeat
+ADDR 0 0    % a
+PUSH 3
+STORE       % a := 3
+PUSH done_label11     
+BR          % exit
+ADDR 0 1    % b
+PUSH 7
+STORE       % b := 7
+PUSH MACHINE_FALSE
+PUSH done_label11
+BF
+PUSH loop_label11
+BR
+done_label11:
+
+
+
+% 2-12      while q or r and not p do  exit when b not= 10
+loop_label12:
+ADDR 0 5    % q
+LOAD
+
+ADDR 0 6    % r 
+LOAD
+PUSH MACHINE_FALSE % see codegen design doc for AND
+EQ
+ADDR 0 4    % p
+LOAD
+PUSH MACHINE_FALSE 
+EQ          % not p    
+PUSH MACHINE_FALSE  
+EQ
+OR
+PUSH MACHINE_FALSE
+EQ          % r and (not p)
+OR          % q or (r and not p)
+
+PUSH done_label12
+BF          % while q or r and not p do
+
+ADDR 0 1    % b
+LOAD
+PUSH 10
+EQ
+PUSH MACHINE_FALSE
+EQ
+PUSH done_label12
+BF          % exit when b not= 10
+
+PUSH loop_label12
+BR
+done_label12:
+
+
+
+% 2-13      write "Value is " , a / b, " or not ", newline
+PUSH 'V'
+PRINTC
+PUSH 'a'
+PRINTC
+PUSH 'l'
+PRINTC
+PUSH 'u'
+PRINTC
+PUSH 'e'
+PRINTC
+PUSH ' '
+PRINTC
+PUSH 'i'
+PRINTC
+PUSH 's'
+PRINTC
+PUSH ' '
+PRINTC
+
+ADDR 0 0    % a 
+LOAD
+ADDR 0 1    % b 
+LOAD
+DIV
+PRINTI
+
+PUSH ' '
+PRINTC
+PUSH 'o'
+PRINTC
+PUSH 'r'
+PRINTC
+PUSH ' '
+PRINTC
+PUSH 'n'
+PRINTC
+PUSH 'o'
+PRINTC
+PUSH 't'
+PRINTC
+PUSH ' '
+PRINTC
+PUSH '\n'
+PRINTC
+
+
+
+% 2-14
+ADDR 0 0    % a 
+READI
+STORE
+
+ADDR 0 1    % b
+READI
+STORE
+
+ADDR 0 2    % c
+READI
+STORE
+
+
+
+% 2-15
+
+
+
+% 2-16
+% already been pushed onto stack at beginning
+
+
+
+% 2-17
+ADDR 0 7    % a local to this scope
+ADDR 0 4    % p
+LOAD
+PUSH MACHINE_FALSE 
+EQ          % not p 
+ADDR 0 5    % Q
+LOAD
+OR          % not p or q
+STORE
+
+
+% 2-18
+
+
+
+% 2-19
+% already been pushed onto stack at beginning
+
+
+
+% 2-20
+ADDR 0 10   % p local to this scope
+
+ADDR 0 8    % innermost b
+LOAD
+PUSH label_false20
+BF          % if p or q
+ADDR 0 11   % q local to this scope
+LOAD
+PUSH label_after20
+BR
+label_false20:
+ADDR 0 12   % r local to this scope
+LOAD
+label_after20:
+STORE       % p := ( b ? q : r )
+
+
+
+% 2-21
+
+
+
+% 2-22
+
+
+
+% 2-23
+loop_label23:
+PUSH MACHINE_TRUE
+PUSH done_label23
+BF          % while true do
+
+
+
+% 2-24
+ADDR 0 4    % p
+LOAD
+ADDR 0 6    % r
+LOAD
+OR          % p or r
+PUSH done_label24
+BF          % exit when p or r
+
+
+
+% 2-25
+loop_label25:   % repeat
+
+
+
+% 2-26      var w, x : Integer
+% already been pushed onto stack at beginning
+
+
+
+% 2-27      if w <= a then exit
+ADDR 0 13   % w
+LOAD
+ADDR 0 0    % a
+LOAD
+SWAP
+LT          % a < w
+PUSH MACHINE_FALSE
+EQ          % w <= a
+PUSH label_after27
+BF          % if w <= a
+PUSH done_label25   % exit from repeat loop on 2-25
+BR
+label_after27:
+
+
+
+% 2-28
+loop_label28:
+ADDR 0 4    % p
+LOAD
+ADDR 0 5    % q
+LOAD        
+OR          % p or q
+ADDR 0 6    % r 
+LOAD
+OR          % p or q or r
+PUSH done_label28
+BF          % while true do
+
+
+
+% 2-29
+
+
+
+% 2-30
+% already been pushed to stack
+
+
+
+% 2-31
+ADDR 0 4    % p
+ADDR 0 5    % q
+LOAD
+PUSH MACHINE_FALSE 
+EQ          % not q
+STORE       % p := not q
+
+
+
+% 2-32      t := ( p or q ? t + 1 : t - 1 )
+ADDR 0 15   % t 
+
+ADDR 0 4    % p 
+LOAD
+ADDR 0 5    % q
+LOAD
+OR
+PUSH label_false32
+BF          % if p or q
+ADDR 0 15   % t 
+PUSH 1
+ADD         % t + 1
+PUSH label_after32
+BR
+label_false32:
+ADDR 0 15   % t
+PUSH 1
+SUB
+label_after32:
+STORE       % t := ( p or q ? t + 1 : t - 1 )
+
+
+
+% 2-33
+ADDR 0 15   % t
+LOAD
+PUSH 12
+SWAP
+LT          % t > 12
+PUSH done_label23 % exit out of all loops
+BF          % exit 3 when t > 12
+
+
+
+% 2-34
+PUSH loop_label28   % go back to the start of inner while loop
+BR
+done_label28:
+
+
+
+% 2-35
+PUSH done_label23 % exit out of all loops
+BR
+
+
+
+% 2-36
+ADDR 0 4    % p 
+LOAD
+PUSH MACHINE_FALSE
+EQ
+ADDR 0 6    % r 
+LOAD
+PUSH MACHINE_FALSE
+EQ
+OR
+PUSH MACHINE_FALSE
+EQ          % p and r 
+PUSH done_label25
+BF          % repeat ... until p and r
+PUSH loop_label25   % go back to start of repeat loop
+BR
+done_label25:
+
+
+
+% 2-37
+PUSH loop_label23   % go back to the start of inner while loop
+BR
+done_label23:
+
+
+
+% 2-38
+HALT        % end of program

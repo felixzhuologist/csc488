@@ -15,7 +15,7 @@ ADDR 0 0    % i
 LOAD
 PUSH 3      % 1
 ADD
-STORE       % i := 1
+STORE       % j := i + 3
 
 % 1-9
 ADDR 0 2    % k
