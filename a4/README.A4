@@ -1,7 +1,9 @@
 Contributions of each team member:
 
 ##### Jeffrey
--
+- Wrote template for array access
+- Wrote template for assignment, if, while, repeat, exit, and return statements
+- Helped write A4-1 sample program's code generation template for array accesses
 
 ##### Atheed
 - Designed code generation templates for arithmetic, boolean, and comparison operators

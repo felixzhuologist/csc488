@@ -169,9 +169,66 @@ NOT
 STORE       % t := s not = r
 
 % 1-24
+ADDR 0 10   % addr(A)
+PUSH 5      % A[5]
+PUSH 2      % size(Integer) = 2
+MUL
+ADD         % addr(A) + (2 * 5) = addr(A[5])
+PUSH 5
+STORE
 
 % 1-25
+ADDR 0 11   % addr(B)
+ADDR 0 0    % i
+LOAD
+PUSH 1
+ADD         % i + 1
+PUSH -100   % Lower bound of B[-100 .. 50]
+SUB         % (i + 1) - (-100)
+PUSH 2      % size(Integer)
+MUL
+ADD         % addr(B) + size(Integer) * [(i + 1) - (-100)]
+
+ADDR 0 10   % addr(A)
+ADDR 0 1    % j
+LOAD
+PUSH 2
+SUB         % j - 2
+PUSH 2      % size(Integer) = 2
+MUL
+ADD         % addr(A) + [2 * (j - 1)] = addr(A[j-1])
+LOAD
+STORE
 
 % 1-26
+ADDR 0 12   % addr(C)
+PUSH 4
+NEG
+PUSH -7     % Lower bound of C[-7 .. -3]
+SUB         % -4 - (-7)
+PUSH 2      % size(Boolean)
+MUL
+ADD         % addr(C) + 2 * [-4 - (-7)]
+
+ADDR 0 5    % p
+LOAD
+ADDR 0 6    % q
+LOAD
+OR          % p or q
+STORE
 
 % 1-27
+ADDR 0 7    % r
+
+ADDR 0 13   % addr(D)
+ADDR 0 0    % addr(i)
+LOAD
+PUSH 200
+ADD         % i + 200
+PUSH 2      % size(Boolean)
+MUL         % 2 * (i + 200)
+ADD         % addr(D) + 2 * (i + 200)
+LOAD
+STORE
+
+% 1-28
