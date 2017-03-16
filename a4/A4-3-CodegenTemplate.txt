@@ -1,0 +1,261 @@
+% 3-3, 3-4: allocate variables a, b, c, d, p, q, r, s
+PUSH UNDEFINED
+PUSH 8
+DUPN
+
+% 3-5: jump over procedure code
+PUSH end_p_decl_label
+BR
+
+start_p_decl_label:
+
+% 3-5: display setup
+ADDR 1 0
+PUSHMT
+SETD LL
+
+% 3-7: push parameter values and local variables
+PUSH UNDEFINED
+PUSH 2
+DUPN
+
+% 3-8: if then statement
+ADDR 1 5              % load q
+LOAD
+PUSH label_after8
+BF
+PUSH p_epilogue_label % return
+BR
+label_after8:
+
+% 3-9: assignment
+ADDR 1 1
+ADDR 0 0
+LOAD
+STORE
+
+% 3-10: return
+PUSH p_epilogue_label
+BR
+
+p_epilogue_label:
+
+% 3-11: epilogue
+PUSHMT
+ADDR 1 0
+SUB
+POPN
+
+SETD 1
+BR
+
+end_p_decl_label:
+
+% 3-11: jump over function code
+PUSH end_f_decl_label
+BR
+
+start_f_decl_label:
+
+% 3-12: display setup
+ADDR 1 0
+PUSHMT
+SETD LL
+
+% 3-12, 3-13: parameters, locals/return variables
+PUSH UNDEFINED
+PUSH 2
+DUPN
+
+PUSH UNDEFINED
+
+% 3-14: if else statement
+ADDR 1 2    % load n
+LOAD
+PUSH label_false14
+BF          % true clause
+ADDR 1 1    % load m
+LOAD
+ADDR 0 1    % load b
+LOAD
+ADD         % m + b
+PUSH f_epilogue_label
+BR
+PUSH label_after8
+BR
+label_false8:
+ADDR 0 2    % load c
+LOAD
+ADDR 1 1    % load m
+LOAD
+SUB         % m + b
+PUSH f_epilogue_label
+BR
+label_after8:
+
+f_epilogue_label:
+
+% 3-15 epilogue
+ADDR 1 3    % load ret value into ret address
+SWAP
+STORE
+
+PUSHMT
+ADDR 1 0
+SUB
+POPN
+
+SETD 1
+BR
+
+% 3-15: jump over Q declaration code
+PUSH end_q_decl_label
+BR
+
+start_q_decl_label:
+
+% 3-16: display setup
+ADDR 1 0
+PUSHMT
+SETD LL
+
+% 3-16, 3-18: parameters and local variables
+PUSH UNDEFINED
+PUSH 6
+DUPN
+
+% 3-19: skip over g decl
+PUSH end_g_decl_label
+BR
+
+start_g_decl_label:
+
+% 3-19: display setup
+ADDR 2 0
+PUSHMT
+SETD LL
+
+% 3-19, 3-21: local variables and return value
+PUSH UNDEFINED
+PUSH 2
+DUPN 
+
+PUSH UNDEFINED
+
+% 3-22: return with
+ADDR 1 1    % load m
+LOAD
+ADDR 1 3    % load p
+OR
+PUSH label_false22
+BF
+ADDR 1 6    % load v
+LOAD
+ADDR 1 2    % load n
+ADD
+PUSH label_after22
+BR
+label_false22:
+ADDR 1 5    % load u
+LOAD
+ADDR 0 1    % load b
+LOAD
+SUB
+label_after22:
+PUSH g_epilogue_label
+BR
+
+g_epilogue_label:
+
+% 3-25: epilogue
+ADDR 2 3    % load ret value into ret address
+SWAP
+STORE
+
+PUSHMT
+ADDR 2 0
+SUB
+POPN
+
+SETD 2
+BR
+
+end_g_decl_label:
+
+% 3-26: if then statement
+PUSH UNDEFINED    % add return value placeholder
+PUSHMT
+PUSH start_g_decl_label
+BR
+PUSH 7
+LT
+PUSH label_after26
+BF
+PUSH q_epilogue_label
+BR
+label_after26:
+
+% 3-27: if then statement
+ADDR 1 4    % load t
+LOAD
+ADDR 0 6    % load r
+LOAD
+PUSH MACHINE_FALSE % get not r
+EQ
+PUSH UNDEFINED    % add return value placeholder
+PUSHMT
+PUSH start_f_decl_label
+BR
+PUSH 17
+EQ
+PUSH label_after27
+BF
+PUSH end_q_decl_label
+BR
+label_after27:
+
+% 3-28: procedure call
+PUSHMT
+PUSH start_p_decl_label
+BR
+
+q_epilogue_label:
+
+% 3-29: epilogue
+PUSHMT
+ADDR 1 0
+SUB
+POPN
+
+SETD 1
+BR
+
+end_q_decl_label:
+
+% 3-30: procedure call
+ADDR 0 4    % load p
+LOAD
+PUSH MACHINE_FALSE % get not p
+EQ
+ADDR 0 5    % load q
+LOAD
+OR
+
+ADDR 0 1    % load b
+LOAD
+ADDR 0 2    % load c
+MUL
+
+ADDR 0 4    % load p
+LOAD
+ADDR 0 5    % load q
+LOAD
+EQ
+PUSH MACHINE_FALSE
+EQ
+
+PUSH UNDEFINED
+PUSHMT
+PUSH start_q_decl_label
+BR
+
