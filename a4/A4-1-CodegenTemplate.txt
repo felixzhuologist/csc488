@@ -1,4 +1,5 @@
-
+PUSHMT
+SETD 0
 
 PUSH UNDEFINED 
 PUSH 573    % 10 (integers and booleans) + 7 (A) + 151 (B) + 5 (C) + 400 (D) = 573
@@ -175,3 +176,5 @@ STORE       % t := s not = r
 % 1-26
 
 % 1-27
+
+HALT
