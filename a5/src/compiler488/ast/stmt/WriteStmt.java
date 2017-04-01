@@ -2,11 +2,15 @@ package compiler488.ast.stmt;
 
 import compiler488.ast.ASTList;
 import compiler488.ast.Printable;
+import compiler488.ast.expn.IntConstExpn;
 import compiler488.ast.type.IntegerType;
 import compiler488.ast.expn.SkipConstExpn;
 import compiler488.ast.expn.TextConstExpn;
 import compiler488.ast.expn.Expn;
 import compiler488.codegen.CodeGenErrorException;
+import compiler488.compiler.Main;
+import compiler488.runtime.Machine;
+import compiler488.runtime.MemoryAddressException;
 import compiler488.semantics.SemanticErrorException;
 
 import java.util.ListIterator;
@@ -57,6 +61,19 @@ public class WriteStmt extends Stmt {
 	}
 
 	public void doCodeGen() throws CodeGenErrorException {
-		outputs.doCodeGen();
+		ListIterator<Printable> outputIter = outputs.getIter();
+		while (outputIter.hasNext()) {
+			try {
+				Printable output = outputIter.next();
+				// check the type of output -> either int or string
+				if (output instanceof IntConstExpn) {
+					((IntConstExpn) output).doCodeGen();
+					Machine.writeMemory(Main.codeGenAddr++, Machine.PRINTI);
+				}
+			} catch (MemoryAddressException e) {
+				throw new CodeGenErrorException(e.getMessage());
+			}
+		}
+//		outputs.doCodeGen();
 	}
 }
