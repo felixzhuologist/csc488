@@ -47,6 +47,7 @@ public class Main {
   // keep track of whether we are in a function/proc to check return semantics
   public static Stack<RoutineSymbol> routineStack = new Stack();
 
+  public static short codeGenAddr = 0;
   /**  public error flag  
    *   Setting this flag to true will suppress further processing 
    *   This can be used by parsing, semantic analysis or code generation
@@ -521,9 +522,10 @@ public class Main {
 	try{
 	   // INSERT CODE HERE TO DO CODE GENERATION
            // e.g.
-	   // programAST.doCodeGen() ;
+//	    programAST.doCodeGen() ;
 	   // or
-	   // codeGen.doIt( programAST );
+		CodeGen codeGen = new CodeGen();
+	    codeGen.doIt( programAST );
 	}
         catch( Exception e) 
 	    {

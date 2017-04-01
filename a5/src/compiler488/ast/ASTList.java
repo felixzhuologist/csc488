@@ -6,6 +6,7 @@ import java.util.ListIterator;
 import java.lang.reflect.*;
 import java.util.ArrayList;
 
+import compiler488.codegen.CodeGenErrorException;
 import compiler488.semantics.SemanticErrorException;
 
 /**
@@ -105,6 +106,19 @@ public class ASTList<E> extends AST {
         for (E elem : this.ll) {
             try {
                 Method method = elem.getClass().getMethod("doSemantics");
+                method.invoke(elem);
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+	@Override
+    public void doCodeGen() throws CodeGenErrorException {
+        for (E elem : this.ll) {
+            try {
+                Method method = elem.getClass().getMethod("doCodeGen");
                 method.invoke(elem);
             }
             catch (Exception ex) {

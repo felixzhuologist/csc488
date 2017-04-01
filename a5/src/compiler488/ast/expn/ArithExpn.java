@@ -29,4 +29,9 @@ public class ArithExpn extends BinaryExpn {
         }
         this.resultType = new IntegerType(lineNumber);
     }
+
+    @Override
+    public void doCodeGen() {
+
+    }
 }

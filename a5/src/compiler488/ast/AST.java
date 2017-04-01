@@ -1,5 +1,6 @@
 package compiler488.ast;
 
+import compiler488.codegen.CodeGenErrorException;
 import compiler488.semantics.SemanticErrorException;
 
 /**
@@ -10,6 +11,7 @@ import compiler488.semantics.SemanticErrorException;
 public class AST {
 
 	protected Integer lineNumber;
+
 
 	public AST() {
 	}
@@ -33,6 +35,10 @@ public class AST {
 	public final static String version = "Winter 2017";
 	
 	public void doSemantics() throws SemanticErrorException {
+        // Do nothing by default.
+	}
+
+	public void doCodeGen() throws CodeGenErrorException {
         // Do nothing by default.
 	}
 }

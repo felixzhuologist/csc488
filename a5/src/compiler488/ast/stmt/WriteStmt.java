@@ -6,6 +6,7 @@ import compiler488.ast.type.IntegerType;
 import compiler488.ast.expn.SkipConstExpn;
 import compiler488.ast.expn.TextConstExpn;
 import compiler488.ast.expn.Expn;
+import compiler488.codegen.CodeGenErrorException;
 import compiler488.semantics.SemanticErrorException;
 
 import java.util.ListIterator;
@@ -53,5 +54,9 @@ public class WriteStmt extends Stmt {
 
 	public void setOutputs(ASTList<Printable> outputs) {
 		this.outputs = outputs;
+	}
+
+	public void doCodeGen() throws CodeGenErrorException {
+		outputs.doCodeGen();
 	}
 }
