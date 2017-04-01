@@ -74,6 +74,6 @@ public class WriteStmt extends Stmt {
 				throw new CodeGenErrorException(e.getMessage());
 			}
 		}
-//		outputs.doCodeGen();
+		// outputs.doCodeGen();
 	}
 }
