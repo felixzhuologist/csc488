@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import compiler488.ast.ASTList;
 import compiler488.ast.Indentable;
 import compiler488.ast.decl.Declaration;
+import compiler488.codegen.CodeGenErrorException;
 import compiler488.compiler.Main;
 import compiler488.semantics.SemanticErrorException;
 
@@ -79,4 +80,10 @@ public class Scope extends Stmt {
         this.statements.doSemantics();
         Main.symbolTable.closeScope();
     }
+
+	@Override
+	public void doCodeGen() throws CodeGenErrorException {
+		declarations.doCodeGen();
+		statements.doCodeGen();
+	}
 }

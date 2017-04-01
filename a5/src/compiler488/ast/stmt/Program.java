@@ -14,9 +14,4 @@ public class Program extends Scope {
         this.declarations = declarations;
         this.statements = statements;
     }
-
-    public void doCodeGen() {
-        // initialize
-    }
-
 }

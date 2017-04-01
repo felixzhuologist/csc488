@@ -39,6 +39,7 @@ public class IntConstExpn extends ConstExpn
 	@Override
 	public void doCodeGen() throws CodeGenErrorException {
 		try {
+			System.out.println("int const code gen");
 			Machine.writeMemory(Main.codeGenAddr++, value.shortValue());
 
 		} catch (MemoryAddressException e) {
