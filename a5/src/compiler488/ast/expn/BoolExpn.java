@@ -2,6 +2,7 @@ package compiler488.ast.expn;
 
 import compiler488.ast.type.BooleanType;
 import compiler488.codegen.CodeGenErrorException;
+import compiler488.codegen.Utils;
 import compiler488.compiler.Main;
 import compiler488.runtime.Machine;
 import compiler488.runtime.MemoryAddressException;
@@ -47,21 +48,24 @@ public class BoolExpn extends BinaryExpn {
 
                     // not left
                     left.doCodeGen();
-                    Machine.writeMemory(Main.codeGenAddr++, Machine.MACHINE_FALSE);
-                    Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
-                    Machine.writeMemory(Main.codeGenAddr++, Machine.EQ);
+                    Utils.generateNotCode();
+//                    Machine.writeMemory(Main.codeGenAddr++, Machine.MACHINE_FALSE);
+//                    Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
+//                    Machine.writeMemory(Main.codeGenAddr++, Machine.EQ);
 
                     // not right
                     right.doCodeGen();
-                    Machine.writeMemory(Main.codeGenAddr++, Machine.MACHINE_FALSE);
-                    Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
-                    Machine.writeMemory(Main.codeGenAddr++, Machine.EQ);
+                    Utils.generateNotCode();
+//                    Machine.writeMemory(Main.codeGenAddr++, Machine.MACHINE_FALSE);
+//                    Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
+//                    Machine.writeMemory(Main.codeGenAddr++, Machine.EQ);
 
                     // not ((not left) or (not right))
                     Machine.writeMemory(Main.codeGenAddr++, Machine.OR);
-                    Machine.writeMemory(Main.codeGenAddr++, Machine.MACHINE_FALSE);
-                    Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
-                    Machine.writeMemory(Main.codeGenAddr++, Machine.EQ);
+                    Utils.generateNotCode();
+//                    Machine.writeMemory(Main.codeGenAddr++, Machine.MACHINE_FALSE);
+//                    Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
+//                    Machine.writeMemory(Main.codeGenAddr++, Machine.EQ);
 
                     break;
                 default:
