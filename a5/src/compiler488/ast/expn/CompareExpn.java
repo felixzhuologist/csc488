@@ -40,7 +40,6 @@ public class CompareExpn extends BinaryExpn {
     try {
         left.doCodeGen();
         right.doCodeGen();
-        short opcode;
         switch (opSymbol) {
             case "<": 
                 Machine.writeMemory(Main.codeGenAddr++, Machine.LT);
@@ -58,11 +57,6 @@ public class CompareExpn extends BinaryExpn {
                 Machine.writeMemory(Main.codeGenAddr++, Machine.LT);
                 Utils.generateNotCode();
                 break;
-            case "=":
-                Machine.writeMemory(Main.codeGenAddr++, Machine.EQ);
-            case "!=":
-                Machine.writeMemory(Main.codeGenAddr++, Machine.EQ);
-                Utils.generateNotCode();
             default:
                 throw new CodeGenErrorException("Unknown operation " + opSymbol);
         }

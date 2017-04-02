@@ -80,17 +80,8 @@ public class WriteStmt extends Stmt {
 				} else {
 					Method method = output.getClass().getMethod("doCodeGen");
 					method.invoke(output);
-					// check the return type of output -> either int or bool
-//					if (((Expn) output).getResultType() instanceof IntegerType) {
-//						// doing code gen on the expression will push its result onto the stack
-////						((Expn) output).doCodeGen();
 
-						Machine.writeMemory(Main.codeGenAddr++, Machine.PRINTI);
-//					} else if (((Expn) output).getResultType() instanceof BooleanType) {
-//
-//						Machine.writeMemory(Main.codeGenAddr++, Machine.PRINTI);
-//
-//					}
+					Machine.writeMemory(Main.codeGenAddr++, Machine.PRINTI);
 				}
 			} catch (Exception e) {
 				throw new CodeGenErrorException(e.getMessage());
