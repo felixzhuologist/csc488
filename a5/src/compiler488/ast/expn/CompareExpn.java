@@ -2,6 +2,11 @@ package compiler488.ast.expn;
 
 import compiler488.ast.type.*;
 import compiler488.semantics.SemanticErrorException;
+import compiler488.runtime.Machine;
+import compiler488.runtime.MemoryAddressException;
+import compiler488.compiler.Main;
+import compiler488.codegen.Utils;
+import compiler488.codegen.CodeGenErrorException;
 
 /**
  * Place holder for all ordered comparisions expression where both operands must
@@ -43,7 +48,7 @@ public class CompareExpn extends BinaryExpn {
             case "<=": 
                 Machine.writeMemory(Main.codeGenAddr++, Machine.SWAP);
                 Machine.writeMemory(Main.codeGenAddr++, Machine.LT);
-                Util.generateNotCode();
+                Utils.generateNotCode();
                 break;
             case ">":
                 Machine.writeMemory(Main.codeGenAddr++, Machine.SWAP);
@@ -51,17 +56,16 @@ public class CompareExpn extends BinaryExpn {
                 break;
             case ">=":
                 Machine.writeMemory(Main.codeGenAddr++, Machine.LT);
-                Util.generateNotCode();
+                Utils.generateNotCode();
                 break;
             case "=":
                 Machine.writeMemory(Main.codeGenAddr++, Machine.EQ);
             case "!=":
                 Machine.writeMemory(Main.codeGenAddr++, Machine.EQ);
-                Util.generateNotCode();
+                Utils.generateNotCode();
             default:
                 throw new CodeGenErrorException("Unknown operation " + opSymbol);
         }
-        Machine.writeMemory(Main.codeGenAddr++, opcode);
     } catch (MemoryAddressException e) {
       throw new CodeGenErrorException(e.getMessage());
     }
