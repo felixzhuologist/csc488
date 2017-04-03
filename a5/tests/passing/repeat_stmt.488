@@ -1,0 +1,7 @@
+{
+    repeat { 
+        write "repeating", newline
+     } until false
+    
+    write "after", newline
+}
