@@ -1,0 +1,3 @@
+{
+    write (false ? 4 : 5), newline
+}

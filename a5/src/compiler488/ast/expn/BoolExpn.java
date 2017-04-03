@@ -49,25 +49,15 @@ public class BoolExpn extends BinaryExpn {
                     // not left
                     left.doCodeGen();
                     Utils.generateNotCode();
-//                    Machine.writeMemory(Main.codeGenAddr++, Machine.MACHINE_FALSE);
-//                    Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
-//                    Machine.writeMemory(Main.codeGenAddr++, Machine.EQ);
 
                     // not right
                     right.doCodeGen();
                     Utils.generateNotCode();
-//                    Machine.writeMemory(Main.codeGenAddr++, Machine.MACHINE_FALSE);
-//                    Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
-//                    Machine.writeMemory(Main.codeGenAddr++, Machine.EQ);
 
                     // not ((not left) or (not right))
                     Machine.writeMemory(Main.codeGenAddr++, Machine.OR);
                     Utils.generateNotCode();
-//                    Machine.writeMemory(Main.codeGenAddr++, Machine.MACHINE_FALSE);
-//                    Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
-//                    Machine.writeMemory(Main.codeGenAddr++, Machine.EQ);
-
-                    break;
+                  break;
                 default:
                     throw new CodeGenErrorException("Unknown operation " + opSymbol);
             }

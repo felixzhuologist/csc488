@@ -15,4 +15,12 @@ public class Utils {
         Machine.writeMemory(Main.codeGenAddr++, Machine.MACHINE_FALSE);
         Machine.writeMemory(Main.codeGenAddr++, Machine.EQ);
     }
+
+    /* Now that we have an address to go to, patch the goToAddr address inside
+    *  the instruction located at instructionAddr in memory.
+    *  Previously, the value at this instruction address was UNDEFINED.
+    * */
+    public static void patch(short instructionAddr, short goToAddr) throws MemoryAddressException {
+        Machine.writeMemory(instructionAddr, goToAddr);
+    }
 }
