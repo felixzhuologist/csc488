@@ -1,0 +1,14 @@
+{
+    if true then
+        write "true1", newline
+    else
+        write "false1", newline
+    write "after1", newline
+
+    if false then
+        write "true2", newline
+    else
+        write "false2", newline
+    write "after2", newline
+
+}
