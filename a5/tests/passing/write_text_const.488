@@ -1,0 +1,3 @@
+{
+    write "Testing text const", newline
+}
