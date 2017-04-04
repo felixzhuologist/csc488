@@ -79,13 +79,7 @@ public class SubsExpn extends UnaryExpn implements Readable {
                 Machine.writeMemory(Main.codeGenAddr++, Machine.SUB);
             }
             
-            // Might need to multiply by sizeof(short) here
-            Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
-            Machine.writeMemory(Main.codeGenAddr++, (short)2);
-            Machine.writeMemory(Main.codeGenAddr++, Machine.MUL);
-            
             Machine.writeMemory(Main.codeGenAddr++, Machine.ADD);
-            Machine.writeMemory(Main.codeGenAddr++, Machine.LOAD);
         }
         catch (Exception e) {
             System.out.println("Thrown in SubsExpn");
