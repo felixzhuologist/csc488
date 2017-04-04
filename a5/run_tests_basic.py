@@ -19,6 +19,13 @@ def get_error_msg(output, exception_name):
     except:
         return ""
 
+def get_output(output):
+    end = output.find('End Execution.')
+    exec_start = output.find('Start Execution')
+    start = output.find('\n', exec_start)
+
+    return output[start + 3:end - 1] # remove extra tabs/newlines
+
 if __name__ == "__main__":
 
     if len(sys.argv) != 2:
@@ -44,6 +51,7 @@ if __name__ == "__main__":
 
     files = re.split(r'\n+', ls_out)
     files.pop(-1)
+    files = set(files)
 
     fail_count = 0
     num_test_cases = len(files)
@@ -52,23 +60,43 @@ if __name__ == "__main__":
     print "Running " + str(num_test_cases) + " tests"
     print "-----------------------------------------"
     
-    # Run compile on all test cases
     for file in files:
-        print "Testing file: " + file
-        test_case_path = test_cases_path + file
-        compile_args = ["sh", "RUNCOMPILER.sh", test_case_path]
-        compile_out = subprocess.check_output(compile_args, stderr=subprocess.STDOUT)
-        if "Syntax error" in compile_out:
-            print '\tSyntax error'
-        elif (semantic_errorname in compile_out):
-            print '\tSemantic error' + get_error_msg(compile_out, semantic_errorname)
-            fail_count += 1
-        elif (codegen_errorname in compile_out):
-            print '\tCodegen error' + get_error_msg(compile_out, codegen_errorname)
-        elif "Exception" in compile_out:
-            print ''
-            print compile_out
-            print '-----------------------------------------'
+        if file.endswith('.488') and sys.argv[1] == 'passing':
+            print "Testing file: " + file
+            test_case_path = test_cases_path + file
+            compile_args = ["sh", "RUNCOMPILER.sh", test_case_path]
+            compile_out = subprocess.check_output(compile_args, stderr=subprocess.STDOUT)
+            if "Syntax error" in compile_out:
+                print '\tSyntax error'
+            elif (semantic_errorname in compile_out):
+                print '\tSemantic error' + get_error_msg(compile_out, semantic_errorname)
+                fail_count += 1
+            elif (codegen_errorname in compile_out):
+                print '\tCodegen error' + get_error_msg(compile_out, codegen_errorname)
+            elif "Exception" in compile_out:
+                print ''
+                print compile_out
+                print '-----------------------------------------'
+            else: # ran without errors, check for correct output
+                expected_file = file.split('.')[0] + '.expected'
+                expected_file_path = test_cases_path + expected_file
+                if expected_file in files:
+                    expected = open(expected_file_path, 'r').read()
+                    try:
+                        got = get_output(compile_out)
+                    except:
+                        print '\tCould not get program output\n'
+                    else:
+                        if expected == got:
+                            print '\tOutput matches expected\n'
+                        else:
+                            print '\tExpected:'
+                            print expected
+                            print '\tBut got:'
+                            print got
+                            print
+                else:
+                    print '\tCould not find expected output file\n'
         
     print "-----------------------------------------"        
     print str(fail_count) + " test cases failed out of " + str(num_test_cases)
