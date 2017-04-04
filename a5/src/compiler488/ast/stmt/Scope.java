@@ -1,10 +1,13 @@
 package compiler488.ast.stmt;
 
 import java.io.PrintStream;
+import java.util.ListIterator;
 
 import compiler488.ast.ASTList;
 import compiler488.ast.Indentable;
 import compiler488.ast.decl.Declaration;
+import compiler488.ast.decl.DeclarationPart;
+import compiler488.ast.decl.MultiDeclarations;
 import compiler488.codegen.CodeGenErrorException;
 import compiler488.compiler.Main;
 import compiler488.semantics.SemanticErrorException;
@@ -87,8 +90,18 @@ public class Scope extends Stmt {
 	    try {
 	        Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
 	        Machine.writeMemory(Main.codeGenAddr++, Machine.UNDEFINED);
-	        Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
-	        Machine.writeMemory(Main.codeGenAddr++, (short)declarations.size());
+
+			// get total size to be allocated
+			Integer totalAllocation = 0;
+			ListIterator<Declaration> decIter = declarations.getIter();
+			while (decIter.hasNext()) {
+				MultiDeclarations m = (MultiDeclarations) decIter.next();
+				totalAllocation += m.getAllocationSize();
+			}
+
+			Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
+			Machine.writeMemory(Main.codeGenAddr++, totalAllocation.shortValue());
+
 	        Machine.writeMemory(Main.codeGenAddr++, Machine.DUPN);
 	    }
 	    catch (Exception e) {

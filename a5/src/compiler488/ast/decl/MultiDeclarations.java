@@ -64,6 +64,23 @@ public class MultiDeclarations extends Declaration {
 		}
 	}
 
+	@Override
+	public Integer getAllocationSize() {
+		int totalAllocation = 0;
+
+		ListIterator<DeclarationPart> elementsIter = elements.getIter();
+		while (elementsIter.hasNext()) {
+			DeclarationPart declPart = elementsIter.next();
+			if (declPart instanceof ScalarDeclPart) {
+				totalAllocation += 1;
+			} else if (declPart instanceof  ArrayDeclPart) {
+				totalAllocation += ((ArrayDeclPart)declPart).getSize();
+			}
+		}
+
+		return totalAllocation;
+	}
+
 	public ASTList<DeclarationPart> getElements() {
 		return elements;
 	}

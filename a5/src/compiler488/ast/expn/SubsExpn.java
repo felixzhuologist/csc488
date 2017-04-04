@@ -1,6 +1,9 @@
 package compiler488.ast.expn;
 
+import com.sun.org.apache.bcel.internal.classfile.Code;
 import compiler488.ast.Readable;
+import compiler488.codegen.CodeGenErrorException;
+import compiler488.runtime.Machine;
 import compiler488.symbol.*;
 import compiler488.compiler.Main;
 import compiler488.ast.type.*;

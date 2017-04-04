@@ -5,14 +5,15 @@ import subprocess
 import re
 
 # String to determine if semantic error
-semantic_error_string = "SemanticErrorException"
+semantic_errorname = "SemanticErrorException"
+codegen_errorname = "CodeGenErrorException"
 
 def print_parse_error():
     print "Error parsing parameters.\n Usage: %s <passing | failing>" % sys.argv[0]
 
-def get_semantic_error_msg(output):
+def get_error_msg(output, exception_name):
     try:
-        msg_start = output.find(semantic_error_string) + len(semantic_error_string)
+        msg_start = output.find(exception_name) + len(exception_name)
         msg_end = output.find("at compiler488.ast", msg_start + 1)
         return output[msg_start:msg_end]
     except:
@@ -59,9 +60,11 @@ if __name__ == "__main__":
         compile_out = subprocess.check_output(compile_args, stderr=subprocess.STDOUT)
         if "Syntax error" in compile_out:
             print '\tSyntax error'
-        elif (semantic_error_string in compile_out):
-            print '\tSemantic error' + get_semantic_error_msg(compile_out)
+        elif (semantic_errorname in compile_out):
+            print '\tSemantic error' + get_error_msg(compile_out, semantic_errorname)
             fail_count += 1
+        elif (codegen_errorname in compile_out):
+            print '\tCodegen error' + get_error_msg(compile_out, codegen_errorname)
         elif "Exception" in compile_out:
             print ''
             print compile_out

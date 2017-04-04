@@ -1,6 +1,8 @@
 package compiler488.ast.stmt;
 
 import compiler488.ast.expn.Expn;
+import compiler488.ast.expn.IdentExpn;
+import compiler488.ast.expn.SubsExpn;
 import compiler488.semantics.SemanticErrorException;
 import compiler488.compiler.Main;
 import compiler488.runtime.Machine;
@@ -57,7 +59,11 @@ public class AssignStmt extends Stmt {
 	@Override
 	public void doCodeGen() throws CodeGenErrorException {
 	    try {
-            this.lval.doCodeGen();
+	    	if (lval instanceof IdentExpn) {
+				lval.doCodeGenLHS();
+			} else if (lval instanceof SubsExpn) {
+				lval.doCodeGen();
+			}
 	        this.rval.doCodeGen();
 	        Machine.writeMemory(Main.codeGenAddr++, Machine.STORE);
 	    }
