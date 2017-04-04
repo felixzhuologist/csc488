@@ -40,4 +40,8 @@ public abstract class SymbolTableEntry {
     public void setLevel(ArrayList<SymbolTableEntry> level) {
         this.level = level;
     }
+    
+    public int getIndex() {
+        return this.level.indexOf(this);
+    }
 }
