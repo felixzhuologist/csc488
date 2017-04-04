@@ -1,0 +1,9 @@
+{
+    var numArray[2]: Integer
+    var another: Integer
+    numArray[1] := 10
+    another := numArray[1]
+    
+    write "The value is "
+    write another
+}
