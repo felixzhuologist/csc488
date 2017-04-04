@@ -73,9 +73,22 @@ public class IdentExpn extends Expn implements Readable
 	        Machine.writeMemory(Main.codeGenAddr++, Machine.ADDR);
 	        Machine.writeMemory(Main.codeGenAddr++, (short)this.lexicalLevel);
 	        Machine.writeMemory(Main.codeGenAddr++, (short)this.index);
+            Machine.writeMemory(Main.codeGenAddr++, Machine.LOAD);
 	    }
 	    catch (Exception e) {
 	        throw new CodeGenErrorException(e.getMessage());
 	    }
+    }
+
+    @Override
+    public void doCodeGenLHS() throws CodeGenErrorException {
+        try {
+            Machine.writeMemory(Main.codeGenAddr++, Machine.ADDR);
+            Machine.writeMemory(Main.codeGenAddr++, (short)this.lexicalLevel);
+            Machine.writeMemory(Main.codeGenAddr++, (short)this.index);
+        }
+        catch (Exception e) {
+            throw new CodeGenErrorException(e.getMessage());
+        }
     }
 }
