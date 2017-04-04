@@ -1,6 +1,9 @@
 package compiler488.ast.expn;
 
+import com.sun.org.apache.bcel.internal.classfile.Code;
 import compiler488.ast.Readable;
+import compiler488.codegen.CodeGenErrorException;
+import compiler488.runtime.Machine;
 import compiler488.symbol.*;
 import compiler488.compiler.Main;
 import compiler488.ast.type.*;
@@ -16,11 +19,16 @@ import compiler488.semantics.SemanticErrorException;
 public class SubsExpn extends UnaryExpn implements Readable {
 
 	private String variable; // name of the array variable
+	// used to calculate the memory address of the variable
+	private int lexicalLevel;   // lexical level of symbol table entry
+	private int index;          // index of symbol table entry
 
 	public SubsExpn(Integer lineNumber, String variable, Expn operand) {
 		super(lineNumber);
 		this.variable = variable;
 		this.operand = operand;
+		this.lexicalLevel = -1;
+		this.index = 1;
 	}
 
 
@@ -37,13 +45,21 @@ public class SubsExpn extends UnaryExpn implements Readable {
 			throw new SemanticErrorException("Indexing into array with non integer type");
 		}
 
-    SymbolTableEntry entry = Main.symbolTable.getEntry(variable);
-    if (entry == null || !(entry instanceof ArraySymbol)) {
-      throw new SemanticErrorException("Reference to undeclared array variable " + variable);
-    }
+		SymbolTableEntry entry = Main.symbolTable.getEntry(variable);
+		if (entry == null || !(entry instanceof ArraySymbol)) {
+		  throw new SemanticErrorException("Reference to undeclared array variable " + variable);
+		}
 
-    ArraySymbol arrEntry = (ArraySymbol) entry;
-    this.resultType = Util.getTypeWithLineNumber(arrEntry.getType(), lineNumber);
+		this.lexicalLevel = entry.getDepth();
+		this.index = entry.getIndex();
+
+		ArraySymbol arrEntry = (ArraySymbol) entry;
+		this.resultType = Util.getTypeWithLineNumber(arrEntry.getType(), lineNumber);
+	}
+
+	@Override
+	public void doCodeGen() throws CodeGenErrorException {
+		// TODO
 	}
 
 	public String getVariable() {

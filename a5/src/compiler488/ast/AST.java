@@ -41,4 +41,8 @@ public class AST {
 	public void doCodeGen() throws CodeGenErrorException {
         // Do nothing by default.
 	}
+
+	public void doCodeGenLHS() throws CodeGenErrorException {
+		// Do nothing by default.
+	}
 }
