@@ -1,0 +1,6 @@
+{
+    var x : Integer
+    var y: Integer
+    x := 1
+    y := 1
+}
