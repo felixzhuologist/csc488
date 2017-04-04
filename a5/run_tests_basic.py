@@ -63,7 +63,9 @@ if __name__ == "__main__":
             print '\tSemantic error' + get_semantic_error_msg(compile_out)
             fail_count += 1
         elif "Exception" in compile_out:
-            print '\tOther error'
+            print ''
+            print compile_out
+            print '-----------------------------------------'
         
     print "-----------------------------------------"        
     print str(fail_count) + " test cases failed out of " + str(num_test_cases)
