@@ -19,6 +19,7 @@ check that an array with ub gets initialized and indexing returns correct value
 
 (new) assign_idents_LHRS_RHS:
 assign constants/basic expressions to variables and check that they get the correct value
+also check that a variable can be incremented
 
 (new) cond_expn:
 check that condition expression evaluates the correct branch for both true and false

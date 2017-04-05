@@ -91,6 +91,7 @@ if __name__ == "__main__":
                         if expected == got:
                             print '\tOutput matches expected\n'
                         else:
+                            fail_count += 1
                             print '\tExpected:'
                             print expected
                             print '\tBut got:'

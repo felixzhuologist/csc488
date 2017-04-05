@@ -3,4 +3,6 @@
     var y: Integer
     x := 2
     y := 99
+    write x, newline
+    write y, newline
 }
