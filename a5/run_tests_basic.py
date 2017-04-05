@@ -61,19 +61,20 @@ if __name__ == "__main__":
     print "-----------------------------------------"
     
     for file in files:
-        if file.endswith('.488') and sys.argv[1] == 'passing':
+        # don't auto run tests which need input
+        if file.endswith('.488') and 'read' not in file and sys.argv[1] == 'passing':
             print "Testing file: " + file
             test_case_path = test_cases_path + file
             compile_args = ["sh", "RUNCOMPILER.sh", test_case_path]
             compile_out = subprocess.check_output(compile_args, stderr=subprocess.STDOUT)
             if "Syntax error" in compile_out:
                 print '\tSyntax error'
-            elif (semantic_errorname in compile_out):
-                print '\tSemantic error' + get_error_msg(compile_out, semantic_errorname)
-                fail_count += 1
+            # elif (semantic_errorname in compile_out):
+            #     print '\tSemantic error' + get_error_msg(compile_out, semantic_errorname)
+            #     fail_count += 1
             elif (codegen_errorname in compile_out):
                 print '\tCodegen error' + get_error_msg(compile_out, codegen_errorname)
-            elif "Exception" in compile_out:
+            elif ".Exception" in compile_out:
                 print ''
                 print compile_out
                 print '-----------------------------------------'
