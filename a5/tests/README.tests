@@ -17,9 +17,9 @@ check that an array with negative lb gets initialized, and indexing returns corr
 (new) array_subexpn_ub:
 check that an array with ub gets initialized and indexing returns correct value
 
-(new) assign_idents_LHRS_RHS:
-assign constants/basic expressions to variables and check that they get the correct value
-also check that a variable can be incremented
+(new) assign_idents_LHS_RHS:
+assign constants/basic expressions to variables and check that they get the correct value.
+check that identExpns work correctly on both sides (LHS and RHS) of an assignStmt
 
 (new) cond_expn:
 check that condition expression evaluates the correct branch for both true and false
@@ -31,10 +31,10 @@ check that unnested if statements evaluate the correct branch and continue corre
 check that not flips boolean value correct
 
 (new) read_stmt_basic:
-check that value gets read into and overwrites variable's value properly
+check that a value gets read into a variable
 
 (new) read_stmt_write:
-same as above but with more variables
+check that values get read into variables and overwrite their values properly
 
 (new) repeat_stmt:
 check that repeat statement with false condition only runs once and exits correctly
