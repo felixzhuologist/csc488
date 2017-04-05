@@ -1,0 +1,78 @@
+(new) indicates this test is new since previous assignments
+
+tests under passing are expected to pass and tests under failing are expected to fail.
+
+Testing process:
+Our testing process involves running automated passing/failing tests.
+For passing tests we include write statements to print out values, and the testing 
+script checks the printed values against the expected values which are defined in
+a separate file. For failing tests the script just checks that the correct error
+is thrown.
+
+Passing:
+========
+(new) array_subexpn_lb:
+check that an array with negative lb gets initialized, and indexing returns correct value
+
+(new) array_subexpn_ub:
+check that an array with ub gets initialized and indexing returns correct value
+
+(new) assign_idents_LHRS_RHS:
+assign constants/basic expressions to variables and check that they get the correct value
+
+(new) cond_expn:
+check that condition expression evaluates the correct branch for both true and false
+
+(new) if_stmt:
+check that unnested if statements evaluate the correct branch and continue correctly
+
+(new) not_expn:
+check that not flips boolean value correct
+
+(new) read_stmt_basic:
+check that value gets read into and overwrites variable's value properly
+
+(new) read_stmt_write:
+same as above but with more variables
+
+(new) repeat_stmt:
+check that repeat statement with false condition only runs once and exits correctly
+
+(new) simple_var:
+check that constants get assigned to variables properly
+
+(new) unary_minus:
+check that unary minus works in an arithmetic expression
+
+(new) write_addexpr1:
+check that arithmetic expression (integer) evaluates to correct value
+
+(new) write_int_expn:
+same as above
+
+(new) write_bool_expn:
+check that bool expression (boolean) evaluates to correct value
+
+(new) write_eq1:
+check that comparison expression (boolean) evaluates to correct value
+
+(new) write_gt1:
+check that greater than expression evaluates to correct value
+
+(new) write_gte1:
+check that greater than or equals expression evalutes to correct value
+
+(new) write_int_const:
+check that an int is written out correctly
+
+(new) write_lt1:
+check that less than evalutes to correct value
+
+(new) write_lte1:
+check that lte evaluates to correct value
+
+(new) write_neq1:
+check that not = evalutes to correct value
+
+(new) write_text_const:
+check that text is written out correctly
