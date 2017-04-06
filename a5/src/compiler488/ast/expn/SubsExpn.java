@@ -66,6 +66,7 @@ public class SubsExpn extends UnaryExpn implements Readable {
     public void doCodeGen() throws CodeGenErrorException {  
      
         try {
+            // Push address of the start of the array
             Machine.writeMemory(Main.codeGenAddr++, Machine.ADDR);
             Machine.writeMemory(Main.codeGenAddr++, (short)this.lexicalLevel);
             Machine.writeMemory(Main.codeGenAddr++, (short)this.index);
@@ -73,12 +74,14 @@ public class SubsExpn extends UnaryExpn implements Readable {
             // This will PUSH the operand's value
             this.operand.doCodeGen();
             
+            // If lb, add operations to update the offset
             if (this.lb != 1) {
                 Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
                 Machine.writeMemory(Main.codeGenAddr++, (short)this.lb);
                 Machine.writeMemory(Main.codeGenAddr++, Machine.SUB);
             }
             
+            // Add the array address and the offset
             Machine.writeMemory(Main.codeGenAddr++, Machine.ADD);
         }
         catch (Exception e) {
