@@ -37,6 +37,7 @@ public class Utils {
 
         // save the address of the instruction so we can patch it later
         short labelFalseInstrAddr = Main.codeGenAddr;
+
         // push address to branch to if false, is undefined right now, will be patched later
         Machine.writeMemory(Main.codeGenAddr++, Machine.UNDEFINED);
         Machine.writeMemory(Main.codeGenAddr++, Machine.BF);

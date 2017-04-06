@@ -55,16 +55,25 @@ public class WhileDoStmt extends LoopingStmt {
 			Machine.writeMemory(Main.codeGenAddr++, Machine.BF);
 
 			// now the body
+			Main.currNumLoops++;
 			body.doCodeGen();
+			Main.currNumLoops--;
 
 			// push the address of the loop label, so we branch back to it after each iteration
 			Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
 			Machine.writeMemory(Main.codeGenAddr++, loopLabelAddr);
 			Machine.writeMemory(Main.codeGenAddr++, Machine.BR);
 
-
 			// now we can patch the address of "after the while block"
 			Utils.patch(labelAfterInstrAddr, Main.codeGenAddr);
+
+			// check if this loop needs to patch any addresses for exit statements
+			Integer numLoops = new Integer(Main.currNumLoops);
+			Integer exitLoopLabel = Main.loopLvlToPatchAddr.get(numLoops);
+			if (exitLoopLabel != null) {
+				Utils.patch(exitLoopLabel.shortValue(), Main.codeGenAddr);
+				Main.loopLvlToPatchAddr.remove(numLoops);
+			}
 		} catch (MemoryAddressException e) {
 			throw new CodeGenErrorException(e.getMessage());
 		}

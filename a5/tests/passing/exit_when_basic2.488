@@ -1,0 +1,10 @@
+{
+  var c : Integer
+  c := 0
+  while c < 3 do {
+    write c, newline
+    exit when false
+    c := c + 1
+  }
+  write "after", newline
+}

@@ -2,6 +2,7 @@ package compiler488.compiler;
 
 import java.io.*;
 import java.util.Stack;
+import java.util.HashMap;
 
 import compiler488.parser.*;
 import compiler488.ast.AST ;
@@ -41,8 +42,11 @@ public class Main {
 
   /* Globals used for semantic analysis */
   public static SymbolTable symbolTable = new SymbolTable();
-  // keep track of number of loops we are in to check exit semantics
+  // keep track of number of loops we are in for exit semantics and codegen
   public static int currNumLoops = 0;
+  // keep track of the addresses of exit labels so that loop codegen
+  // can go back and patch the correct address
+  public static HashMap<Integer, Integer> loopLvlToPatchAddr = new HashMap<Integer, Integer>();
   // keep track of whether we are in a function/proc to check return semantics
   public static Stack<RoutineSymbol> routineStack = new Stack();
 

@@ -1,9 +1,14 @@
 package compiler488.ast.stmt;
 
+import compiler488.ast.AST;
 import compiler488.ast.expn.*;
 import compiler488.ast.type.BooleanType;
 import compiler488.compiler.Main;
 import compiler488.semantics.SemanticErrorException;
+import compiler488.codegen.Utils;
+import compiler488.runtime.Machine;
+import compiler488.runtime.MemoryAddressException;
+import compiler488.codegen.CodeGenErrorException;
 
 /**
  * Represents the command to exit from a loop.
@@ -84,4 +89,31 @@ public class ExitStmt extends Stmt {
 	    }
 	}
 
+	@Override
+	public void doCodeGen() throws CodeGenErrorException {
+		try {
+			if (expn != null) {
+				// generate if where the if block is just exit statement codegen 
+				// (without a condition)
+	      Utils.generateIfCode(expn, (AST) (new ExitStmt(lineNumber, level)), null);
+			}
+			else {
+				// generate branching code
+				Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
+				// save address to be patched later
+				Integer labelAfterLoop = new Integer(Main.codeGenAddr);
+				Machine.writeMemory(Main.codeGenAddr++, Machine.UNDEFINED);
+				Machine.writeMemory(Main.codeGenAddr++, Machine.BR);
+
+				// save information so that loops know which address to patch
+				Integer levelOfLoopToJumpOutOf = new Integer(Main.currNumLoops - level);
+				Integer previousLabel = Main.loopLvlToPatchAddr.get(levelOfLoopToJumpOutOf);
+				if (previousLabel == null) { // want to exit at the first exit statement
+					Main.loopLvlToPatchAddr.put(levelOfLoopToJumpOutOf, labelAfterLoop);
+				}
+			}
+		} catch (MemoryAddressException e) {
+			throw new CodeGenErrorException(e.getMessage());
+		}
+	}
 }

@@ -1,0 +1,11 @@
+{
+  write 0, newline
+  repeat {
+    while true do {
+      exit when true
+      write 1, newline
+    }
+    write 0, newline
+  } until false
+  write 0, newline
+}

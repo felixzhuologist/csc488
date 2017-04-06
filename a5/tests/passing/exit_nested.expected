@@ -1,0 +1,8 @@
+open 0
+open 1
+open 2
+open 3
+close 3
+close 2
+close 1
+close 0

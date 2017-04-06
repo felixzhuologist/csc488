@@ -77,3 +77,22 @@ check that not = evalutes to correct value
 
 (new) write_text_const:
 check that text is written out correctly
+
+(new) exit_basic:
+can exit through single while loop
+
+(new) exit_nested:
+check that exit (with no level specified) in an inner loop exits exactly 1 loop
+
+(new) exit_when_basic:
+check that exit exits correctly when expn is true
+
+(new) exit_when_basic2:
+check that exit does not exit when expn is false
+
+(new) exit_when_nested:
+check that exit when expn is true exits correct number of loops inside nested loop
+
+(new) exit_nested2:
+check that exit exits the correct number of loops when the number of levels is
+greater than 1

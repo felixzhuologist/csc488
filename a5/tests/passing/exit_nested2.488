@@ -1,0 +1,20 @@
+{
+  write "open 0", newline
+  repeat {
+    write "open 1", newline
+    repeat {
+      write "open 2", newline
+        repeat {
+          write "open 3", newline
+          while true do {
+            exit 3
+            write "inside 3", newline
+          }
+          write "close 3", newline
+        } until false
+        write "close 2", newline
+    } until false
+    write "close 1", newline
+  } until false
+  write "close 0", newline
+}

@@ -20,7 +20,7 @@ def get_error_msg(output, exception_name):
         return ""
 
 def get_output(output):
-    end = output.find('End Execution.')
+    end = max(output.find('End Execution.'), output.find('Execution Error'))
     exec_start = output.find('Start Execution')
     start = output.find('\n', exec_start)
 
