@@ -12,10 +12,10 @@ is thrown.
 Passing:
 ========
 (new) array_subexpn_lb:
-check that an array with negative lb gets initialized, and indexing returns correct value
+check that an array with negative lowerbound gets initialized, and indexing returns correct value
 
 (new) array_subexpn_ub:
-check that an array with ub gets initialized and indexing returns correct value
+check that an array with an upperbound and the default lowerbound gets initialized and indexing returns correct value
 
 (new) assign_idents_LHS_RHS:
 assign constants/basic expressions to variables and check that they get the correct value.
