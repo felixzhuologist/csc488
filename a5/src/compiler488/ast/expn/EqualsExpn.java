@@ -1,11 +1,13 @@
 package compiler488.ast.expn;
 
 import compiler488.ast.type.BooleanType;
+import compiler488.ast.type.IntegerType;
 import compiler488.runtime.Machine;
 import compiler488.runtime.MemoryAddressException;
 import compiler488.compiler.Main;
 import compiler488.codegen.Utils;
 import compiler488.codegen.CodeGenErrorException;
+import compiler488.semantics.SemanticErrorException;
 
 /**
  * Place holder for all binary expression where both operands could be either
@@ -21,9 +23,18 @@ public class EqualsExpn extends BinaryExpn {
     }
 
     @Override
-    public void doSemantics() {
+    public void doSemantics() throws SemanticErrorException {
+        this.left.doSemantics();
+        this.right.doSemantics();
+
+        if (!(left.getResultType() instanceof BooleanType && right.getResultType() instanceof BooleanType) && 
+            !(left.getResultType() instanceof IntegerType && right.getResultType() instanceof IntegerType)) {
+            throw new SemanticErrorException(opSymbol + " expects two of the same type but got a " +
+                                left.getResultType().getClass().getName() + " and " +
+                                right.getResultType().getClass().getName() + " instead");
+        }
+        
         this.resultType = new BooleanType(lineNumber);
-        // TODO: check that left/right are either both ints or both bools
     }
 
     @Override
