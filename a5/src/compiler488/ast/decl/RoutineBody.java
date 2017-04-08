@@ -66,6 +66,13 @@ public class RoutineBody extends Indentable {
 		}
 	}
 	
+    public Integer getAllocationSize() {
+        int totalAllocation = this.parameters.size();
+        totalAllocation += this.body.getAllocationSize();
+
+        return totalAllocation;
+    }
+	
 	public void doCodeGenWithReturnAddr(short address) throws CodeGenErrorException {  
 
 		try {

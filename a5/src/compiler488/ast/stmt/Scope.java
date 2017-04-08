@@ -79,6 +79,28 @@ public class Scope extends Stmt {
 		this.statements = statements;
 	}
 	
+	public Integer getAllocationSize() {
+	    
+	    Integer totalAllocation = 0;
+        ListIterator<Declaration> decIter = declarations.getIter();
+        while (decIter.hasNext()) {
+        
+            Declaration nextDeclaration = decIter.next();
+            totalAllocation += nextDeclaration.getAllocationSize();
+//             if (nextDeclaration instanceof  MultiDeclarations) {
+//             
+//                 
+//                 MultiDeclarations m = (MultiDeclarations) nextDeclaration;
+//                 totalAllocation += m.getAllocationSize();
+//             }
+//             else {
+//                 totalAllocation += Declara
+//             }
+        }
+        
+        return totalAllocation;
+	}
+	
 	@Override
 	public void doSemantics() throws SemanticErrorException {
 		Main.symbolTable.openScope();
@@ -113,12 +135,19 @@ public class Scope extends Stmt {
 			Machine.writeMemory(Main.codeGenAddr++, (short)0);
 
 			// get total size to be allocated
-			Integer totalAllocation = 0;
-			ListIterator<Declaration> decIter = declarations.getIter();
-			while (decIter.hasNext()) {
-				MultiDeclarations m = (MultiDeclarations) decIter.next();
-				totalAllocation += m.getAllocationSize();
-			}
+			Integer totalAllocation = this.getAllocationSize();
+// 			ListIterator<Declaration> decIter = declarations.getIter();
+// 			while (decIter.hasNext()) {
+// 			
+// 			    Declaration nextDeclaration = decIter.next();
+// 			    if (nextDeclaration instanceof  MultiDeclarations) {
+// 				    MultiDeclarations m = (MultiDeclarations) nextDeclaration;
+// 				    totalAllocation += m.getAllocationSize();
+// 				}
+// 				else {
+// 				    totalAllocation += 
+// 				}
+// 			}
 
 			Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
 			Machine.writeMemory(Main.codeGenAddr++, totalAllocation.shortValue());

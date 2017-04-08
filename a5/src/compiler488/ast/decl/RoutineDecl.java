@@ -86,17 +86,23 @@ public class RoutineDecl extends Declaration {
 			routineSymbol = new FunctionSymbol(this.name, paramTypes, this.type);
 		}
 
-		this.lexicalLevel = routineSymbol.getDepth();
-		this.index = routineSymbol.getIndex();
-
 		Main.symbolTable.addEntry(routineSymbol);
 		Main.routineStack.push(routineSymbol);
+		
+		this.lexicalLevel = routineSymbol.getDepth();
+		this.index = routineSymbol.getIndex();
+		
 		Main.symbolTable.openScope();
 
 		this.routineBody.doSemantics();
 
 		Main.symbolTable.closeScope();
 		Main.routineStack.pop();
+	}
+
+    @Override
+	public Integer getAllocationSize() {
+		return this.routineBody.getAllocationSize();
 	}
 
 	@Override

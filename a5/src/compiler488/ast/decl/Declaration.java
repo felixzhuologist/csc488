@@ -34,8 +34,7 @@ public class Declaration extends Indentable {
 	}
 
 	public Integer getAllocationSize() {
-		// do nothing by default
-		return -1;
+		return 1;
 	}
 
 }
