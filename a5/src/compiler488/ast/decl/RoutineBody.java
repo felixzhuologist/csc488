@@ -33,9 +33,9 @@ public class RoutineBody extends Indentable {
 	 * routine.
 	 * 
 	 * @param out
-	 *            Where to print the description.
+	 *			Where to print the description.
 	 * @param depth
-	 *            How much indentation to use while printing.
+	 *			How much indentation to use while printing.
 	 */
 	@Override
 	public void printOn(PrintStream out, int depth) {
@@ -50,6 +50,38 @@ public class RoutineBody extends Indentable {
 	public void doSemantics() throws SemanticErrorException {
 		this.parameters.doSemantics();
 		this.body.doSemantics();
+	}
+	
+	@Override
+	public void doCodeGen() throws CodeGenErrorException {  
+
+		try {
+			// Save space for parameters
+			Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
+			Machine.writeMemory(Main.codeGenAddr++, (short)0);
+
+			// get total # of parameters to be allocated
+			Integer totalAllocation = parameters.size();
+			Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
+			Machine.writeMemory(Main.codeGenAddr++, totalAllocation.shortValue());
+
+			Machine.writeMemory(Main.codeGenAddr++, Machine.DUPN);
+		}
+		catch (Exception e) {
+			System.out.println("Thrown in RoutineBody");
+			throw new CodeGenErrorException(e.getMessage());
+		}
+	
+		// Generate Scope
+		this.body.doCodeGen();
+			
+		// Clean up
+		try {
+            // TODO SETD of return addr
+		}
+		catch (Exception e) {
+			throw new CodeGenErrorException(e.getMessage());
+		}
 	}
 
 	public Scope getBody() {

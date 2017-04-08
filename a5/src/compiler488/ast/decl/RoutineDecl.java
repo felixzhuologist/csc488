@@ -20,14 +20,14 @@ public class RoutineDecl extends Declaration {
 	 */
 	private RoutineBody routineBody;
 	// used to calculate the memory address of the variable
-    private int lexicalLevel;   // lexical level of symbol table entry
-    private int index;          // index of symbol table entry
+	private int lexicalLevel;   // lexical level of symbol table entry
+	private int index;		  // index of symbol table entry
 
 	public RoutineDecl(Integer lineNumber, String name, RoutineBody routineBody) {
 		super(lineNumber);
 		this.name = name;
 		this.routineBody = routineBody;
-		this.ident = ident;
+		this.index = 1;
 		this.lexicalLevel = -1;
 	}
 
@@ -36,7 +36,7 @@ public class RoutineDecl extends Declaration {
 		this.name = name;
 		this.routineBody = routineBody;
 		this.type = type;
-		this.ident = ident;
+        this.index = 1;
 		this.lexicalLevel = -1;
 	}
 
@@ -103,16 +103,16 @@ public class RoutineDecl extends Declaration {
 		try {
 			// Let the body handle scope and reserving space for var, and parameters
 			this.routineBody.doCodeGen();
-			
-            // Save space for return value 
-            if(this.type != null)
-            {
-                Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
-                Machine.writeMemory(Main.codeGenAddr++, Machine.UNDEFINED);
-            }
+// 			
+// 			// Save space for return value 
+// 			if(this.type != null)
+// 			{
+// 				Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
+// 				Machine.writeMemory(Main.codeGenAddr++, (float)0);
+// 			}
 		}
 		catch (Exception e) {
-			System.out.println("Thrown in SubsExpn");
+			System.out.println("Thrown in RoutineDecl");
 			throw new CodeGenErrorException(e.getMessage());
 		}
 	}

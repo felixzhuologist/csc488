@@ -91,6 +91,16 @@ public class Scope extends Stmt {
 	@Override
 	public void doCodeGen() throws CodeGenErrorException {
 	    try {
+            doCodeGen(false);
+        }
+        catch (Exception e) {
+		    throw new CodeGenErrorException(e.getMessage());
+		}
+	}
+	
+    @Override
+	public void doCodeGen(boolean doesReturn) throws CodeGenErrorException {
+	    try {
 	        if (this.lexicalLevel > 0) {
 	            short prevDisp = Main.codeGenAddr;
 	            Machine.writeMemory(Main.codeGenAddr++, Machine.ADDR);
@@ -121,6 +131,16 @@ public class Scope extends Stmt {
 	    }
 		declarations.doCodeGen();
 		statements.doCodeGen();
+		
+		if (doesReturn)
+		{
+		    Machine.writeMemory(Main.codeGenAddr++, Machine.ADDR);
+	        Machine.writeMemory(Main.codeGenAddr++, (short)(this.lexicalLevel - 1));
+	        Machine.writeMemory(Main.codeGenAddr++, (short)0);
+		
+		    // TODO set return value
+		}
+		
 		try {
 		    if (this.lexicalLevel > 0) {
                 Machine.writeMemory(Main.codeGenAddr++, Machine.PUSHMT);
