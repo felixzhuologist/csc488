@@ -19,11 +19,16 @@ public class RoutineDecl extends Declaration {
 	 * statements to execute when the procedure is called.
 	 */
 	private RoutineBody routineBody;
+	// used to calculate the memory address of the variable
+    private int lexicalLevel;   // lexical level of symbol table entry
+    private int index;          // index of symbol table entry
 
 	public RoutineDecl(Integer lineNumber, String name, RoutineBody routineBody) {
 		super(lineNumber);
 		this.name = name;
 		this.routineBody = routineBody;
+		this.ident = ident;
+		this.lexicalLevel = -1;
 	}
 
 	public RoutineDecl(Integer lineNumber, String name, RoutineBody routineBody, Type type) {
@@ -31,6 +36,8 @@ public class RoutineDecl extends Declaration {
 		this.name = name;
 		this.routineBody = routineBody;
 		this.type = type;
+		this.ident = ident;
+		this.lexicalLevel = -1;
 	}
 
 	/**
@@ -41,22 +48,22 @@ public class RoutineDecl extends Declaration {
 	@Override
 	public String toString() {
 	  if(type==null)
-	    {
-	      return " procedure " + name;
-	    }
+		{
+		  return " procedure " + name;
+		}
 	  else
-	    {
-	      return " function " + name + " : " + type ;
-	    }
+		{
+		  return " function " + name + " : " + type ;
+		}
 	}
 
 	/**
 	 * Prints a description of the function/procedure.
 	 * 
 	 * @param out
-	 *            Where to print the description.
+	 *			Where to print the description.
 	 * @param depth
-	 *            How much indentation to use while printing.
+	 *			How much indentation to use while printing.
 	 */
 	@Override
 	public void printOn(PrintStream out, int depth) {
@@ -77,6 +84,9 @@ public class RoutineDecl extends Declaration {
 			routineSymbol = new FunctionSymbol(this.name, paramTypes, this.type);
 		}
 
+		this.lexicalLevel = routineSymbol.getDepth();
+		this.index = routineSymbol.getIndex();
+
 		Main.symbolTable.addEntry(routineSymbol);
 		Main.routineStack.push(routineSymbol);
 		Main.symbolTable.openScope();
@@ -85,6 +95,35 @@ public class RoutineDecl extends Declaration {
 
 		Main.symbolTable.closeScope();
 		Main.routineStack.pop();
+	}
+
+	@Override
+	public void doCodeGen() throws CodeGenErrorException {  
+	 
+		try {
+			// Push address of restoration
+			Machine.writeMemory(Main.codeGenAddr++, Machine.ADDR);
+			Machine.writeMemory(Main.codeGenAddr++, (short)this.lexicalLevel);
+			Machine.writeMemory(Main.codeGenAddr++, (short)0);
+			
+			// Set new display
+			Machine.writeMemory(Main.codeGenAddr++, Machine.PUSHMT);
+			Machine.writeMemory(Main.codeGenAddr++, Machine.SETD);
+			
+			// Let the body handle reserving space for var, param, and body instructions
+			this.routineBody.doCodeGen();
+			
+            // Save space for return value 
+            if(this.type != null)
+            {
+                Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
+                Machine.writeMemory(Main.codeGenAddr++, Machine.UNDEFINED);
+            }
+		}
+		catch (Exception e) {
+			System.out.println("Thrown in SubsExpn");
+			throw new CodeGenErrorException(e.getMessage());
+		}
 	}
 
 	public RoutineBody getRoutineBody() {
