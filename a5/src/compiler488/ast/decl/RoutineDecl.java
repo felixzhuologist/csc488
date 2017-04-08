@@ -5,6 +5,8 @@ import compiler488.ast.type.Type;
 import compiler488.symbol.*;
 import compiler488.compiler.Main;
 import compiler488.semantics.SemanticErrorException;
+import compiler488.codegen.CodeGenErrorException;
+import compiler488.runtime.Machine;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
@@ -36,7 +38,7 @@ public class RoutineDecl extends Declaration {
 		this.name = name;
 		this.routineBody = routineBody;
 		this.type = type;
-        this.index = 1;
+		this.index = 1;
 		this.lexicalLevel = -1;
 	}
 
@@ -101,15 +103,33 @@ public class RoutineDecl extends Declaration {
 	public void doCodeGen() throws CodeGenErrorException {  
 	 
 		try {
-			// Let the body handle scope and reserving space for var, and parameters
-			this.routineBody.doCodeGen();
-// 			
-// 			// Save space for return value 
-// 			if(this.type != null)
-// 			{
-// 				Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
-// 				Machine.writeMemory(Main.codeGenAddr++, (float)0);
-// 			}
+			// Activation record start
+			// Return address is at the top of the stack from FunctionCallExpn
+
+			if (this.type != null) 
+			{
+				short returnValueAddr = Main.codeGenAddr;
+				returnValueAddr -= (short)2;
+				// Let the body handle scope and reserving space for var, and parameters
+				this.routineBody.doCodeGenWithReturnAddr(returnValueAddr);
+			}
+			else {
+				// Let the body handle scope and reserving space for var, and parameters
+				this.routineBody.doCodeGen();
+			}
+
+			if (this.lexicalLevel > 0) {
+				Machine.writeMemory(Main.codeGenAddr++, Machine.PUSHMT);
+				Machine.writeMemory(Main.codeGenAddr++, Machine.ADDR);
+				Machine.writeMemory(Main.codeGenAddr++, (short)this.lexicalLevel);
+				Machine.writeMemory(Main.codeGenAddr++, (short)0);
+				Machine.writeMemory(Main.codeGenAddr++, Machine.SUB);
+				Machine.writeMemory(Main.codeGenAddr++, Machine.POPN);
+				//Machine.writeMemory(Main.codeGenAddr++, Machine.SETD);
+				//Machine.writeMemory(Main.codeGenAddr++, (short)(this.lexicalLevel - 1));
+
+				Machine.writeMemory(Main.codeGenAddr++, Machine.BR);
+			}
 		}
 		catch (Exception e) {
 			System.out.println("Thrown in RoutineDecl");

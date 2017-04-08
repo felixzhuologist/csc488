@@ -1,13 +1,18 @@
 package compiler488.ast.expn;
 
+
+import java.util.ListIterator;
+import java.util.ArrayList;
+
 import compiler488.ast.ASTList;
 import compiler488.symbol.*;
 import compiler488.compiler.Main;
 import compiler488.ast.type.*;
 import compiler488.semantics.Util;
 import compiler488.semantics.SemanticErrorException;
-
-import java.util.ArrayList;
+import compiler488.codegen.CodeGenErrorException;
+import compiler488.runtime.Machine;
+import compiler488.codegen.Utils;
 
 /**
  * Represents a function call with or without arguments.
@@ -83,7 +88,7 @@ public class FunctionCallExpn extends Expn {
 			// Return address
 			Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
 			short labelAfterFuncCall = Main.codeGenAddr;		
-			Machine.writeMemory(Main.codeGenAddr++, float(0));
+			Machine.writeMemory(Main.codeGenAddr++, (short)0);
 
 			// Procedure/Func address
 			Machine.writeMemory(Main.codeGenAddr++, Machine.ADDR);
