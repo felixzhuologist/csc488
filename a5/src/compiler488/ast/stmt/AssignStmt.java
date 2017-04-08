@@ -67,7 +67,7 @@ public class AssignStmt extends Stmt {
 
 	        this.rval.doCodeGen();
 
-	        if (this.rval instanceof SubsExpn || this.rval instanceof IdentExpn) {
+	        if (this.rval instanceof SubsExpn) {
                 Machine.writeMemory(Main.codeGenAddr++, Machine.LOAD);
 	        }
 
