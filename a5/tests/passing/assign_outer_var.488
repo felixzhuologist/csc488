@@ -1,0 +1,14 @@
+{
+    var result : Integer
+    if not result = 1 then
+    {
+        var x : Integer
+        if not x = 1 then
+        {
+            var y : Integer
+            y := 1
+            result := y
+        }
+    }
+    write result, newline
+}

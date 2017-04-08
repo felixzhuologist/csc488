@@ -1,0 +1,6 @@
+{
+    var lt : Integer
+    if 0 < 1 then
+        lt := 1
+    write lt, newline
+}
