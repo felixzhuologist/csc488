@@ -21,6 +21,9 @@ check that an array with ub gets initialized and indexing returns correct value
 assign constants/basic expressions to variables and check that they get the correct value.
 check that identExpns work correctly on both sides (LHS and RHS) of an assignStmt
 
+(new) assign_outer_var:
+check that assigning a value to a variable in an outer scope works
+
 (new) cond_expn:
 check that condition expression evaluates the correct branch for both true and false
 
