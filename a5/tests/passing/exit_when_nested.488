@@ -6,6 +6,6 @@
       write 1, newline
     }
     write 0, newline
-  } until false
+  } until true
   write 0, newline
 }

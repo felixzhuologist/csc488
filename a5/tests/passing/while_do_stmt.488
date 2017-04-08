@@ -1,7 +1,9 @@
 {
     var c : Integer
     c := 0
-    while c < 3 do { 
+    while c < 3 do {
+        var j : Integer
+        j := 1
         write c, newline
         c := c + 1
      }
