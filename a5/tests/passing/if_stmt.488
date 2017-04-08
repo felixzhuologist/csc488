@@ -1,11 +1,17 @@
 {
-    if true then
+    var x, y : Boolean
+    x := true
+    if x then {
+        x := false
         write "true1", newline
-    else
+    } else {
+        x := true
         write "false1", newline
+    }
     write "after1", newline
 
-    if false then
+    y := true
+    if x and y then
         write "true2", newline
     else
         write "false2", newline
