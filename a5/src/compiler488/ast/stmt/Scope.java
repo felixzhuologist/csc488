@@ -20,6 +20,8 @@ public class Scope extends Stmt {
 	protected ASTList<Declaration> declarations; // The declarations at the top.
 
 	protected ASTList<Stmt> statements; // The statements to execute.
+	
+	private int lexicalLevel = -1;
 
 	public Scope(Integer lineNumber, ASTList<Stmt> statements) {
 		super(lineNumber);
@@ -80,6 +82,7 @@ public class Scope extends Stmt {
 	@Override
     public void doSemantics() throws SemanticErrorException {
         Main.symbolTable.openScope();
+        this.lexicalLevel = Main.symbolTable.currentDepth();
         this.declarations.doSemantics();
         this.statements.doSemantics();
         Main.symbolTable.closeScope();
@@ -88,8 +91,17 @@ public class Scope extends Stmt {
 	@Override
 	public void doCodeGen() throws CodeGenErrorException {
 	    try {
+	        if (this.lexicalLevel > 0) {
+	            short prevDisp = Main.codeGenAddr;
+	            Machine.writeMemory(Main.codeGenAddr++, Machine.ADDR);
+	            Machine.writeMemory(Main.codeGenAddr++, (short)(this.lexicalLevel - 1));
+	            Machine.writeMemory(Main.codeGenAddr++, (short)0);
+	            Machine.writeMemory(Main.codeGenAddr++, Machine.PUSHMT);
+	            Machine.writeMemory(Main.codeGenAddr++, Machine.SETD);
+	            Machine.writeMemory(Main.codeGenAddr++, (short)this.lexicalLevel);
+	        }
 	        Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
-	        Machine.writeMemory(Main.codeGenAddr++, Machine.UNDEFINED);
+	        Machine.writeMemory(Main.codeGenAddr++, (short)0);
 
 			// get total size to be allocated
 			Integer totalAllocation = 0;
@@ -109,5 +121,20 @@ public class Scope extends Stmt {
 	    }
 		declarations.doCodeGen();
 		statements.doCodeGen();
+		try {
+		    if (this.lexicalLevel > 0) {
+                Machine.writeMemory(Main.codeGenAddr++, Machine.PUSHMT);
+                Machine.writeMemory(Main.codeGenAddr++, Machine.ADDR);
+                Machine.writeMemory(Main.codeGenAddr++, (short)this.lexicalLevel);
+                Machine.writeMemory(Main.codeGenAddr++, (short)0);
+                Machine.writeMemory(Main.codeGenAddr++, Machine.SUB);
+                Machine.writeMemory(Main.codeGenAddr++, Machine.POPN);
+                Machine.writeMemory(Main.codeGenAddr++, Machine.SETD);
+                Machine.writeMemory(Main.codeGenAddr++, (short)(this.lexicalLevel - 1));
+		    }
+		}
+		catch (Exception e) {
+		    throw new CodeGenErrorException(e.getMessage());
+		}
 	}
 }

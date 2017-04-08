@@ -44,12 +44,12 @@ public class Utils {
 
         // if true then:
         whenTrue.doCodeGen();
-        // need to push the address to branch to, so that it skips the else part
-        //	PUSH label_after
-        //	BR
-        Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
-
+        
         if (whenFalse != null) {
+            // need to push the address to branch to, so that it skips the else part
+            //	PUSH label_after
+            //	BR
+            Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
             // save the address of the instruction so we can patch it later
             short labelAfterInstrAddr = Main.codeGenAddr;
             Machine.writeMemory(Main.codeGenAddr++, Machine.UNDEFINED);
