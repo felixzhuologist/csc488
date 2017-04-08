@@ -1,7 +1,10 @@
 {
-    repeat { 
-        write "repeating", newline
-     } until false
+    var i : Integer
+    i := 0
+    repeat {
+        write i, newline
+        i := i + 1
+     } until i = 2
     
     write "after", newline
 }

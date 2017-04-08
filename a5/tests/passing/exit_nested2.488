@@ -11,10 +11,10 @@
             write "inside 3", newline
           }
           write "close 3", newline
-        } until false
+        } until true
         write "close 2", newline
-    } until false
+    } until true
     write "close 1", newline
-  } until false
+  } until true
   write "close 0", newline
 }
