@@ -101,16 +101,7 @@ public class RoutineDecl extends Declaration {
 	public void doCodeGen() throws CodeGenErrorException {  
 	 
 		try {
-			// Push address of restoration
-			Machine.writeMemory(Main.codeGenAddr++, Machine.ADDR);
-			Machine.writeMemory(Main.codeGenAddr++, (short)this.lexicalLevel);
-			Machine.writeMemory(Main.codeGenAddr++, (short)0);
-			
-			// Set new display
-			Machine.writeMemory(Main.codeGenAddr++, Machine.PUSHMT);
-			Machine.writeMemory(Main.codeGenAddr++, Machine.SETD);
-			
-			// Let the body handle reserving space for var, param, and body instructions
+			// Let the body handle scope and reserving space for var, and parameters
 			this.routineBody.doCodeGen();
 			
             // Save space for return value 
