@@ -46,6 +46,9 @@ check that exit does not exit when expn is false
 (new) exit_when_nested:
 check that exit when expn is true exits correct number of loops inside nested loop
 
+(new) func_simple:
+check that a function declaration without parameters is stored and accessed correctly within the same level scope
+
 (new) if_stmt:
 check that unnested if statements evaluate the correct branch and continue correctly
 
