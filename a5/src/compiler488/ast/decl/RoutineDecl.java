@@ -102,7 +102,7 @@ public class RoutineDecl extends Declaration {
 
     @Override
 	public Integer getAllocationSize() {
-		return this.routineBody.getAllocationSize();
+		return 1 + this.routineBody.getAllocationSize();
 	}
 
 	@Override
