@@ -57,6 +57,10 @@ public class SymbolTable {
 		scopeDisplay.add(new ArrayList<SymbolTableEntry>());
 		depth++;
 	}
+	
+	public int currentDepth() {
+	    return this.depth;
+	}
 
 	/**
 	 * Delete every symbol in this scope, and replace them in the symbol table
