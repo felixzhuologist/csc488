@@ -59,17 +59,13 @@ public class AssignStmt extends Stmt {
 	@Override
 	public void doCodeGen() throws CodeGenErrorException {
 	    try {
-	    	if (lval instanceof IdentExpn) {
+	    	if (lval instanceof IdentExpn || lval instanceof SubsExpn) {
 				lval.doCodeGenLHS();
-			} else if (lval instanceof SubsExpn) {
+			} else {
 				lval.doCodeGen();
 			}
 
-	        this.rval.doCodeGen();
-
-	        if (this.rval instanceof SubsExpn) {
-                Machine.writeMemory(Main.codeGenAddr++, Machine.LOAD);
-	        }
+	        rval.doCodeGen();
 
 	        Machine.writeMemory(Main.codeGenAddr++, Machine.STORE);
 	    }
