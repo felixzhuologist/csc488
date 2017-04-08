@@ -5,6 +5,9 @@ Who did what:
 ##### Atheed
 
 ##### Evan
+    - Wrote code generation code for several expressions as well as looping, if, and write statements
+    - Added passing tests for the above mentioned expressions and statements
+    - Debugged codegen and wrote documentation for several classes in the doc
 
 ##### Felix M 
 
