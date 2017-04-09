@@ -1,0 +1,40 @@
+{
+    % This program uses all forms of array declaration, positive and negative bounds
+    % In addition this program also tries to use some of the features of the language
+    % Such as addition, not, and while loops
+    % By: Jeffrey Deng 
+    % UtorID: dengjeff
+    
+    % Here we have all forms of array declaration, positive, negative  and a mix of bounds
+    var numArray[2], anotherNumArray[2]: Integer
+    var numBoundedArray[3 .. 4] : Integer
+    var numNegativeBoundedArray[-2 .. -1] : Integer
+    var booleanMixedBoundedArray[-1 .. 0] : Boolean
+    
+    % An integer counter that is used to confine the loop below
+    % The counter can be a random integer
+    var counter : Integer
+    counter := 2
+    
+    % Here we access the arrays and give them a value that we can use to manipulate
+    numArray[1] := 0
+    anotherNumArray[1] := 0
+    numBoundedArray[3] := 0
+    numNegativeBoundedArray[-2] := 0
+    booleanMixedBoundedArray[-1] := false
+    
+    % Test the accessor and mutation of each array for counter times
+    while counter > 0 do {
+        
+        % Increment the values stored in Integer array's by one 
+        numArray[1] := numArray[ 1 ] + 1
+        anotherNumArray[1] := anotherNumArray[1] + 1
+        numBoundedArray[3] := numBoundedArray[3] + 1
+        numNegativeBoundedArray[-2] := numNegativeBoundedArray[-2] + 1
+        
+        % Toggle the boolean value stored in boolean array
+        booleanMixedBoundedArray[-1] := not booleanMixedBoundedArray[-1]
+        
+        counter := counter - 1
+    }
+}

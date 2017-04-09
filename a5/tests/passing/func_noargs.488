@@ -1,0 +1,9 @@
+{
+  var v : Integer
+  function f () : Integer {
+    return with 5
+  }
+
+  v := f()
+  write v, newline
+}

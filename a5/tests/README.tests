@@ -11,6 +11,9 @@ is thrown.
 
 Passing:
 ========
+A1a - A1e:
+check that codegen runs for these programs without breaking
+
 (new) array_subexpn_lb:
 check that an array with negative lowerbound gets initialized, and indexing returns correct value
 
@@ -48,6 +51,22 @@ check that exit when expn is true exits correct number of loops inside nested lo
 
 (new) func_simple:
 check that a function declaration without parameters is stored and accessed correctly within the same level scope
+
+(new) func_noargs:
+check that variable takes on correct value from function that just returns value
+
+(new) func_return:
+check that code after a return is not executed
+
+(new) func_args:
+check that function gets correct values for args, and returns correctly
+
+(new) func_closure:
+check that function overwrites variables correctly and is also able to access
+variables outside its scope
+
+(new) func_nested:
+check that nested function returns correctly
 
 (new) if_stmt:
 check that unnested if statements evaluate the correct branch and continue correctly
