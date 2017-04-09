@@ -5,6 +5,8 @@ import compiler488.ast.type.Type;
 import compiler488.symbol.*;
 import compiler488.compiler.Main;
 import compiler488.semantics.SemanticErrorException;
+import compiler488.codegen.CodeGenErrorException;
+import compiler488.runtime.Machine;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
@@ -19,11 +21,16 @@ public class RoutineDecl extends Declaration {
 	 * statements to execute when the procedure is called.
 	 */
 	private RoutineBody routineBody;
+	// used to calculate the memory address of the variable
+	private int lexicalLevel;   // lexical level of symbol table entry
+	private int index;		  // index of symbol table entry
 
 	public RoutineDecl(Integer lineNumber, String name, RoutineBody routineBody) {
 		super(lineNumber);
 		this.name = name;
 		this.routineBody = routineBody;
+		this.index = 1;
+		this.lexicalLevel = -1;
 	}
 
 	public RoutineDecl(Integer lineNumber, String name, RoutineBody routineBody, Type type) {
@@ -31,6 +38,8 @@ public class RoutineDecl extends Declaration {
 		this.name = name;
 		this.routineBody = routineBody;
 		this.type = type;
+		this.index = 1;
+		this.lexicalLevel = -1;
 	}
 
 	/**
@@ -41,22 +50,22 @@ public class RoutineDecl extends Declaration {
 	@Override
 	public String toString() {
 	  if(type==null)
-	    {
-	      return " procedure " + name;
-	    }
+		{
+		  return " procedure " + name;
+		}
 	  else
-	    {
-	      return " function " + name + " : " + type ;
-	    }
+		{
+		  return " function " + name + " : " + type ;
+		}
 	}
 
 	/**
 	 * Prints a description of the function/procedure.
 	 * 
 	 * @param out
-	 *            Where to print the description.
+	 *			Where to print the description.
 	 * @param depth
-	 *            How much indentation to use while printing.
+	 *			How much indentation to use while printing.
 	 */
 	@Override
 	public void printOn(PrintStream out, int depth) {
@@ -79,12 +88,57 @@ public class RoutineDecl extends Declaration {
 
 		Main.symbolTable.addEntry(routineSymbol);
 		Main.routineStack.push(routineSymbol);
+		
+		this.lexicalLevel = routineSymbol.getDepth();
+		this.index = routineSymbol.getIndex();
+		
 		Main.symbolTable.openScope();
 
 		this.routineBody.doSemantics();
 
 		Main.symbolTable.closeScope();
 		Main.routineStack.pop();
+	}
+
+    @Override
+	public Integer getAllocationSize() {
+		return 1 + this.routineBody.getAllocationSize();
+	}
+
+	@Override
+	public void doCodeGen() throws CodeGenErrorException {  
+	 
+		try {
+			// Activation record start
+			// Return address is at the top of the stack from FunctionCallExpn
+
+			if (this.type != null) 
+			{
+				// Let the body handle scope and reserving space for var, and parameters
+				this.routineBody.doCodeGenWithReturn(true);
+			}
+			else {
+				// Let the body handle scope and reserving space for var, and parameters
+				this.routineBody.doCodeGen();
+			}
+
+			if (this.lexicalLevel > 0) {
+				Machine.writeMemory(Main.codeGenAddr++, Machine.PUSHMT);
+				Machine.writeMemory(Main.codeGenAddr++, Machine.ADDR);
+				Machine.writeMemory(Main.codeGenAddr++, (short)this.lexicalLevel);
+				Machine.writeMemory(Main.codeGenAddr++, (short)0);
+				Machine.writeMemory(Main.codeGenAddr++, Machine.SUB);
+				Machine.writeMemory(Main.codeGenAddr++, Machine.POPN);
+				//Machine.writeMemory(Main.codeGenAddr++, Machine.SETD);
+				//Machine.writeMemory(Main.codeGenAddr++, (short)(this.lexicalLevel - 1));
+
+				Machine.writeMemory(Main.codeGenAddr++, Machine.BR);
+			}
+		}
+		catch (Exception e) {
+			System.out.println("Thrown in RoutineDecl");
+			throw new CodeGenErrorException(e.getMessage());
+		}
 	}
 
 	public RoutineBody getRoutineBody() {

@@ -5,7 +5,10 @@ import java.io.PrintStream;
 import compiler488.ast.ASTList;
 import compiler488.ast.Indentable;
 import compiler488.ast.stmt.Scope;
+import compiler488.compiler.Main;
 import compiler488.semantics.SemanticErrorException;
+import compiler488.codegen.CodeGenErrorException;
+import compiler488.runtime.Machine;
 
 /**
  * Represents the parameters and instructions associated with a
@@ -33,9 +36,9 @@ public class RoutineBody extends Indentable {
 	 * routine.
 	 * 
 	 * @param out
-	 *            Where to print the description.
+	 *			Where to print the description.
 	 * @param depth
-	 *            How much indentation to use while printing.
+	 *			How much indentation to use while printing.
 	 */
 	@Override
 	public void printOn(PrintStream out, int depth) {
@@ -50,6 +53,41 @@ public class RoutineBody extends Indentable {
 	public void doSemantics() throws SemanticErrorException {
 		this.parameters.doSemantics();
 		this.body.doSemantics();
+	}
+	
+	public void doCodeGenWithReturn(boolean hasReturn) throws CodeGenErrorException {  
+		try {
+			// Save space for parameters
+			Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
+			Machine.writeMemory(Main.codeGenAddr++, (short)0);
+
+			// get total # of parameters to be allocated
+			Integer totalAllocation = parameters.size();
+			Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
+			Machine.writeMemory(Main.codeGenAddr++, totalAllocation.shortValue());
+
+			Machine.writeMemory(Main.codeGenAddr++, Machine.DUPN);
+
+			// Generate Scope
+			if (hasReturn) {
+				this.body.doCodeGen(hasReturn, totalAllocation.shortValue());
+			}
+			else 
+			{
+				this.body.doCodeGen(false,  totalAllocation.shortValue());
+			}
+		}
+		catch (Exception e) {
+			System.out.println("Thrown in RoutineBody");
+			throw new CodeGenErrorException(e.getMessage());
+		}
+	}
+	
+	public Integer getAllocationSize() {
+		int totalAllocation = this.parameters.size();
+		totalAllocation += this.body.getAllocationSize();
+
+		return totalAllocation;
 	}
 
 	public Scope getBody() {

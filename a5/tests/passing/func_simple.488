@@ -1,0 +1,8 @@
+{
+    function getFive: Integer
+    {
+        return with 5
+    }
+    
+    write getFive
+}
