@@ -1,7 +1,0 @@
-Arithmetic
-
-Boolean
-
-Comparisons
-
-Conditional
