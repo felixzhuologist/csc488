@@ -1,0 +1,8 @@
+{
+    function echo(a:Integer): Integer
+    {
+        return with a
+    }
+    
+    write echo(2)
+}

@@ -1,0 +1,62 @@
+% Tests valid scopes in functions, procedures and main scope 
+{
+
+    var a: Integer
+    var b: Integer
+
+    procedure write_Integers(a: Integer, b: Integer) {
+        write a
+        write b    
+    }
+    
+    function get_a : Integer {
+        return with a
+    }
+    
+    function get_b : Integer {
+        return with b
+    }
+    
+    a := 0
+    b := 0
+    
+    % Should be 0 and 0
+    write_Integers(a, b)
+    
+    % Test redefinition in inner scope
+    {
+        var a: Integer
+        var b: Integer
+
+        a := 1
+        b := 1
+        
+        % Should be 1 and 1
+        write_Integers(a, b)
+        
+        % Test redefinition in inner scope
+        {
+            var a: Integer
+            var b: Integer   
+            
+            a := 2
+            b := 2
+            
+            % Should be 2 and 2
+            write_Integers(a, b)
+            
+            % Test access of variables defined in outer scopes
+            {
+                % Should be 2 and 2
+                write_Integers(a, b)
+                
+                % Should be 0 and 0
+                write get_a
+                write get_b
+            }
+        }
+    }
+    
+    % Should be 0 and 0
+    write_Integers(a, b)
+}

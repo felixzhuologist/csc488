@@ -1,0 +1,8 @@
+{
+    procedure write_Integers(a: Integer, b: Integer) {
+        write a
+        write b
+    }
+    
+    write_Integers(1, 2)
+}
