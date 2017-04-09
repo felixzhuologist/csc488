@@ -1,0 +1,13 @@
+{
+  function get_circle_area(radius: Integer): Integer {
+    var pi: Integer
+    function square(n: Integer): Integer {
+      return with n * n
+    }
+
+    pi := 3
+    return with pi * square(radius)
+  }
+
+  write get_circle_area(1)
+}

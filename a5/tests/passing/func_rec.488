@@ -1,0 +1,9 @@
+{
+  function fib (n: Integer): Integer {
+    if n = 0 then return with 0
+    if n = 1 then return with 1
+    return with fib(n - 1) + fib(n - 2)
+  }
+
+  write fib(15)
+}

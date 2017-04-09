@@ -58,6 +58,9 @@ check that variable takes on correct value from function that just returns value
 (new) func_return:
 check that code after a return is not executed
 
+(new) func_rec:
+check that deep recursive calls return correct value
+
 (new) func_args:
 check that function gets correct values for args, and returns correctly
 
