@@ -3,6 +3,9 @@ Who did what:
 ##### Jeffrey
 
 ##### Atheed
+    - Wrote code generation for Read stmt and fixed IdentExpn
+    - Helped fix SubsExpn, array memory allocation, and array declaration
+    - Wrote several relevant tests
 
 ##### Evan
     - Wrote code generation code for several expressions as well as looping, if, and write statements
