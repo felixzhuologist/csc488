@@ -3,6 +3,10 @@
     {
         return with 5
     }
+    % var A[4] : Integer
+
+    % A[1] := 11
     
-    write getFive
+    write getFive, newline
+    % write A[1], newline
 }
