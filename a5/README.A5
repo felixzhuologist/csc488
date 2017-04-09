@@ -10,6 +10,8 @@ Who did what:
     - Debugged codegen and wrote documentation for several classes in the doc
 
 ##### Felix M 
+    - Wrote codegen for program initialization, scopes, assignment statements, and display management
+    - Fixed some bugs, wrote some tests, and contributed to documentation
 
 ##### Felix Z
     - Wrote codegen for several expressions and for
