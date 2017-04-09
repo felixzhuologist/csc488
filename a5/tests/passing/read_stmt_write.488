@@ -1,5 +1,6 @@
 {
    var A, B, C : Integer
+   var K[5] : Integer
    C := 44
    B := 5
    A := B + 10
@@ -8,4 +9,6 @@
    write A, newline
    write B + C, newline
    write C + 50, newline
+   read K[3]
+   write K[3], newline
 }

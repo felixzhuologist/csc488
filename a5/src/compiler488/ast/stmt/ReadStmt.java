@@ -57,10 +57,8 @@ public class ReadStmt extends Stmt {
 		try {
 			while (inIter.hasNext()) {
 				Expn input = (Expn)(inIter.next());
-				if (input instanceof IdentExpn) {
+				if (input instanceof IdentExpn || input instanceof SubsExpn) {
 					input.doCodeGenLHS();
-				} else if (input instanceof SubsExpn) {
-					input.doCodeGen();
 				} else {
 					throw new CodeGenErrorException("Can't read input of such an expression");
 				}
