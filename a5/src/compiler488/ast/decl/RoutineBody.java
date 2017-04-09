@@ -55,26 +55,7 @@ public class RoutineBody extends Indentable {
 		this.body.doSemantics();
 	}
 	
-	@Override
-	public void doCodeGen() throws CodeGenErrorException {  
-		try {
-			doCodeGenWithReturnAddr((short)-1);
-		}
-		catch (Exception e) {
-			System.out.println("Thrown in RoutineBody");
-			throw new CodeGenErrorException(e.getMessage());
-		}
-	}
-	
-    public Integer getAllocationSize() {
-        int totalAllocation = this.parameters.size();
-        totalAllocation += this.body.getAllocationSize();
-
-        return totalAllocation;
-    }
-	
-	public void doCodeGenWithReturnAddr(short address) throws CodeGenErrorException {  
-
+	public void doCodeGenWithReturn(boolean hasReturn) throws CodeGenErrorException {  
 		try {
 			// Save space for parameters
 			Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
@@ -86,43 +67,79 @@ public class RoutineBody extends Indentable {
 			Machine.writeMemory(Main.codeGenAddr++, totalAllocation.shortValue());
 
 			Machine.writeMemory(Main.codeGenAddr++, Machine.DUPN);
-			
-			// Save space for return value
-			if (address >= 0) { 
-				Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
-				Machine.writeMemory(Main.codeGenAddr++, (short)0);
+
+			// Generate Scope
+			if (hasReturn) {
+				this.body.doCodeGen(hasReturn, totalAllocation.shortValue());
+			}
+			else 
+			{
+				this.body.doCodeGen(false,  totalAllocation.shortValue());
 			}
 		}
 		catch (Exception e) {
 			System.out.println("Thrown in RoutineBody");
 			throw new CodeGenErrorException(e.getMessage());
 		}
-	
-		// Generate Scope
-		if (address >= 0) {
-			this.body.doCodeGen(true);
-		}
-		else 
-		{
-			this.body.doCodeGen(false);
-		}
-		
-		// Set return value
-		try {
-			if (address >= 0) { 
-				// Load return value address
-				Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
-				Machine.writeMemory(Main.codeGenAddr++, (short)address);
-			
-				// Swap Return address and return value from line 102, and store
-				Machine.writeMemory(Main.codeGenAddr++, Machine.SWAP);
-				Machine.writeMemory(Main.codeGenAddr++, Machine.STORE);
-			}
-		}
-		catch (Exception e) {
-			throw new CodeGenErrorException(e.getMessage());
-		}
 	}
+	
+	public Integer getAllocationSize() {
+		int totalAllocation = this.parameters.size();
+		totalAllocation += this.body.getAllocationSize();
+
+		return totalAllocation;
+	}
+	
+// 	public void doCodeGenWithReturnAddr(short address) throws CodeGenErrorException {  
+// 
+// 		try {
+// 			// Save space for parameters
+// 			Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
+// 			Machine.writeMemory(Main.codeGenAddr++, (short)0);
+// 
+// 			// get total # of parameters to be allocated
+// 			Integer totalAllocation = parameters.size();
+// 			Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
+// 			Machine.writeMemory(Main.codeGenAddr++, totalAllocation.shortValue());
+// 
+// 			Machine.writeMemory(Main.codeGenAddr++, Machine.DUPN);
+// 			
+// 			// Save space for return value
+// 			if (address >= 0) { 
+// 				Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
+// 				Machine.writeMemory(Main.codeGenAddr++, (short)0);
+// 			}
+// 		}
+// 		catch (Exception e) {
+// 			System.out.println("Thrown in RoutineBody");
+// 			throw new CodeGenErrorException(e.getMessage());
+// 		}
+// 	
+// 		// Generate Scope
+// 		if (address >= 0) {
+// 			this.body.doCodeGen(true);
+// 		}
+// 		else 
+// 		{
+// 			this.body.doCodeGen(false);
+// 		}
+// 		
+// 		// Set return value
+// 		try {
+// 			if (address >= 0) { 
+// 				// Load return value address
+// 				Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
+// 				Machine.writeMemory(Main.codeGenAddr++, (short)address);
+// 			
+// 				// Swap Return address and return value from line 102, and store
+// 				Machine.writeMemory(Main.codeGenAddr++, Machine.SWAP);
+// 				Machine.writeMemory(Main.codeGenAddr++, Machine.STORE);
+// 			}
+// 		}
+// 		catch (Exception e) {
+// 			throw new CodeGenErrorException(e.getMessage());
+// 		}
+// 	}
 	
 
 	public Scope getBody() {

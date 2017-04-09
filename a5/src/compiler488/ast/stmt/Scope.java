@@ -84,18 +84,8 @@ public class Scope extends Stmt {
 	    Integer totalAllocation = 0;
         ListIterator<Declaration> decIter = declarations.getIter();
         while (decIter.hasNext()) {
-        
             Declaration nextDeclaration = decIter.next();
             totalAllocation += nextDeclaration.getAllocationSize();
-//             if (nextDeclaration instanceof  MultiDeclarations) {
-//             
-//                 
-//                 MultiDeclarations m = (MultiDeclarations) nextDeclaration;
-//                 totalAllocation += m.getAllocationSize();
-//             }
-//             else {
-//                 totalAllocation += Declara
-//             }
         }
         
         return totalAllocation;
@@ -113,14 +103,14 @@ public class Scope extends Stmt {
 	@Override
 	public void doCodeGen() throws CodeGenErrorException {
 		try {
-			doCodeGen(false);
+			doCodeGen(false, 0);
 		}
 		catch (Exception e) {
 			throw new CodeGenErrorException(e.getMessage());
 		}
 	}
 	
-	public void doCodeGen(boolean doesReturn) throws CodeGenErrorException {
+	public void doCodeGen(boolean doesReturn, int numParams) throws CodeGenErrorException {
 		try {
 			if (this.lexicalLevel > 0) {
 				short prevDisp = Main.codeGenAddr;
@@ -136,18 +126,6 @@ public class Scope extends Stmt {
 
 			// get total size to be allocated
 			Integer totalAllocation = this.getAllocationSize();
-// 			ListIterator<Declaration> decIter = declarations.getIter();
-// 			while (decIter.hasNext()) {
-// 			
-// 			    Declaration nextDeclaration = decIter.next();
-// 			    if (nextDeclaration instanceof  MultiDeclarations) {
-// 				    MultiDeclarations m = (MultiDeclarations) nextDeclaration;
-// 				    totalAllocation += m.getAllocationSize();
-// 				}
-// 				else {
-// 				    totalAllocation += 
-// 				}
-// 			}
 
 			Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
 			Machine.writeMemory(Main.codeGenAddr++, totalAllocation.shortValue());
@@ -166,10 +144,12 @@ public class Scope extends Stmt {
 			
 				if (doesReturn)
 				{
+				    Integer returnAddress = -numParams-2;
+				
 					// Set Return Value
 					Machine.writeMemory(Main.codeGenAddr++, Machine.ADDR);
-					Machine.writeMemory(Main.codeGenAddr++, (short)(this.lexicalLevel - 1));
-					Machine.writeMemory(Main.codeGenAddr++, (short)0);
+					Machine.writeMemory(Main.codeGenAddr++, (short)(this.lexicalLevel));
+					Machine.writeMemory(Main.codeGenAddr++, returnAddress.shortValue());
 					Machine.writeMemory(Main.codeGenAddr++, Machine.SWAP);
 					Machine.writeMemory(Main.codeGenAddr++, Machine.STORE);
 				}

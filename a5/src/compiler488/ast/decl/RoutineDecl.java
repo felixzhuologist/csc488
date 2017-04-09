@@ -114,10 +114,8 @@ public class RoutineDecl extends Declaration {
 
 			if (this.type != null) 
 			{
-				short returnValueAddr = Main.codeGenAddr;
-				returnValueAddr -= (short)2;
 				// Let the body handle scope and reserving space for var, and parameters
-				this.routineBody.doCodeGenWithReturnAddr(returnValueAddr);
+				this.routineBody.doCodeGenWithReturn(true);
 			}
 			else {
 				// Let the body handle scope and reserving space for var, and parameters
