@@ -1,0 +1,14 @@
+{
+  
+  var a: Integer
+  var b: Integer
+
+  function addb (b: Integer) : Integer {
+    return with a + b
+  }
+
+  a := 5
+  b := 10
+
+  write addb(5)
+}

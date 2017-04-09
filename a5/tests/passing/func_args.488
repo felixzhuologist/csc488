@@ -1,0 +1,12 @@
+{
+    function max (i: Integer, j: Integer) : Integer {
+        if i > j
+        then
+            return with i
+        else
+            return with j
+    }
+
+    write max(3, 5), newline
+    write max(-1, -2)
+}

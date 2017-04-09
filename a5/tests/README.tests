@@ -1,4 +1,4 @@
-(new) indicates this test is new since previous assignments
+######(new) indicates this test is new since previous assignments
 
 tests under passing are expected to pass and tests under failing are expected to fail.
 
@@ -11,103 +11,134 @@ is thrown.
 
 Passing:
 ========
-(new) array_subexpn_lb:
+######A1a - A1e:
+check that codegen runs for these programs without breaking
+
+######(new) array_subexpn:
+check that multiple arrays are allocated, and assigned to, correctly
+
+######(new) array_subexpn_lb:
 check that an array with negative lowerbound gets initialized, and indexing returns correct value
 
-(new) array_subexpn_ub:
+######(new) array_subexpn_ub:
 check that an array with an upperbound and the default lowerbound gets initialized and indexing returns correct value
 
-(new) assign_idents_LHS_RHS:
+######(new) assign_idents_LHS_RHS:
 assign constants/basic expressions to variables and check that they get the correct value.
 check that identExpns work correctly on both sides (LHS and RHS) of an assignStmt
 
-(new) assign_outer_var:
+######(new) assign_outer_var:
 check that assigning a value to a variable in an outer scope works
 
-(new) cond_expn:
+######(new) cond_expn:
 check that condition expression evaluates the correct branch for both true and false
 
-(new) exit_basic:
+######(new) exit_basic:
 can exit through single while loop
 
-(new) exit_nested:
+######(new) exit_nested:
 check that exit (with no level specified) in an inner loop exits exactly 1 loop
 
-(new) exit_nested2:
+######(new) exit_nested2:
 check that exit exits the correct number of loops when the number of levels is
 greater than 1
 
-(new) exit_when_basic:
+######(new) exit_when_basic:
 check that exit exits correctly when expn is true
 
-(new) exit_when_basic2:
+######(new) exit_when_basic2:
 check that exit does not exit when expn is false
 
-(new) exit_when_nested:
+######(new) exit_when_nested:
 check that exit when expn is true exits correct number of loops inside nested loop
 
-(new) func_simple:
+######(new) func_simple:
 check that a function declaration without parameters is stored and accessed correctly within the same level scope
 
-(new) if_stmt:
+(new) func_noargs:
+check that variable takes on correct value from function that just returns value
+
+(new) func_return:
+check that code after a return is not executed
+
+(new) func_rec:
+check that deep recursive calls return correct value
+
+(new) func_args:
+check that function gets correct values for args, and returns correctly
+
+(new) func_closure:
+check that function overwrites variables correctly and is also able to access
+variables outside its scope
+
+(new) func_nested:
+check that nested function returns correctly
+
+######(new) func_param:
+check that a function declaration parameters is stored and accessed correctly within the same level scope
+
+######(new) if_stmt:
 check that unnested if statements evaluate the correct branch and continue correctly
 
-(new) if_without_else:
+######(new) if_without_else:
 check that unnested if statements without an 'else' case evaluates and continues correctly
 
-(new) not_expn:
+######(new) not_expn:
 check that not flips boolean value correct
 
-(new) read_stmt_basic:
+######(new) procedure:
+check that a procedure declaration is stored correctly and branched to correctly
+
+######(new) read_stmt_basic:
 check that a value gets read into a variable
 
-(new) read_stmt_write:
+######(new) read_stmt_write:
 check that values get read into variables and overwrite their values properly
 
-(new) repeat_stmt:
+######(new) repeat_stmt:
 check that repeat statement with true condition only runs once and exits correctly
 
-(new) simple_var:
+######(new) simple_var:
 check that constants get assigned to variables properly
 
-(new) unary_minus:
+######(new) unary_minus:
 check that unary minus works in an arithmetic expression
 
-(new) while_do_stmt:
+######(new) while_do_stmt:
 check that while do statement executes exactly 3 times
 
-(new) write_addexpr1:
+######(new) write_addexpr1:
 check that arithmetic expression (integer) evaluates to correct value
 
-(new) write_int_expn:
+######(new) write_int_expn:
 same as above
 
-(new) write_bool_expn:
+######(new) write_bool_expn:
 check that bool expression (boolean) evaluates to correct value
 
-(new) write_eq1:
+######(new) write_eq1:
 check that comparison expression (boolean) evaluates to correct value
 
-(new) write_gt1:
+######(new) write_gt1:
 check that greater than expression evaluates to correct value
 
-(new) write_gte1:
+######(new) write_gte1:
 check that greater than or equals expression evalutes to correct value
 
-(new) write_int_const:
+######(new) write_int_const:
 check that an int is written out correctly
 
-(new) write_int_expn:
+######(new) write_int_expn:
 check that an expression returning an integer is written correctly
 
-(new) write_lt1:
+######(new) write_lt1:
 check that less than evalutes to correct value
 
-(new) write_lte1:
+######(new) write_lte1:
 check that lte evaluates to correct value
 
-(new) write_neq1:
+######(new) write_neq1:
 check that not = evalutes to correct value
 
-(new) write_text_const:
+######(new) write_text_const:
 check that text is written out correctly
