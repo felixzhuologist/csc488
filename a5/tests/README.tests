@@ -14,6 +14,9 @@ Passing:
 A1a - A1e:
 check that codegen runs for these programs without breaking
 
+(new) array_subexpn:
+check that multiple arrays are allocated, and assigned to, correctly
+
 (new) array_subexpn_lb:
 check that an array with negative lowerbound gets initialized, and indexing returns correct value
 
