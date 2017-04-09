@@ -1,7 +1,10 @@
 Who did what:
 
 ##### Jeffrey
-
+	- Wrote code generation for SubsExpn
+	- Attempted code generation for FunctionDecl, RoutineBody, RoutineDecl, and Scope
+	- Wrote several Function and SubsExpn tests
+	- Wrote documentation for Function and Procedures
 ##### Atheed
     - Wrote code generation for Read stmt and fixed IdentExpn
     - Helped fix SubsExpn, array memory allocation, and array declaration
