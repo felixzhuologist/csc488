@@ -16,7 +16,7 @@ Who did what:
 ##### Felix Z
     - Wrote codegen for several expressions and for
       exit statements
-    - Wrote passings tests for the above
+    - Wrote passings tests for the above + functions
     - Modified the A4 testing script to check for
       the correct print output
     - Added documentation for expressions, statements,
