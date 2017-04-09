@@ -1,0 +1,21 @@
+{
+    var B[12] : Integer
+    var A[-4 .. 10]: Integer
+    B[1] := -21
+    B[2] := -22
+    B[3] := -23
+    B[12] := -212
+    A[-4] := 14
+    A[-3] := 13
+    A[10] := 12
+    
+    
+    write "The value is "
+    write A[-4], newline
+    write A[-3], newline
+    write A[10], newline
+    write B[1], newline
+    write B[2], newline
+    write B[3], newline
+    write B[12], newline
+}

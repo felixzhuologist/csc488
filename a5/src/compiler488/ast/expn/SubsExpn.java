@@ -74,12 +74,39 @@ public class SubsExpn extends UnaryExpn implements Readable {
             // This will PUSH the operand's value
             this.operand.doCodeGen();
             
-            // If lb, add operations to update the offset
-            if (this.lb != 1) {
-                Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
-                Machine.writeMemory(Main.codeGenAddr++, (short)this.lb);
-                Machine.writeMemory(Main.codeGenAddr++, Machine.SUB);
-            }
+            // add operations to update the offset
+            Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
+            Machine.writeMemory(Main.codeGenAddr++, (short)this.lb);
+            Machine.writeMemory(Main.codeGenAddr++, Machine.SUB);
+            
+            // Add the array address and the offset
+            Machine.writeMemory(Main.codeGenAddr++, Machine.ADD);
+
+            // load val in mem
+            Machine.writeMemory(Main.codeGenAddr++, Machine.LOAD);
+        }
+        catch (Exception e) {
+            System.out.println("Thrown in SubsExpn");
+            throw new CodeGenErrorException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void doCodeGenLHS() throws CodeGenErrorException {  
+     
+        try {
+            // Push address of the start of the array
+            Machine.writeMemory(Main.codeGenAddr++, Machine.ADDR);
+            Machine.writeMemory(Main.codeGenAddr++, (short)this.lexicalLevel);
+            Machine.writeMemory(Main.codeGenAddr++, (short)this.index);
+            
+            // This will PUSH the operand's value
+            this.operand.doCodeGen();
+            
+            // add operations to update the offset
+            Machine.writeMemory(Main.codeGenAddr++, Machine.PUSH);
+            Machine.writeMemory(Main.codeGenAddr++, (short)this.lb);
+            Machine.writeMemory(Main.codeGenAddr++, Machine.SUB);
             
             // Add the array address and the offset
             Machine.writeMemory(Main.codeGenAddr++, Machine.ADD);
