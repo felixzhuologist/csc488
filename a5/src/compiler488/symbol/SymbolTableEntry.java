@@ -42,6 +42,19 @@ public abstract class SymbolTableEntry {
     }
     
     public int getIndex() {
-        return this.level.indexOf(this);
+
+        Integer listIndex = this.level.indexOf(this);
+        if (listIndex == 0) {
+            return 0;
+        }
+        SymbolTableEntry prevEntry = level.get(listIndex - 1);
+
+        if (prevEntry instanceof ArraySymbol) {
+            return prevEntry.getIndex() + ((ArraySymbol) prevEntry).getSize();
+        } else if (prevEntry instanceof ScalarSymbol) {
+            return prevEntry.getIndex() + 1;
+        } else {
+            return listIndex;
+        }
     }
 }
