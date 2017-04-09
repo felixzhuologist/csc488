@@ -40,15 +40,20 @@ public abstract class SymbolTableEntry {
     public void setLevel(ArrayList<SymbolTableEntry> level) {
         this.level = level;
     }
-    
+
+    /* Get the position where the symbol corresponding to this symbol table entry will be stored in memory. */
     public int getIndex() {
 
         Integer listIndex = this.level.indexOf(this);
         if (listIndex == 0) {
             return 0;
         }
+        // get the index of the previously-declared element at this lexical level
         SymbolTableEntry prevEntry = level.get(listIndex - 1);
 
+        // the index of the current symbol will be the index of the previous symbol + the previous symbol's size.
+        // if the previous entry is an array symbol, its size is the size of the array
+        // if the previous entry is a scalar symbol, its size is just 1
         if (prevEntry instanceof ArraySymbol) {
             return prevEntry.getIndex() + ((ArraySymbol) prevEntry).getSize();
         } else if (prevEntry instanceof ScalarSymbol) {

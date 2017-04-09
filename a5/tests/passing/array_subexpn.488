@@ -1,16 +1,17 @@
 {
+    var K[8] : Boolean
     var B[12] : Integer
-    var A[-4 .. 10]: Integer
+    var A[-4 .. 10] : Integer
+
+    K[1] := true or false
     B[1] := -21
     B[2] := -22
     B[3] := -23
     B[12] := -212
-    A[-4] := 14
+    A[-4] := B[3] + 10
     A[-3] := 13
     A[10] := 12
     
-    
-    write "The value is "
     write A[-4], newline
     write A[-3], newline
     write A[10], newline
